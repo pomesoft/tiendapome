@@ -10,3 +10,15 @@ C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Impresion\bin\Debug\N
 C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Impresion\obj\Debug\tiendapome.Impresion.csprojResolveAssemblyReference.cache
 C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Impresion\obj\Debug\tiendapome.Impresion.dll
 C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Impresion\obj\Debug\tiendapome.Impresion.pdb
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Impresion\bin\Debug\tiendapome.Impresion.dll
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Impresion\bin\Debug\tiendapome.Impresion.pdb
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Impresion\bin\Debug\tiendapome.Entidades.dll
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Impresion\bin\Debug\Newtonsoft.Json.dll
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Impresion\bin\Debug\tiendapome.Entidades.pdb
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Impresion\bin\Debug\wnvhtmlconvert.xml
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Impresion\bin\Debug\Newtonsoft.Json.xml
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Impresion\obj\Debug\tiendapome.Impresion.csprojAssemblyReference.cache
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Impresion\obj\Debug\tiendapome.Impresion.csproj.CoreCompileInputs.cache
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Impresion\obj\Debug\tiendapome.Impresion.csproj.CopyComplete
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Impresion\obj\Debug\tiendapome.Impresion.dll
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Impresion\obj\Debug\tiendapome.Impresion.pdb

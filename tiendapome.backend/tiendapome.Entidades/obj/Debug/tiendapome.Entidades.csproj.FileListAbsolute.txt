@@ -4,3 +4,11 @@ C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Entidades\bin\Debug\N
 C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Entidades\obj\Debug\tiendapome.Entidades.csprojResolveAssemblyReference.cache
 C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Entidades\obj\Debug\tiendapome.Entidades.dll
 C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Entidades\obj\Debug\tiendapome.Entidades.pdb
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Entidades\bin\Debug\tiendapome.Entidades.dll
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Entidades\bin\Debug\tiendapome.Entidades.pdb
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Entidades\bin\Debug\Newtonsoft.Json.dll
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Entidades\obj\Debug\tiendapome.Entidades.csprojAssemblyReference.cache
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Entidades\obj\Debug\tiendapome.Entidades.csproj.CoreCompileInputs.cache
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Entidades\obj\Debug\tiendapome.Entidades.csproj.CopyComplete
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Entidades\obj\Debug\tiendapome.Entidades.dll
+C:\Varios\tiendapome\tiendapome.backend\tiendapome.Entidades\obj\Debug\tiendapome.Entidades.pdb
