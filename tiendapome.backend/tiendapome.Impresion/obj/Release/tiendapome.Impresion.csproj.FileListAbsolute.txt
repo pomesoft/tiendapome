@@ -1,0 +1,12 @@
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Impresion\bin\Release\tiendapome.Impresion.dll
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Impresion\bin\Release\tiendapome.Impresion.pdb
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Impresion\bin\Release\NVelocity.dll
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Impresion\bin\Release\tiendapome.Entidades.dll
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Impresion\bin\Release\wnvhtmlconvert.dll
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Impresion\bin\Release\Newtonsoft.Json.dll
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Impresion\bin\Release\tiendapome.Entidades.pdb
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Impresion\bin\Release\wnvhtmlconvert.xml
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Impresion\bin\Release\Newtonsoft.Json.xml
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Impresion\obj\Release\tiendapome.Impresion.csprojResolveAssemblyReference.cache
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Impresion\obj\Release\tiendapome.Impresion.dll
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Impresion\obj\Release\tiendapome.Impresion.pdb

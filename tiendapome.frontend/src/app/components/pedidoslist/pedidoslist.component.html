@@ -1,0 +1,455 @@
+<div class="container-fluid">
+
+      <div class="row p-2">
+            <div class="col-12 col-lg-2">
+                  <div id="MenuFiltros" class="card shadow">
+                        <div class="card-header card-header-primary">
+                              <div class="row">
+                                    <div class="col-7">
+                                          Filtros
+                                    </div>
+                                    <div class="col-5">
+                                          <a href="#" class="btn btn-icon-split"
+                                                (click)="mostrarOcultarFiltros( $event )">
+                                                <span class="icon text-white-50" *ngIf="mostrarPanelFiltros">
+                                                      <i class="fas fa-angle-double-up"></i>
+                                                </span>
+                                                <span class="icon text-white-50" *ngIf="!mostrarPanelFiltros">
+                                                      <i class="fas fa-angle-double-down"></i>
+                                                </span>
+                                          </a>
+                                    </div>
+                              </div>
+                        </div>
+                        <div class="card-body">
+
+                              <div class="row">
+                                    <div class="col-12 text-center">
+                                          <div *ngIf="!cargando">
+                                                <a href="#" class="btn btn-success btn-icon-split"
+                                                      (click)="aplicarFiltros( $event )">
+                                                      <span class="icon text-white-50 mr-1">
+                                                            <i class="fas fa-check"></i>
+                                                      </span>
+                                                      <span class="text">Aplicar filtros</span>
+                                                </a>
+                                          </div>
+                                          <div *ngIf="cargando">
+                                                <a class="btn btn-success btn-icon-split" aria-disabled="true">
+                                                      <span class="spinner-border spinner-border-sm icon text-white-50 mr-2"
+                                                            role="status" aria-hidden="true"></span>
+                                                      <span class="text text-white-50">Cargando...</span>
+                                                </a>
+                                          </div>
+                                    </div>
+                              </div>
+
+                              <div *ngIf="mostrarPanelFiltros">
+                                    <div class="row">
+                                          <div class="col">
+                                                <span class="font-weight-bold">Estados</span>
+                                                <div class="form-check" *ngFor="let estado of Estados">
+                                                      <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                  id="estado{{estado.Id}}" [(ngModel)]="estado.Chequed">
+                                                            {{estado.Descripcion}}
+                                                            <span class="form-check-sign">
+                                                                  <span class="check"></span>
+                                                            </span>
+                                                      </label>
+                                                </div>
+                                          </div>
+                                    </div>
+                                    <div class="row">
+                                          <div class="col mt-2">
+                                                <div class="form-group">
+                                                      <select class="custom-select" [(ngModel)]="clienteSeleccionado">
+                                                            <option *ngFor="let item of Clientes" [value]="item.Id">
+                                                                  {{ item.Email}} - {{ item.Nombre}} {{ item.Apellido}}
+                                                            </option>
+                                                      </select>
+                                                </div>
+                                          </div>
+                                    </div>
+                                    <div class="row">
+                                          <div class="col">
+                                                <span class="font-weight-bold">Fechas</span>
+                                                <div class="form-group">
+                                                      <label>Desde</label>
+                                                      <input type="date" class="form-control"
+                                                            [(ngModel)]="fechaDesde" />
+                                                </div>
+                                                <div class="form-group">
+                                                      <label>Hasta</label>
+                                                      <input type="date" class="form-control"
+                                                            [(ngModel)]="fechaHasta" />
+                                                </div>
+                                          </div>
+                                    </div>
+                              </div>
+
+                        </div>
+                  </div>
+            </div>
+            <div class="col-12 col-lg-10">
+                  <div class="card shadow">
+                        <div class="card-header card-header-primary">
+                              {{titulo}}
+                        </div>
+                        <div class="card-body">
+                              <div class="col-12">
+                                    <div class="table-responsive">
+                                          <table class="table table-striped table-hover" id="dataTable" width="100%"
+                                                cellspacing="0">
+                                                <thead>
+                                                      <tr>
+                                                            <th></th>
+                                                            <th></th>
+                                                            <th>Cliente</th>
+                                                            <th>Total</th>
+                                                            <th>Pedido</th>
+                                                            <th>Fecha</th>
+                                                            <th>Estado</th>
+                                                            <th>Observaciones</th>
+                                                      </tr>
+                                                </thead>
+                                                <tbody>
+                                                      <tr
+                                                            *ngFor="let item of Pedidos  | paginate: { id: 'server', itemsPerPage: 20, currentPage: numeroPagina, totalItems: totalFilas }">
+                                                            <td>
+
+                                                                  <a href="#"
+                                                                        class="btn btn-primary btn-icon-split btn-sm mr-1"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="Ver pedido"
+                                                                        (click)="editarItem( $event, item )">
+                                                                        <span class="icon text-white-50">
+                                                                              <i class="fas fa-fw fa-edit"></i>
+                                                                        </span>
+                                                                  </a>
+                                                                  <a href="#"
+                                                                        *ngIf="mostrarFinalizarPedido && item.Estado != null && (item.Estado.Id == 3 || item.Estado.Id == 8)"
+                                                                        class="btn btn-success btn-icon-split btn-sm mr-1"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="Finalizar pedido"
+                                                                        (click)="confirmarFinalizarPedido( $event, item )">
+                                                                        <span class="icon text-white-50">
+                                                                              <i class="fas fa-check-square"></i>
+                                                                        </span>
+                                                                  </a>
+                                                                  <a href="#"
+                                                                        *ngIf="mostrarReenviarPedidoProveedor && item.Estado != null && item.Estado.Id == 2"
+                                                                        class="btn btn-warning btn-icon-split btn-sm mr-1"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="Reenviar al proveedor"
+                                                                        (click)="confirmarReenvioAlProveedor( $event, item )">
+                                                                        <span class="icon text-white-50">
+                                                                              <i class="fas fa-share-square"></i>
+                                                                        </span>
+                                                                  </a>
+                                                                  <a href="#"
+                                                                        *ngIf="mostrarLiberarStockPedido  && item.Estado != null && (item.Estado.Id == 2 || item.Estado.Id == 3)"
+                                                                        class="btn btn-info btn-icon-split btn-sm mr-1"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="Exportar Listado Etiquetas"
+                                                                        (click)="exportarListadoEtiquetas( $event, item )">
+                                                                        <span class="icon text-white-50">
+                                                                              <i class="fas fa-print"></i>
+                                                                        </span>
+                                                                  </a>
+                                                                  <!-- 
+                                                                  <a href="#"
+                                                                        *ngIf="mostrarLiberarStockPedido  && item.Estado != null && (item.Estado.Id == 2 || item.Estado.Id == 3)"
+                                                                        class="btn btn-warning btn-icon-split btn-sm mr-1"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="Liberar Stock"
+                                                                        (click)="confirmarLiberarStock( $event, item )">
+                                                                        <span class="icon text-white-50">
+                                                                              <i class="fas fa-dolly"></i>
+                                                                        </span>
+                                                                  </a> 
+                                                                  -->
+                                                            </td>
+                                                            <td>
+                                                                  <a href="#"
+                                                                        *ngIf="item.Estado != null && item.Estado.Id == 2"
+                                                                        class="btn btn-success btn-icon-split btn-sm mr-1"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="Armar pedido"
+                                                                        (click)="procesarPedido( $event, item )">
+                                                                        <span class="icon text-white-50">
+                                                                              <i class="fas fa-box-open"></i>
+                                                                        </span>
+                                                                  </a>
+                                                                  <a href="#"
+                                                                        class="btn btn-danger btn-icon-split btn-sm mr-1"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="Cancelar pedido"
+                                                                        (click)="confirmarCancelacion( $event, item )">
+                                                                        <span class="icon text-white-50">
+                                                                              <i class="far fa-calendar-times"></i>
+                                                                        </span>
+                                                                  </a>
+                                                            </td>
+                                                            <td>
+                                                                  <a href="#" class="nav-link"
+                                                                        (click)="editarItem( $event, item )">
+                                                                        <span *ngIf="item.Cliente">
+                                                                              ({{item.Cliente.Id}}) -
+                                                                              {{item.Cliente.Nombre}}
+                                                                              {{item.Cliente.Apellido}}<br />
+                                                                              {{item.Cliente.Email}} <br />
+                                                                              {{item.Cliente.NombreFantasia}}
+                                                                        </span>
+                                                                  </a>
+                                                                  <a href="#" class="nav-link"
+                                                                        (click)="enviarWhatsApp( $event, item.Cliente )">
+                                                                        <span class="icon mr-2">
+                                                                              <i class="fab fa-whatsapp"></i>
+                                                                        </span>
+                                                                        <span>{{item.Cliente.Celular}}</span>
+                                                                  </a>
+                                                            </td>
+                                                            <td class="text-right">
+                                                                  <a href="#" class="nav-link"
+                                                                        (click)="editarItem( $event, item )">
+                                                                        <span>{{item.Moneda}}
+                                                                              {{item.Total | number: '1.2-2'}}</span>
+                                                                  </a>
+                                                            </td>
+                                                            <td>
+                                                                  <a href="#" class="nav-link"
+                                                                        (click)="editarItem( $event, item )">
+                                                                        {{item.Numero}}
+                                                                  </a>
+                                                            </td>
+                                                            <td>
+                                                                  <a href="#" class="nav-link"
+                                                                        (click)="editarItem( $event, item )">
+                                                                        {{item.Fecha | date: 'dd/MM/yyyy'}}
+                                                                  </a>
+                                                            </td>
+                                                            <td>
+                                                                  <a href="#" class="nav-link"
+                                                                        (click)="editarItem( $event, item )">
+                                                                        {{item.Estado.Descripcion}}
+                                                                  </a>
+                                                            </td>
+                                                            <td>
+                                                                  <span *ngIf="cobrarComisionApp( item )">
+                                                                        <img src="assets\img\logo-pome.png" alt="" />
+                                                                        <br /> {{item.Cliente.ComisionApp}} %
+                                                                        Comisión<br />
+                                                                  </span>
+                                                                  <span *ngIf="item.NumeroPedidoMinorista!=0">
+                                                                        Pedido cliente: {{item.NumeroPedidoMinorista}}
+                                                                  </span>
+                                                                  <span *ngIf="item.NumeroPedidoProveedor!=0">
+                                                                        Pedido proveedor: {{item.NumeroPedidoProveedor}}
+                                                                  </span>
+                                                            </td>
+                                                      </tr>
+                                                </tbody>
+                                          </table>
+                                    </div>
+                                    <div class="has-text-centered">
+                                          <pagination-controls id="server" (pageChange)="pageChange($event)"
+                                                maxSize="10" directionLinks="true" responsive="true"
+                                                previousLabel="Anterior" nextLabel="Siguiente"
+                                                screenReaderPaginationLabel="Paginación" screenReaderPageLabel="página"
+                                                screenReaderCurrentLabel="Página actual">
+                                          </pagination-controls>
+                                    </div>
+                              </div>
+
+                        </div>
+                  </div>
+            </div>
+      </div>
+</div>
+
+<div class="modal fade" id="modalConfirmaCancelar" tabindex="-1" role="dialog"
+      aria-labelledby="modalConfirmaCancelarTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                  <div class="modal-header">
+                        <h5 class="modal-title" id="modalConfirmaCancelarTitle">
+                              Pedidos</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                        </button>
+                  </div>
+                  <div class="modal-body">
+                        <div class="alert alert-danger" role="alert" *ngIf="clienteSeleccionado">
+                              {{textoConfirmaCancelar}}
+                        </div>
+                  </div>
+                  <div class="modal-footer">
+                        <button type="button" class="btn mr-2" data-dismiss="modal">
+                              <span class="icon text-white-50 m-2">
+                                    <i class="fas fa-times"></i>
+                              </span>
+                              Volver atrás
+                        </button>
+                        <button type="button" class="btn btn-danger" (click)="cancelarPedido( $event )">
+                              <span class="icon text-white-50 m-2">
+                                    <i class="fas fa-trash-alt"></i>
+                              </span>
+                              Cancelar
+                        </button>
+                  </div>
+            </div>
+      </div>
+</div>
+
+<div class="modal fade" id="modalConfirmaProveedor" tabindex="-1" role="dialog"
+      aria-labelledby="modalConfirmaProveedorTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                  <div class="modal-header">
+                        <h5 class="modal-title" id="modalConfirmaProveedorTitle">
+                              Pedidos</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                        </button>
+                  </div>
+                  <div class="modal-body">
+                        <div class="alert alert-warning" role="alert" *ngIf="clienteSeleccionado">
+                              {{textoReenvioProveedor}}
+                        </div>
+                  </div>
+                  <div class="modal-footer">
+                        <button type="button" class="btn mr-2" data-dismiss="modal">
+                              <span class="icon text-white-50 m-2">
+                                    <i class="fas fa-times"></i>
+                              </span>
+                              Volver atrás
+                        </button>
+                        <button type="button" class="btn btn-warning" (click)="reenviarAlProveedor( $event )"
+                              *ngIf="!reenviandoAProveedor">
+                              <span class="icon text-white-50 m-2">
+                                    <i class="fas fa-share-square"></i>
+                              </span>
+                              Reenviar al Proveedor
+                        </button>
+                        <button type="button" class="btn btn-warning" *ngIf="reenviandoAProveedor">
+                              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              Reenviando...
+                        </button>
+                  </div>
+            </div>
+      </div>
+</div>
+
+<div class="modal fade" id="modalMensajes" tabindex="-1" role="dialog" aria-labelledby="modalMensajesTitle"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                  <div class="modal-header">
+                        <h5 class="modal-title" id="modalMensajesTitle">
+                              Pedidos</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                        </button>
+                  </div>
+                  <div class="modal-body">
+                        <div role="alert" [ngClass]="{ 'alert': mensajeUsuario_OK,
+                                           'alert alert-warning': !mensajeUsuario_OK  }">
+                              {{textoMensajeUsuario}}
+                        </div>
+                  </div>
+                  <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn" [ngClass]="{ ' btn-success': mensajeUsuario_OK,
+                                           ' btn-warning': !mensajeUsuario_OK  }">
+                              <span class="icon text-white-50 m-2">
+                                    <i class="far fa-check-square"></i>
+                              </span>
+                              {{textoBotonMensajeUsuario}}
+                        </button>
+                  </div>
+            </div>
+      </div>
+</div>
+
+<div class="modal fade" id="modalConfirmaFinalizar" tabindex="-1" role="dialog"
+      aria-labelledby="modalConfirmaProveedorTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                  <div class="modal-header">
+                        <h5 class="modal-title" id="modalConfirmaFinalizarTitle">
+                              Pedidos</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                        </button>
+                  </div>
+                  <div class="modal-body">
+                        <div class="alert alert-success" role="alert">
+                              ¿Desea finalizar el pedido?
+                        </div>
+                  </div>
+                  <div class="modal-footer">
+                        <button type="button" class="btn mr-2" data-dismiss="modal">
+                              <span class="icon text-white-50 m-2">
+                                    <i class="fas fa-times"></i>
+                              </span>
+                              Cancelar
+                        </button>
+                        <button type="button" class="btn btn-success" (click)="finalizarPedido( $event )"
+                              *ngIf="!finalizandoPedido">
+                              <span class="icon text-white-50 m-2">
+                                    <i class="fas fa-check-square"></i>
+                              </span>
+                              Finalizar Pedido
+                        </button>
+                        <button type="button" class="btn btn-success" *ngIf="finalizandoPedido">
+                              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              Finalizando...
+                        </button>
+                  </div>
+            </div>
+      </div>
+</div>
+
+
+
+<div class="modal fade" id="modalConfirmaLiberarStock" tabindex="-1" role="dialog"
+      aria-labelledby="modalConfirmaLiberarStockTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                  <div class="modal-header">
+                        <h5 class="modal-title" id="modalConfirmaLiberarStockTitle">
+                              Pedidos</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                        </button>
+                  </div>
+                  <div class="modal-body">
+                        <div class="alert alert-warning" role="alert" *ngIf="clienteSeleccionado">
+                              {{textoLiberarStock}}
+                        </div>
+                  </div>
+                  <div class="modal-footer">
+                        <button type="button" class="btn mr-2" data-dismiss="modal">
+                              <span class="icon text-white-50 m-2">
+                                    <i class="fas fa-times"></i>
+                              </span>
+                              Volver atrás
+                        </button>
+                        <button type="button" class="btn btn-warning" (click)="liberarStock( $event )"
+                              *ngIf="!liberandoStock">
+                              <span class="icon text-white-50 m-2">
+                                    <i class="fas fa-share-square"></i>
+                              </span>
+                              Liberar Stock
+                        </button>
+                        <button type="button" class="btn btn-warning" *ngIf="liberandoStock">
+                              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              Liberando...
+                        </button>
+                  </div>
+            </div>
+      </div>
+</div>
+
+
+<notifier-container></notifier-container>

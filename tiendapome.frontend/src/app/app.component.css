@@ -1,0 +1,57 @@
+.navbar-nav li:hover>ul.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+}
+
+/* rotate caret on hover */
+
+.dropdown-menu>li>a:hover:after {
+    text-decoration: underline;
+    transform: rotate(-90deg);
+}
+
+#header {
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+#content {
+    padding-top: 80px;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-content: center;
+    width: 100%;
+    background-color: white;
+    border-top: solid 1px #E6E6E6;
+    color: #000000;
+    z-index: 100;
+}
+
+.footer>button {
+    border: none;
+    background: none;
+    padding: 12px;
+}
+
+.footer>button:hover {
+    background-color: lightblue;
+}
+
+

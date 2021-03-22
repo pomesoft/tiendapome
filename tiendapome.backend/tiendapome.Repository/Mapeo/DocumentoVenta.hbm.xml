@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping assembly="tiendapome.Entidades" namespace="tiendapome.Entidades" xmlns="urn:nhibernate-mapping-2.2">
+    <class name="tiendapome.Entidades.DocumentoVenta" table="tp_DocumentosVenta" lazy="false">
+        <id name="Id" column="IdVenta">
+            <generator class="identity" />
+        </id>
+        <property name="IdEmpresa" column="IdEmpresa" />
+        <many-to-one name="Usuario" column="IdUsuario" class="tiendapome.Entidades.Cliente" />
+        <many-to-one name="Cliente" column="IdCliente" class="tiendapome.Entidades.Cliente" />
+        <property name="IdPedido" column="IdPedido" />
+        <property name="NumeroPedido" column="NumeroPedido" />        
+        <many-to-one name="TipoComprobante" column="IdTipo" class="tiendapome.Entidades.VentaTipoComprobante" />
+        <property name="Letra" column="Letra" />
+        <property name="Sucursal" column="Sucursal" />
+        <property name="Numero" column="Numero" />
+        <property name="Fecha" column="Fecha" />
+        <property name="Vencimiento" column="Vencimiento" />
+        <property name="Gravado" column="Gravado" />
+        <property name="Descuento" column="Descuento" />
+        <property name="PorcentajeIVA" column="PorcentajeIVA" />
+        <property name="IVA" column="IVA" />
+        <property name="Total" column="Total" />
+        <property name="Pendiente" column="Pendiente" />
+        <property name="Comision" column="Comision" />
+        <property name="Efectivo" column="Efectivo" />
+        <property name="EfectivoCotizaDolar" column="EfectivoCotizaDolar" />
+        <property name="Dolares" column="Dolares" />
+        <property name="DolaresCotizaDolar" column="DolaresCotizaDolar" />
+        <property name="Euros" column="Euros" />
+        <property name="EurosCotizaDolar" column="EurosCotizaDolar" />
+        <property name="Cheques" column="Cheques" />
+        <property name="ChequesCotizaDolar" column="ChequesCotizaDolar" />
+        <property name="Tarjeta" column="Tarjeta" />
+        <property name="TarjetaCotizaDolar" column="TarjetaCotizaDolar" />
+        <property name="MercadoPago" column="MercadoPago" />
+        <property name="MercadoPagoCotizaDolar" column="MercadoPagoCotizaDolar" />
+        <property name="DepositoTransferencia" column="DepositoTransferencia" />
+        <property name="DepositoTransferCotizaDolar" column="DepositoTransferCotizaDolar" />
+        <property name="RetencionIVA" column="RetencionIVA" />
+        <property name="RetencionGanancia" column="RetencionGanancia" />
+        <property name="RetencionIngBrutos" column="RetencionIngBrutos" />
+        <property name="Anulado" column="Anulado" />
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,129 @@
+<div class="container bg-gradient-primary w-100">
+    <!-- Outer Row -->
+    <div class=" row justify-content-center p-2">
+        <div class="col-xl-10 col-lg-12 col-md-9">
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-lg-6 d-none d-lg-block p-4">
+                            <img src="assets\img\img_login.png" alt="" />
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <img src="assets\img\TJ.jpg" alt="" />
+                                </div>
+                                <hr>
+                                <!-- <form> -->
+                                <div class="form-group">
+                                    <input type="email" class="form-control" id="exampleInputEmail"
+                                        aria-describedby="emailHelp" placeholder="Ingresá tú email..."
+                                        [(ngModel)]="cliente.Email">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control" id="exampleInputPassword"
+                                        placeholder="Contraseña" [(ngModel)]="cliente.Codigo">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control" id="exampleInputPassword"
+                                        placeholder="RepetÍ la contraseña" [(ngModel)]="claveRepetida">
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Apellido"
+                                                [(ngModel)]="cliente.Apellido" />
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Nombre"
+                                                [(ngModel)]="cliente.Nombre" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="Celular"
+                                                [(ngModel)]="cliente.Celular" />
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="CUIT/CUIL"
+                                                [(ngModel)]="cliente.IdentificacionTributaria" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Nombre Fantasía"
+                                        [(ngModel)]="cliente.NombreFantasia" />
+                                </div>
+                                <hr>
+
+                                <div *ngIf="!ingresando">
+                                    <a href="#" class="btn btn-success btn-user btn-block"
+                                        (click)="registrarUsuario( $event )" *ngIf="mostrarBtnMayorista">
+                                        Quiero ser Minorista
+                                    </a>
+
+                                    <a href="#" class="btn btn-warning btn-user btn-block"
+                                        (click)="registrarUsuarioMayorista( $event )" *ngIf="mostrarBtnMayorista">
+                                        Quiero ser Mayorista
+                                    </a>
+
+                                    <a href="#" class="btn btn-success btn-user btn-block"
+                                        (click)="registrarUsuario( $event )" *ngIf="!mostrarBtnMayorista">
+                                        Aceptar
+                                    </a>
+                                    <hr>
+                                    <a href="#" class="btn btn-user btn-block" [routerLink]="['/carrito']">
+                                        Cancelar
+                                    </a>
+                                </div>
+
+                                <div *ngIf="ingresando">
+                                    <a class="btn btn-primary btn-user btn-block" aria-disabled="true">
+                                        <span class="spinner-border spinner-border-sm mr-2" role="status"
+                                            aria-hidden="true"></span>
+                                        Ingresando...
+                                    </a>
+                                </div>
+                                <!-- </form> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalConfirmaRegistro" tabindex="-1" role="dialog"
+    aria-labelledby="modalConfirmaRegistroLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalConfirmaRegistroLabel">Registro de usuarios</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" role="alert" *ngIf="!todoOK">
+                    {{leyendaErrorRegistro}}
+                </div>
+                <div class="alert alert-success" role="alert" *ngIf="todoOK">
+                    {{leyendaConfirmaRegistro}}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal"
+                    (click)="cerrarConfirmacion( $event )">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<notifier-container></notifier-container>

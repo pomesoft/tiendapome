@@ -1,0 +1,312 @@
+﻿<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+    <div id="plantilla">
+        <br />
+        <table cellpadding="2" cellspacing="0" font-size: 10pt;">            
+            <tr style="height: 30px;">
+                <th style="text-align: center; border: 1pt solid #666666; border-collapse: collapse; padding: 2px;">
+                    <strong>Nro &Iacute;tem</strong>
+                </th>
+                <th style="text-align: center; border: 1pt solid #666666; border-collapse: collapse; padding: 2px;">
+                    <strong>C&oacute;digo</strong>
+                </th>
+                <th style="text-align: center; border: 1pt solid #666666; border-collapse: collapse; padding: 2px;">
+                    <strong>Cantidad</strong>
+                </th>
+                <th style="text-align: center; border: 1pt solid #666666; border-collapse: collapse; padding: 2px;">
+                    <strong>Precio Unitario</strong>
+                </th>
+            </tr>
+            #foreach( $Fila in $Listado )
+            <tr style="height: 20px; padding: 1px;">
+                <td>${Fila.Campo1}</td>
+                <td>${Fila.Campo2}</td>
+                <td>${Fila.Campo3}</td>
+                <td>${Fila.Campo4}</td>
+            </tr>
+            #end
+
+        </table>
+    </div>
+</body>
+</html>
+
+
+
+<style type="text/css">
+    .boldItalic {
+        color: #c60;
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    .p {
+        font-family: verdana,arial,helvetica,geneva,sans-serif;
+    }
+
+    .sans {
+        font-family: verdana,arial,helvetica,geneva,sans-serif;
+        font-size: small;
+    }
+
+    .small {
+        font-family: verdana,arial,helvetica,geneva,sans-serif;
+        font-size: x-small;
+    }
+
+    .h1 {
+        font-family: verdana,arial,helvetica,geneva,sans-serif;
+        color: #CC6600;
+        font-size: small;
+    }
+
+    .h2 {
+        font-family: verdana,arial,helvetica,geneva,sans-serif;
+        color: #CC6600;
+        font-size: small;
+    }
+
+    .h3color {
+        font-family: verdana,arial,helvetica,geneva,sans-serif;
+        color: #CC6600;
+        font-size: x-small;
+    }
+
+    .tiny {
+        font-family: verdana,arial,helvetica,geneva,sans-serif;
+        font-size: xx-small;
+    }
+
+    .listprice {
+        font-family: verdana,arial,helvetica,geneva,sans-serif;
+        text-decoration: line-through;
+    }
+
+    .price {
+        font-family: verdana,arial,helvetica,geneva,sans-serif;
+        color: #990000;
+    }
+
+    .tinyprice {
+        font-family: verdana,arial,helvetica,geneva,sans-serif;
+        color: #990000;
+        font-size: xx-small;
+    }
+
+    .highlight {
+        font-family: verdana,arial,helvetica,geneva,sans-serif;
+        color: #990000;
+        font-size: x-small;
+    }
+
+    .topnav-link {
+        text-decoration: none;
+        color: #003399;
+    }
+
+    .topnav-hover {
+        text-decoration: none;
+        color: #CC6600;
+    }
+
+    .topnav-active {
+        font-family: verdana,arial,helvetica,geneva,sans-serif;
+        font-size: 12px;
+        color: #CC6600;
+        text-decoration: none;
+    }
+
+    .tabon {
+        font-size: 10px;
+        color: #FFCC66;
+        font-family: verdana,arial,helvetica,geneva,sans-serif;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: bold;
+        line-height: 10px;
+    }
+
+    .taboff {
+        font-size: 10px;
+        color: #000000;
+        font-family: verdana,arial,helvetica,geneva,sans-serif;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: bold;
+        line-height: 10px;
+    }
+
+    .amabot {
+        color: #c60;
+        font-size: .92em;
+    }
+
+
+    html {
+        margin: 0px;
+    }
+
+    body {
+        font-family: verdana,arial,helvetica,geneva,sans-serif;
+        font-size: 10pt;
+        margin: 0px;
+    }
+
+    sup {
+        font-size: 7pt;
+    }
+
+    strong {
+        font-weight: bold;
+    }
+
+    em {
+        font-style: italic;
+    }
+
+    ul {
+        margin-top: 8pt;
+        margin-bottom: 8pt;
+        margin-left: 30px; /*list-style-type: none;*/
+    }
+
+    ol {
+        margin-left: 30px;
+        list-style-type: decimal;
+        list-style-position: inside;
+    }
+
+    #plantilla {
+        /*border: 1px solid #000000;*/
+        width: 4cm;
+        height: auto;
+    }
+
+        #plantilla h1 {
+            margin-top: 8pt;
+            margin-bottom: 0pt;
+            font-size: 18pt;
+            font-weight: bold;
+            color: Black;
+            text-align: center;
+        }
+
+        #plantilla h2 {
+            margin-top: 8pt;
+            margin-bottom: 8pt;
+            font-size: 16pt;
+            font-weight: bold;
+            color: Black;
+        }
+
+        #plantilla h3 {
+            margin-top: 12pt;
+            margin-bottom: 8pt;
+            font-size: 14pt;
+            font-weight: bold;
+            color: Black;
+        }
+
+        #plantilla h4 {
+            margin-top: 0pt;
+            margin-bottom: 8pt;
+            font-size: 10pt;
+            font-weight: normal;
+            color: Black;
+        }
+
+        #plantilla ol.letras {
+            margin-left: 0px;
+            list-style-type: lower-alpha;
+            list-style-position: inside;
+        }
+
+        #plantilla p {
+            margin-top: 8pt;
+            margin-bottom: 8pt;
+        }
+
+        #plantilla table {
+            font-family: verdana,arial,helvetica,geneva,sans-serif;
+            font-size: 7pt;
+        }
+
+        #plantilla span.inputField {
+            background-color: #c0c0c0;
+        }
+
+        #plantilla span.important {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        #plantilla div.singlecolumn {
+        }
+
+        #plantilla div.alineacionDerecha {
+            width: 99%;
+            text-align: right;
+        }
+
+        #plantilla div.line {
+            margin-top: 3pt;
+        }
+
+        #plantilla div.headerline {
+            margin-top: 4pt;
+            margin-bottom: 4pt;
+        }
+
+        #plantilla span.headerlabel {
+            font-size: 14pt;
+            font-weight: bold;
+            font-family: Verdana;
+        }
+
+        #plantilla span.label {
+            font-size: 10pt;
+            font-family: Verdana;
+        }
+
+        #plantilla span.sublabel {
+            font-size: 9pt;
+            font-family: Verdana;
+        }
+
+        #plantilla span.data {
+            font-size: 12pt;
+            font-family: Verdana;
+            font-weight: bold;
+            display: inline-block;
+            margin-right: 0.2cm;
+            padding-left: 0.05cm;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        #plantilla div.footnote {
+            margin-top: 0.8cm;
+            font-size: 7pt;
+            font-family: Verdana;
+            color: #999999;
+        }
+
+            #plantilla div.footnote p {
+                margin-top: 2pt;
+                margin-bottom: 2pt;
+            }
+
+        #plantilla span.field {
+            color: #999999;
+            font-size: 10pt;
+            font-family: Verdana;
+            background-color: #c0c0c0;
+        }
+</style>
+
+

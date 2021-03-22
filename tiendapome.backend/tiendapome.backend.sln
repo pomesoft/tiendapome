@@ -1,0 +1,66 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01-Repositorio", "01-Repositorio", "{3A161EFC-6FCF-45C3-B563-5100A176A8EF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02-Entidades", "02-Entidades", "{3B721062-FBCF-42A9-B55D-7B3639D4D6C7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03-Servicios", "03-Servicios", "{42D3EEAF-464C-420B-963C-2D8F441FDFB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04-APIRest", "04-APIRest", "{1BD1E855-A620-4D8C-BCE6-9A0ED17402AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tiendapome.Repository", "tiendapome.Repository\tiendapome.Repository.csproj", "{89C9AF1C-3301-4447-9175-D19D1A512197}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tiendapome.Entidades", "tiendapome.Entidades\tiendapome.Entidades.csproj", "{5C67F42E-E901-422C-A0A1-809885948F28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tiendapome.Servicios", "tiendapome.Servicios\tiendapome.Servicios.csproj", "{91770031-BD85-44D4-9009-3BC960EF2E8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tiendapome.API", "tiendapome.API\tiendapome.API.csproj", "{0F038715-7AAA-4FE7-8FF4-6F2B34569A41}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9CDA513F-83CC-4D1C-BF6B-681C779BA658}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tiendapome.Impresion", "tiendapome.Impresion\tiendapome.Impresion.csproj", "{04C16E7E-162A-4FE9-B23A-32260BD6D6F7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{89C9AF1C-3301-4447-9175-D19D1A512197}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89C9AF1C-3301-4447-9175-D19D1A512197}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89C9AF1C-3301-4447-9175-D19D1A512197}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89C9AF1C-3301-4447-9175-D19D1A512197}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C67F42E-E901-422C-A0A1-809885948F28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C67F42E-E901-422C-A0A1-809885948F28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C67F42E-E901-422C-A0A1-809885948F28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C67F42E-E901-422C-A0A1-809885948F28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91770031-BD85-44D4-9009-3BC960EF2E8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91770031-BD85-44D4-9009-3BC960EF2E8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91770031-BD85-44D4-9009-3BC960EF2E8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91770031-BD85-44D4-9009-3BC960EF2E8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F038715-7AAA-4FE7-8FF4-6F2B34569A41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F038715-7AAA-4FE7-8FF4-6F2B34569A41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F038715-7AAA-4FE7-8FF4-6F2B34569A41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F038715-7AAA-4FE7-8FF4-6F2B34569A41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04C16E7E-162A-4FE9-B23A-32260BD6D6F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04C16E7E-162A-4FE9-B23A-32260BD6D6F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04C16E7E-162A-4FE9-B23A-32260BD6D6F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04C16E7E-162A-4FE9-B23A-32260BD6D6F7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{89C9AF1C-3301-4447-9175-D19D1A512197} = {3A161EFC-6FCF-45C3-B563-5100A176A8EF}
+		{5C67F42E-E901-422C-A0A1-809885948F28} = {3B721062-FBCF-42A9-B55D-7B3639D4D6C7}
+		{91770031-BD85-44D4-9009-3BC960EF2E8A} = {42D3EEAF-464C-420B-963C-2D8F441FDFB3}
+		{04C16E7E-162A-4FE9-B23A-32260BD6D6F7} = {42D3EEAF-464C-420B-963C-2D8F441FDFB3}
+		{0F038715-7AAA-4FE7-8FF4-6F2B34569A41} = {1BD1E855-A620-4D8C-BCE6-9A0ED17402AA}
+	EndGlobalSection
+EndGlobal

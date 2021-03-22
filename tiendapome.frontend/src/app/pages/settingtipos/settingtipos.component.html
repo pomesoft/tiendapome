@@ -1,0 +1,514 @@
+<notifier-container></notifier-container>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-header card-header-primary">
+                    <div class="row">
+                        <div class="col-6">
+                            Tipos
+                        </div>
+                        <div class="col-6">
+                            <a href="#" class="btn btn-primary btn-icon-split btn-sm"
+                                (click)="onClickAgregarTipo( $event )">
+                                <span class="icon text-white-50 m-1">
+                                    <i class="fas fa-plus-square"></i>
+                                </span>
+                                <span class="text">Agregar</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10%; text-align: center; vertical-align: middle;"></th>
+                                        <th style="width: 70%; text-align: center; vertical-align: middle;">
+                                            Descripción
+                                        </th>
+                                        <th style="width: 10%; text-align: center; vertical-align: middle;">
+                                            Orden
+                                        </th>
+                                        <th style="width: 10%; text-align: center; vertical-align: middle;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of listTipos">
+                                        <td>
+                                            <a href="#" class="btn btn-white btn-raised btn-fab btn-round"
+                                                data-toggle="tooltip" data-placement="top" title="Editar tipo"
+                                                (click)="onClickEditarTipo( $event, item )">
+                                                <span class="icon text-primary">
+                                                    <i class="fas fa-fw fa-edit"></i>
+                                                </span>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="#" class="text-dark"
+                                                (click)="onClickSeleccionarTipo( $event, item )">
+                                                <span class="text-primary"
+                                                    *ngIf="tipoSeleccionado && tipoSeleccionado.Id == item.Id">
+                                                    {{item.Descripcion}}
+                                                </span>
+                                                <span class="font-weight-normal"
+                                                    *ngIf="tipoSeleccionado && tipoSeleccionado.Id != item.Id">
+                                                    {{item.Descripcion}}
+                                                </span>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="#" class="text-dark"
+                                                (click)="onClickSeleccionarTipo( $event, item )">
+                                                {{item.Orden}}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="#" class="btn btn-white btn-raised btn-fab btn-round"
+                                                data-toggle="tooltip" data-placement="top" title="Seleccionar tipo"
+                                                (click)="onClickSeleccionarTipo( $event, item )">
+                                                <span class="icon text-primary">
+                                                    <i class="fas fa-arrow-alt-circle-right"></i>
+                                                </span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-header card-header-primary">
+                    <div class="row">
+                        <div class="col-6">
+                            Categorías
+                        </div>
+                        <div class="col-6">
+                            <a href="#" class="btn btn-primary btn-icon-split btn-sm"
+                                (click)="onClickAgregarCategoria( $event )">
+                                <span class="icon text-white-50 m-1">
+                                    <i class="fas fa-plus-square"></i>
+                                </span>
+                                <span class="text">Agregar</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row" *ngIf="tipoSeleccionado">
+                        <div class="col">
+                            <span class="h5 font-weight-bold">Tipo: {{tipoSeleccionado.Descripcion}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="table-responsive" *ngIf="tipoSeleccionado">
+                            <table class="table table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10%; text-align: center; vertical-align: middle;"></th>
+                                        <th style="width: 70%; text-align: center; vertical-align: middle;">
+                                            Descripción
+                                        </th>
+                                        <th style="width: 10%; text-align: center; vertical-align: middle;">
+                                            Orden
+                                        </th>
+                                        <th style="width: 10%; text-align: center; vertical-align: middle;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of tipoSeleccionado.Categorias">
+                                        <td>
+                                            <a href="#" class="btn btn-white btn-raised btn-fab btn-round"
+                                                data-toggle="tooltip" data-placement="top" title="Editar tipo"
+                                                (click)="onClickEditarCatgoria( $event, item )">
+                                                <span class="icon text-primary">
+                                                    <i class="fas fa-fw fa-edit"></i>
+                                                </span>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="#" class="text-dark"
+                                                (click)="onClickSeleccionarCategoria( $event, item )">
+                                                <span class="text-primary"
+                                                    *ngIf="categoriaSeleccionada && categoriaSeleccionada.Id == item.Id">
+                                                    {{item.Descripcion}}
+                                                </span>
+                                                <span class="font-weight-normal"
+                                                    *ngIf="categoriaSeleccionada && categoriaSeleccionada.Id != item.Id">
+                                                    {{item.Descripcion}}
+                                                </span>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="#" class="text-dark"
+                                                (click)="onClickSeleccionarCategoria( $event, item )">
+                                                {{item.Orden}}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="#" class="btn btn-white btn-raised btn-fab btn-round"
+                                                data-toggle="tooltip" data-placement="top" title="Seleccionar tipo"
+                                                (click)="onClickSeleccionarCategoria( $event, item )">
+                                                <span class="icon text-primary">
+                                                    <i class="fas fa-arrow-alt-circle-right"></i>
+                                                </span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-header card-header-primary">
+                    <div class="row">
+                        <div class="col-6">
+                            Subcategorías
+                        </div>
+                        <div class="col-6">
+                            <a href="#" class="btn btn-primary btn-icon-split btn-sm"
+                                (click)="onClickAgregarSubcategoria( $event )">
+                                <span class="icon text-white-50 m-1">
+                                    <i class="fas fa-plus-square"></i>
+                                </span>
+                                <span class="text">Agregar</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">                                        
+                    <div class="row" *ngIf="categoriaSeleccionada">
+                        <div class="col">
+                            <span class="h5 font-weight-bold">Categoría: {{categoriaSeleccionada.Descripcion}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="table-responsive" *ngIf="categoriaSeleccionada">
+                            <table class="table table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10%; text-align: center; vertical-align: middle;"></th>
+                                        <th style="width: 80%; text-align: center; vertical-align: middle;">
+                                            Descripción
+                                        </th>
+                                        <th style="width: 10%; text-align: center; vertical-align: middle;">
+                                            Orden
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of categoriaSeleccionada.Subcategorias">
+                                        <td>
+                                            <a href="#" class="btn btn-white btn-raised btn-fab btn-round"
+                                                data-toggle="tooltip" data-placement="top" title="Editar tipo"
+                                                (click)="onClickEditarSubcatgoria( $event, item )">
+                                                <span class="icon text-primary">
+                                                    <i class="fas fa-fw fa-edit"></i>
+                                                </span>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="#" class="text-dark"
+                                                (click)="onClickEditarSubcatgoria( $event, item )">
+                                                <span class="text-primary"
+                                                    *ngIf="subcategoriaSeleccionada && subcategoriaSeleccionada.Id == item.Id">
+                                                    {{item.Descripcion}}
+                                                </span>
+                                                <span class="font-weight-normal"
+                                                    *ngIf="subcategoriaSeleccionada && subcategoriaSeleccionada.Id != item.Id">
+                                                    {{item.Descripcion}}
+                                                </span>
+                                            </a>
+                                        </td>
+                                        <td>{{item.Orden}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalConfirmaEliminacion" tabindex="-1" role="dialog"
+    aria-labelledby="modalConfirmaEliminacionTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalConfirmaEliminacionTitle">
+                    {{titulo}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" role="alert" *ngIf="tipoSeleccionado">
+                    {{textoConfirmaEliminacion}}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-dismiss="modal">
+                    <span class="icon text-white-50 m-2">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-danger" (click)="onClickEliminarTipo( $event )">
+                    <span class="icon text-white-50 m-2">
+                        <i class="fas fa-trash-alt"></i>
+                    </span>
+                    Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalItemTipo" tabindex="-1" role="dialog" aria-labelledby="modalItemTipoTitle"
+    aria-hidden="true" *ngIf="tipoSeleccionado">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalItemTipoTitle">
+                    Tipo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Descripción:</label>
+                            <input type="text" class="form-control" aria-describedby="descripcion-addon"
+                                [(ngModel)]="tipoSeleccionado.Descripcion">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Orden:</label>
+                            <input type="number" class="form-control" aria-describedby="cantidad-addon"
+                                [(ngModel)]="tipoSeleccionado.Orden">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Visible</label>
+                            <input type="checkbox" class="form-control" [(ngModel)]="tipoSeleccionado.Visible" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger mr-4" (click)="onClickEliminarItemTipo( $event )"
+                    *ngIf="tipoSeleccionado.Id>0">
+                    <span class="icon text-white-50 m-2">
+                        <i class="fas fa-trash-alt"></i>
+                    </span>
+                    Eliminar
+                </button>
+                <button type="button" class="btn mr-3" data-dismiss="modal">
+                    <span class="icon text-white-50 m-2">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    Cancelar
+                </button>
+                <div *ngIf="!procesando">
+                    <button type="button" class="btn btn-success" (click)="onClickGuardarItemTipo( $event )">
+                        <span class="icon text-white-50 m-2">
+                            <i class="fas fa-save"></i>
+                        </span>
+                        Guardar
+                    </button>
+                </div>
+                <div *ngIf="procesando">
+                    <a class="btn btn-success" aria-disabled="true">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span class="text">Procesando...</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalItemCategoria" tabindex="-1" role="dialog" aria-labelledby="modalItemCategoriaTitle"
+    aria-hidden="true" *ngIf="categoriaSeleccionada">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalItemCategoriaTitle">
+                    Categoría</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Descripción:</label>
+                            <input type="text" class="form-control" aria-describedby="descripcion-addon"
+                                [(ngModel)]="categoriaSeleccionada.Descripcion">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Orden:</label>
+                            <input type="number" class="form-control" aria-describedby="cantidad-addon"
+                                [(ngModel)]="categoriaSeleccionada.Orden">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Visible</label>
+                            <input type="checkbox" class="form-control" [(ngModel)]="categoriaSeleccionada.Visible" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger mr-4" (click)="onClickEliminarItemCategoria( $event )"
+                    *ngIf="categoriaSeleccionada.Id>0">
+                    <span class="icon text-white-50 m-2">
+                        <i class="fas fa-trash-alt"></i>
+                    </span>
+                    Eliminar
+                </button>
+                <button type="button" class="btn mr-3" data-dismiss="modal">
+                    <span class="icon text-white-50 m-2">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    Cancelar
+                </button>
+                <div *ngIf="!procesando">
+                    <button type="button" class="btn btn-success" (click)="onClickGuardarItemCategoria( $event )">
+                        <span class="icon text-white-50 m-2">
+                            <i class="fas fa-save"></i>
+                        </span>
+                        Guardar
+                    </button>
+                </div>
+                <div *ngIf="procesando">
+                    <a class="btn btn-success" aria-disabled="true">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span class="text">Procesando...</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="modalItemSubcategoria" tabindex="-1" role="dialog"
+    aria-labelledby="modalItemSubcategoriaTitle" aria-hidden="true" *ngIf="subcategoriaSeleccionada">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalItemSubcategoriaTitle">
+                    Subcategoría</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Descripción:</label>
+                            <input type="text" class="form-control" aria-describedby="descripcion-addon"
+                                [(ngModel)]="subcategoriaSeleccionada.Descripcion">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Orden:</label>
+                            <input type="number" class="form-control" aria-describedby="cantidad-addon"
+                                [(ngModel)]="subcategoriaSeleccionada.Orden">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Visible</label>
+                            <input type="checkbox" class="form-control"
+                                [(ngModel)]="subcategoriaSeleccionada.Visible" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Medidas</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">                        
+                        <div class="col-4" *ngFor="let item of listMedidas">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" id="medida{{item.Id}}" [(ngModel)]="item.Chequed">
+                                    {{item.Observaciones}}
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger mr-4" (click)="onClickEliminarItemSubcategoria( $event )"
+                    *ngIf="subcategoriaSeleccionada.Id>0">
+                    <span class="icon text-white-50 m-2">
+                        <i class="fas fa-trash-alt"></i>
+                    </span>
+                    Eliminar
+                </button>
+                <button type="button" class="btn mr-3" data-dismiss="modal">
+                    <span class="icon text-white-50 m-2">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    Cancelar
+                </button>
+                <div *ngIf="!procesando">
+                    <button type="button" class="btn btn-success" (click)="onClickGuardarItemSubcategoria( $event )">
+                        <span class="icon text-white-50 m-2">
+                            <i class="fas fa-save"></i>
+                        </span>
+                        Guardar
+                    </button>
+                </div>
+                <div *ngIf="procesando">
+                    <a class="btn btn-success" aria-disabled="true">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span class="text">Procesando...</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

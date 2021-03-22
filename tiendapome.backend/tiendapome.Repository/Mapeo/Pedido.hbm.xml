@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping assembly="tiendapome.Entidades" namespace="tiendapome.Entidades" xmlns="urn:nhibernate-mapping-2.2">
+    <class name="tiendapome.Entidades.Pedido" table="tp_pedidos" lazy="false">
+        <id name="Id" column="IdPedido">
+            <generator class="identity" />
+        </id>
+        <property name="Numero" column="Numero" />
+        <property name="Fecha" column="Fecha" />
+        <many-to-one name="Cliente" column="IdCliente" class="tiendapome.Entidades.Cliente" />
+        <property name="Observaciones" column="Observaciones" />
+        <property name="Total" column="Total" />
+        <property name="CantidadItems" column="CantidadItems" />
+        <property name="Porcentaje" column="Porcentaje" />
+        <property name="Moneda" column="Moneda" />
+        <property name="IdPedidoProveedor" column="IdPedidoProveedor" />
+        <property name="NumeroPedidoProveedor" column="NumeroPedidoProveedor" />
+        <property name="IdPedidoMinorista" column="IdPedidoMinorista" />
+        <property name="NumeroPedidoMinorista" column="NumeroPedidoMinorista" />        
+        <many-to-one name="Estado" column="IdEstado" class="tiendapome.Entidades.Estado" />
+    </class>
+</hibernate-mapping>

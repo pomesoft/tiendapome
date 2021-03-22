@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping assembly="tiendapome.Entidades" namespace="tiendapome.Entidades" xmlns="urn:nhibernate-mapping-2.2">
+    <class name="tiendapome.Entidades.DocumentoVentaItem" table="tp_DocumentoVentaItems" lazy="false">
+        <id name="Id" column="IdVentaItem">
+            <generator class="identity" />
+        </id>
+        <property name="IdVenta" column="IdVenta" />
+        <property name="NroItem" column="NroItem" />
+        <property name="IdProductoStock" column="IdProductoStock" />
+        <property name="Descripcion" column="Descripcion" />
+        <property name="Cantidad" column="Cantidad" />
+        <property name="PrecioUnitario" column="PrecioUnitario" />
+        <property name="Precio" column="Precio" />
+        <property name="IdPedidoItemProducto" column="IdPedidoItemProducto" />
+    </class>
+</hibernate-mapping>

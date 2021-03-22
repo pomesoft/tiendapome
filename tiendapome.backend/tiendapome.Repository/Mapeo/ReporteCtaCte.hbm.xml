@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping assembly="tiendapome.Entidades" namespace="tiendapome.Entidades" xmlns="urn:nhibernate-mapping-2.2">
+    <class name="tiendapome.Entidades.ListadoCtaCte" table="ResumenCtaCte" lazy="false">
+        <id name="Id" column="Id">
+        </id>
+        <property name="Campo1" column="Campo1" />
+        <property name="Campo2" column="Campo2" />
+        <property name="Campo3" column="Campo3" />
+        <property name="Campo4" column="Campo4" />
+        <property name="Campo5" column="Campo5" />
+        <property name="Campo6" column="Campo6" />
+    </class>
+    <sql-query name="getResumenCtaCte">
+        <return alias="ResumenCtaCte" class="tiendapome.Entidades.ListadoCtaCte"/>
+        <![CDATA[
+            select ROW_NUMBER() OVER (ORDER BY c.IdCliente ASC) AS Id,
+                c.IdCliente as Campo1, (c.Nombre+' '+c.Apellido) as Campo2, c.NombreFantasia as Campo3, 
+	            isnull(sum(case when tc.EsDebe = 1 then v.Total else 0 end), 0) as Campo4,
+	            isnull(sum(case when tc.EsDebe = 0 then v.Total else 0 end), 0) as Campo5,
+	            (isnull(sum(case when tc.EsDebe = 1 then v.Total else 0 end), 0) - isnull(sum(case when tc.EsDebe = 0 then v.Total else 0 end), 0)) as Campo6
+            from tp_DocumentosVenta v 
+	            inner join tp_VentaTiposComprobante tc on v.IdTipo = tc.IdVentaTipoComprobante
+	            inner join tp_Clientes c on v.IdCliente = c.IdCliente 
+            where v.Anulado = 0	
+            group by c.IdCliente, c.Nombre, c.Apellido, c.NombreFantasia
+        ]]>
+    </sql-query>
+</hibernate-mapping>

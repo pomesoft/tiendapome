@@ -1,0 +1,242 @@
+<div class="container ">
+
+    <div class="row">
+        <div class="col-12 font-weight-bolder text-center">
+            <span class=" mr-2">&nbsp;&nbsp;</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 font-weight-bolder text-center">
+            <span class=" mr-2">&nbsp;&nbsp;</span>
+        </div>
+    </div>
+
+
+    <div class="main-panel">
+        <div infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="1000" [fromRoot]="true"
+            (scrolled)="onScroll()">
+            <div class="row">
+                <div class="col-sm-6 col-lg-4 " *ngFor="let prod of productos">
+                    <div class="card shadow" [ngClass]="{
+                            'border border-secondary': prod.Id > 0,
+                            'border border-success': prod.ProductoPedido == true
+                        }">
+
+                        <div class="row">
+
+                            <!-- //TODO: parametrizar este funcionamiento -->
+                            <div class="col-3 text-center p-1" style="font-size: 0.9em;">
+                                <span>Cod. {{prod.Codigo}}</span>
+                            </div>
+                            <div class="col-9 font-weight-bolder text-center p-1" style="font-size: 1em;">
+                                <span>{{prod.Descripcion}}</span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-10">
+                                <div class="cropped">
+                                    <!-- <img class="card-img-top" defaultImage="../../../assets/img/Loader.gif"
+                                        lazyLoad="{{prod.FotoLink}}" alt="{{prod.Codigo}}">  -->
+                                    <img class="card-img-top" src="{{prod.FotoLink}}" alt="{{prod.Codigo}}">
+                                </div>
+                            </div>
+                            <div class="col-1"></div>
+                        </div>
+
+
+                        <div class="row p-1" *ngIf="ventaMayorista">
+                            <div class="col-3 font-weight-bold text-center">
+                                <span class="ml-3" *ngIf="prod.TipoPrecio==1">
+                                    <strong>{{prod.Peso}} Gr</strong>
+                                </span>
+                            </div>
+                            <div class="col-9 font-weight-bold text-center">
+                                <span>
+                                    <strong class="font-weight-bold">Precio Final</strong>
+                                </span>
+                                <span class="h4 font-weight-bold text-success" *ngIf="prod.PrecioPorPeso">
+                                    {{prod.MonedaVenta}} {{ prod.Peso * prod.PrecioUnitarioFinal | number: '1.2-2' }}
+                                </span>
+                                <span class="h4 font-weight-bold text-success" *ngIf="prod.PrecioPorPieza">
+                                    {{prod.MonedaVenta}} {{ prod.PrecioUnitarioFinal | number: '1.2-2' }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="row p-1" *ngIf="!ventaMayorista && prod.Subcategoria.Id == subcategoriaEnPromo">
+
+                            <div class="col-12 font-weight-bold text-info text-left">
+                                Antes
+                                <span class="h4" *ngIf="prod.TipoPrecio==1" style="text-decoration:line-through;">
+                                    {{prod.MonedaVenta}}
+                                    {{ (prod.Peso*prod.PrecioUnitarioFinal) + ((prod.Peso*prod.PrecioUnitarioFinal) * 0.135) | number: '1.2-2' }}</span>
+                                <span class="h4" *ngIf="prod.TipoPrecio==2" style="text-decoration:line-through;">
+                                    {{prod.MonedaVenta}}
+                                    {{ prod.PrecioUnitarioFinal * (prod.PrecioUnitarioFinal  * 0.135) | number: '1.2-2' }}</span>
+                            </div>
+
+                        </div>
+
+
+                        <!-- <div *ngIf="!ventaMayorista && mostrarPrecios(); then panel_SI_MuestraPrecio else panel_NO_MuestraPrecio "></div> -->
+
+                        <!-- <ng-template #panel_SI_MuestraPrecio> -->
+                            
+                            <div class="row p-1" *ngIf="!ventaMayorista && mostrarPrecios()">
+                                <div class="col-12 font-weight-bold text-center">
+                                    <span class="h3" *ngIf="prod.TipoPrecio==1">{{prod.MonedaVenta}}
+                                        {{ prod.Peso*prod.PrecioUnitarioFinal | number: '1.2-2' }}</span>
+                                    <span class="h3" *ngIf="prod.TipoPrecio==2">{{prod.MonedaVenta}}
+                                        {{ prod.PrecioUnitarioFinal | number: '1.2-2' }}</span>
+                                </div>
+                            </div>
+
+                        <!-- </ng-template> -->
+                        
+                        <!-- <ng-template #panel_NO_MuestraPrecio>
+                            <div class="col-12">
+                                <button type="button" class="btn btn-primary btn-block"
+                                    (click)=" enviarWhatsApp( $event, prod )">
+                                    <span class="icon mr-1" style="font-size: 1.5em;">
+                                        Consultar
+                                    </span>
+                                    <span class="icon mr-1" style="font-size: 0.9em;">
+                                        Click aquí 
+                                        <i class="fas fa-arrow-right fa-lg"></i>
+                                    </span>
+                                    <img src="../../../assets/img/WhatsApp-Logo-650x366.png" alt="" width="50" height="50">
+                                </button>
+                            </div>
+                        </ng-template> -->
+                        
+
+                        <div class="row" *ngIf="productIdAlerta == prod.Id">
+                            <div class="col-12">
+                                <div id="alertError_{{prod.Id}}" role="alert" [ngClass]="{
+                                            'alert alert-info fade hide p-1': tipoAlerta == '',
+                                            'alert alert-success fade hide p-1': tipoAlerta == 'success',
+                                            'alert alert-warning fade hide p-1': tipoAlerta == 'warning',
+                                            'alert alert-danger fade hide p-1': tipoAlerta == 'danger'
+                                        }">
+                                    <div class="container text-body">
+                                        <span class="">{{mensajeError}}</span>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row  pl-4 pr-4 mb-1 mt-1" *ngIf="clienteConListaAsignada">  
+                            <div class="col-12">
+                                <button type="button" class="btn btn-success btn-block"
+                                    (click)=" ingresarCantidadesPorMedida( $event, prod )">
+                                    <span class="icon text-dark" style="font-size: 1em;">
+                                        <i class="fas fa-cart-plus mr-1"></i>
+                                        Agregar al carrito
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="shadow-lg p-2 bg-light rounded text-center" *ngIf="cargandoProductos">
+            <div class="spinner-border text-secondary" role="status">
+                <span class="sr-only">Cargando...</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalMedidas" tabindex="-1" role="dialog" aria-labelledby="modalMedidasTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" *ngIf="productoIngresaCantidades">
+                    {{descripcionProductoModalCantidades}}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" *ngIf="productoIngresaCantidades">
+                <div class="row" *ngFor="let itemMedida of productoIngresaCantidades.ProductoStock">
+                    <div class="col-6 pt-2">
+                        <span >{{itemMedida.Medida.Observaciones}}</span>
+                    </div>
+
+                    <div class="col-6" *ngIf="itemMedida.StockDisponible > 0">
+                        <table>
+                            <tr>
+                                <td style="width: 10%;">
+                                    <button type="button" class="btn btn-fab btn-round"
+                                        (click)="restaCantidadMedida( $event, itemMedida )">
+                                        <span class="icon text-white-50" style="font-size: 0.7em;">
+                                            <i class="fas fa-minus"></i>
+                                        </span>
+                                    </button>
+                                </td>
+                                <td style="width: 70%;">
+                                    <input type="number" class="form-control text-center  font-weight-bolder"
+                                        [(ngModel)]="itemMedida.CantidadPedido"
+                                        (ngModelChange)="verificarCantidadPorMedida( itemMedida )" />
+                                </td>
+                                <td style="width: 10%;">
+                                    <button type="button" class="btn btn-fab btn-round"
+                                        (click)="sumaCantidadPorMedida( $event, itemMedida )">
+                                        <span class="icon text-white-50" style="font-size: 0.7em;">
+                                            <i class="fas fa-plus"></i>
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-6 pt-2 pb-3 text-center" *ngIf="itemMedida.StockDisponible == 0">
+                        <span class="text-danger">Sin Stock</span>
+                    </div>
+
+                    <div class="col-12" *ngIf="productIdAlertaModalMedida == itemMedida.Id">
+                        <div id="alertErrorMedidas_{{itemMedida.Id}}" role="alert" class="alert alert-warning p-1">
+                            <div class="container text-body">
+                                <span class="">{{mensajeError}}</span>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="icon text-white-50 mr-2">
+                        <i class="fas fa-window-close"></i>
+                    </span>
+                    Cancelar
+                </a>
+                <a href="#" class="btn btn-success btn-block" data-dismiss="modal"
+                    (click)="addCarrito( $event, productoIngresaCantidades )" *ngIf="!agregandoAlCarrito">
+                    <span class="icon text-white-50 mr-2">
+                        <i class="fas fa-cart-plus"></i>
+                    </span>
+                    Agregar
+                </a>
+                <a class="btn btn-success btn-block" aria-disabled="true" *ngIf="agregandoAlCarrito">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span class="text">Agregando...</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<notifier-container></notifier-container>

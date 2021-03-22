@@ -1,0 +1,387 @@
+<notifier-container></notifier-container>
+
+<div class="container-fluid">
+
+    <div class="card shadow mb-4">
+        <!-- <div class="card-header card-header-primary">
+                    {{titulo}}
+                </div> -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-md-8">
+                    <ng-template #rtCliente let-r="result" let-t="term">
+                        <ngb-highlight [result]="r.ClienteList" [term]="t"></ngb-highlight>
+                    </ng-template>
+
+                    <div class="input-group">
+
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                Cliente:
+                            </span>
+                        </div>
+                        <input id="typeahead-basic" type="text" class="form-control h4"
+                            [(ngModel)]="clienteSeleccionado" [ngbTypeahead]="buscarCliente"
+                            [resultTemplate]="rtCliente" [inputFormatter]="formatterCliente" />
+
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-white btn-raised btn-fab btn-round">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-2">
+                    <div class="shadow pt-3 pb-2 pl-2 mb-3 bg-white rounded text-center">
+                        <span class="h4">{{titulo}}</span>
+                    </div>
+                </div>
+                <div class="col-12 col-md-2">
+                    <div class="shadow p-2 mb-3 bg-white rounded text-center">
+                        <!-- <span class="h4">Número: </span> -->
+                        <span class="h3 text-right">{{NumeroDocumento}}</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-3 col-lg-3">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="fecha-addon">Fecha: </span>
+                        </div>
+                        <input type="date" class="form-control" aria-describedby="fecha-addon"
+                            [ngModel]="docVenta.Fecha | date:'yyyy-MM-dd'"
+                            [value]="docVenta.Fecha | date:'yyyy-MM-dd'" />
+                    </div>
+                </div>
+                <div class="col-12 col-md-3 col-lg-2">
+
+                </div>
+                <div class="col-12 col-md-2 col-lg-3">
+
+                </div>
+                <div class="col-12 col-md-2 col-lg-2">
+                    <div *ngIf="!procesando">
+                        <a href="#" class="btn btn-success btn-block" (click)="onClickGuardar( $event )">
+                            <span class="icon text-white-50  m-2">
+                                <i class="fas fa-save"></i>
+                            </span>
+                            <span class="text">Guardar</span>
+                        </a>
+                    </div>
+                    <div *ngIf="procesando">
+                        <a class="btn btn-success  btn-block" aria-disabled="true">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            <span class="text">Procesando...</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-12 col-md-2 col-lg-2">
+                    <a href="#" class="btn btn-block" (click)="onClickVolver( $event )">
+                        <span class="icon text-white-50  m-2">
+                            <i class="fas fa-arrow-left"></i>
+                        </span>
+                        <span class="text">Volver</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="docVenta.Numero">
+                <div class="col-12 col-md-6">
+                    <div class="card p-2">
+                        <div class="row">
+                            <div class="col">
+                                <div class="shadow p-2 mb-3 bg-white rounded text-center">
+                                    <span class="h4">Observaciones</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 p-2">
+                                <div class="form-group">
+                                    <textarea class="form-control" aria-label="Observaciones" rows="3"
+                                        [(ngModel)]="docVenta.Observaciones.Observaciones"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    
+                                    <label for="fileFoto" class="btn btn-primary subir mr-1">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        Adjuntar foto comprobante
+                                    </label>
+                                    <input type="file" id="fileFoto" style="display: none;"
+                                        (change)="fileCapturarEvento( $event )" />
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-10" *ngIf="docVenta.Observaciones && docVenta.Observaciones.AdjuntoLink">
+                                <img src="{{docVenta.Observaciones.AdjuntoLink}}" alt="Adjunto" class="rounded img-fluid">                                
+                            </div>
+                            <div class="col-1"></div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="card p-2">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="shadow p-2 mb-3 bg-white rounded text-center">
+                                    <span class="h4 pl-4">Detalle Medios de Pago</span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <!-- <a href="#" class="btn btn-warning btn-block">
+                                    <span class="icon text-white-50  m-2">
+                                        <i class="fas fa-print"></i>
+                                    </span>
+                                    <span class="text">Exportr a PDF</span>
+                                </a> -->
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-4 text-center">
+                                <span>Medio de pago</span>
+                            </div>
+                            <div class="col-2 text-center">
+                                <span>Importe</span>
+                            </div>
+                            <div class="col-2 text-center">
+                                <span>Cotización</span>
+                            </div>
+                            <div class="col-4 text-center">
+                                <span>USD</span>
+                            </div>
+                        </div>
+                        <div class="row mt-2 ">
+                            <div class="col-3 pt-2">
+                                <span>Dólares</span>
+                            </div>
+                            <div class="col-3">
+                                <div class="input-group">
+                                    <input type="number" class="form-control text-right h4"
+                                        [(ngModel)]="docVenta.Dolares" (ngModelChange)="calcularTotales()">
+                                </div>
+                            </div>
+                            <div class="col-3">
+
+                            </div>
+                            <div class="col-3">
+                                <div class="shadow bg-white rounded p-2 mb-1 w-100 text-right ">
+                                    <span class="h4"
+                                        *ngIf="docVenta.Dolares>0">{{docVenta.Dolares | number: '1.2-2'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-3 pt-2">
+                                <span>Pesos</span>
+                            </div>
+                            <div class="col-3">
+                                <div class="input-group">
+                                    <input type="number" class="form-control text-right h4"
+                                        [(ngModel)]="docVenta.Efectivo" (ngModelChange)="calcularTotales()">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="input-group">
+                                    <input type="number" class="form-control text-right h4"
+                                        [(ngModel)]="docVenta.EfectivoCotizaDolar" (ngModelChange)="calcularTotales()">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="shadow bg-white rounded p-2 mb-1 w-100 text-right "
+                                    *ngIf="docVenta.Efectivo>0 && docVenta.EfectivoCotizaDolar>0">
+                                    <span class="h4">
+                                        {{(docVenta.Efectivo / docVenta.EfectivoCotizaDolar) | number: '1.2-2'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-3 pt-2">
+                                <span>Tarjeta de Crédito</span>
+                            </div>
+                            <div class="col-3">
+                                <div class="input-group">
+                                    <input type="number" class="form-control text-right h4"
+                                        [(ngModel)]="docVenta.Tarjeta" (ngModelChange)="calcularTotales()">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="input-group">
+                                    <input type="number" class="form-control text-right h4"
+                                        [(ngModel)]="docVenta.TarjetaCotizaDolar" (ngModelChange)="calcularTotales()">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="shadow bg-white rounded p-2 mb-1 w-100 text-right "
+                                    *ngIf="docVenta.Tarjeta>0 && docVenta.TarjetaCotizaDolar>0">
+                                    <span class="h4">
+                                        {{(docVenta.Tarjeta / docVenta.TarjetaCotizaDolar) | number: '1.2-2'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-3 pt-2">
+                                <span>Mercado Pago</span>
+                            </div>
+                            <div class="col-3">
+                                <div class="input-group">
+                                    <input type="number" class="form-control text-right h4"
+                                        [(ngModel)]="docVenta.MercadoPago" (ngModelChange)="calcularTotales()">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="input-group">
+                                    <input type="number" class="form-control text-right h4"
+                                        [(ngModel)]="docVenta.MercadoPagoCotizaDolar"
+                                        (ngModelChange)="calcularTotales()">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="shadow bg-white rounded p-2 mb-1 w-100 text-right "
+                                    *ngIf="docVenta.MercadoPago>0 && docVenta.MercadoPagoCotizaDolar>0">
+                                    <span class="h4">
+                                        {{(docVenta.MercadoPago / docVenta.MercadoPagoCotizaDolar) | number: '1.2-2'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-3 pt-2">
+                                <span>Depósito / Transfer</span>
+                            </div>
+                            <div class="col-3">
+                                <div class="input-group">
+                                    <input type="number" class="form-control text-right h4"
+                                        [(ngModel)]="docVenta.DepositoTransferencia"
+                                        (ngModelChange)="calcularTotales()">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="input-group">
+                                    <input type="number" class="form-control text-right h4"
+                                        [(ngModel)]="docVenta.DepositoTransferCotizaDolar"
+                                        (ngModelChange)="calcularTotales()">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="shadow bg-white rounded p-2 mb-1 w-100 text-right "
+                                    *ngIf="docVenta.DepositoTransferencia>0 && docVenta.DepositoTransferCotizaDolar>0">
+                                    <span class="h4">
+                                        {{(docVenta.DepositoTransferencia / docVenta.DepositoTransferCotizaDolar) | number: '1.2-2'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-3 pt-2">
+                                <span>Cheque</span>
+                            </div>
+                            <div class="col-3">
+                                <div class="input-group">
+                                    <input type="number" class="form-control text-right h4"
+                                        [(ngModel)]="docVenta.Cheques" (ngModelChange)="calcularTotales()">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="input-group">
+                                    <input type="number" class="form-control text-right h4"
+                                        [(ngModel)]="docVenta.ChequesCotizaDolar" (ngModelChange)="calcularTotales()">
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="shadow bg-white rounded p-2 mb-1 w-100 text-right "
+                                    *ngIf="docVenta.Cheques>0 && docVenta.ChequesCotizaDolar>0">
+                                    <span class="h4">
+                                        {{(docVenta.Cheques / docVenta.ChequesCotizaDolar) | number: '1.2-2'}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-4 pt-2 text-center">
+                                <div *ngIf="!procesando">
+                                    <a href="#" class="btn btn-warning btn-block"
+                                        (click)="onClickComprobantesPendientes( $event )">
+                                        <span class="icon text-white-50  mr-2">
+                                            <i class="fas fa-search-dollar"></i>
+                                        </span>
+                                        <span class="text">Consultar</span>
+                                    </a>
+                                </div>
+                                <div *ngIf="procesando">
+                                    <a class="btn btn-warning btn-block" aria-disabled="true">
+                                        <span class="spinner-border spinner-border-sm" role="status"
+                                            aria-hidden="true"></span>
+                                        <span class="text">Procesando...</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-4 pt-2 text-right">
+                                <span class="h4">Saldo Cliente: USD</span>
+                            </div>
+                            <div class="col-4 text-left">
+                                <div class="shadow bg-white rounded p-2 mb-3 w-100 text-right ">
+
+                                    <span class="h4">{{saldoCliente | number: '1.2-2'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 pt-2  text-right">
+                                <div *ngIf="!procesando">
+                                    <a href="#" class="btn btn-success btn-block" (click)="onClickGuardar( $event )">
+                                        <span class="icon text-white-50  mr-2">
+                                            <i class="fas fa-save"></i>
+                                        </span>
+                                        <span class="text">Guardar</span>
+                                    </a>
+                                </div>
+                                <div *ngIf="procesando">
+                                    <a class="btn btn-success  btn-block" aria-disabled="true">
+                                        <span class="spinner-border spinner-border-sm" role="status"
+                                            aria-hidden="true"></span>
+                                        <span class="text">Procesando...</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-4 pt-2 text-right">
+                                <span class="h4">Total Recibo: USD</span>
+                            </div>
+                            <div class="col-4">
+                                <div class="shadow bg-white rounded p-2 mb-3 w-100 text-right ">
+                                    <span class="h3">{{docVenta.Total | number: '1.2-2'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 pt-2 text-center">
+
+                            </div>
+                            <div class="col-4 pt-2 text-right">
+                                <span class="h4">Pendiente: USD</span>
+                            </div>
+                            <div class="col-4 text-left">
+                                <div class="shadow bg-white rounded p-2 mb-3 w-100 text-right ">
+
+                                    <span class="h4">{{saldoPendiente | number: '1.2-2'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

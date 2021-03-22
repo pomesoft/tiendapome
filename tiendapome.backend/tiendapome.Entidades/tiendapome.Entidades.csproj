@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5C67F42E-E901-422C-A0A1-809885948F28}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>tiendapome.Entidades</RootNamespace>
+    <AssemblyName>tiendapome.Entidades</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Categoria.cs" />
+    <Compile Include="Cliente.cs" />
+    <Compile Include="ClienteLista.cs" />
+    <Compile Include="CotizacionDolar.cs" />
+    <Compile Include="DocumentoVentaObservaciones.cs" />
+    <Compile Include="DTO\ListadoCtaCte.cs" />
+    <Compile Include="DTO\ItemListado.cs" />
+    <Compile Include="DTO\PedidoItemProductoDTO.cs" />
+    <Compile Include="DTO\PedidoItemDTO.cs" />
+    <Compile Include="DTO\PedidoDTO.cs" />
+    <Compile Include="EntidadBase.cs" />
+    <Compile Include="EntidadBaseParametrica.cs" />
+    <Compile Include="EntidadHelpers.cs" />
+    <Compile Include="Estado.cs" />
+    <Compile Include="ListaPrecio.cs" />
+    <Compile Include="ListaPrecioCliente.cs" />
+    <Compile Include="MensajeResponse.cs" />
+    <Compile Include="Parametro.cs" />
+    <Compile Include="Pedido.cs" />
+    <Compile Include="PedidoItem.cs" />
+    <Compile Include="PedidoItemProducto.cs" />
+    <Compile Include="DocumentoVentaList.cs" />
+    <Compile Include="Producto.cs" />
+    <Compile Include="PedidoList.cs" />
+    <Compile Include="ProductoList.cs" />
+    <Compile Include="ProductoStockMovimiento.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Medida.cs" />
+    <Compile Include="ProductoStock.cs" />
+    <Compile Include="DocumentoVenta.cs" />
+    <Compile Include="DocumentoVentaItem.cs" />
+    <Compile Include="Provincia.cs" />
+    <Compile Include="ProductoGrupoOrden.cs" />
+    <Compile Include="SituacionIVA.cs" />
+    <Compile Include="VentaTipoComprobante.cs" />
+    <Compile Include="SubcategoriaMedida.cs" />
+    <Compile Include="SubcategoriaMerge.cs" />
+    <Compile Include="Rol.cs" />
+    <Compile Include="Sesion.cs" />
+    <Compile Include="Subcategoria.cs" />
+    <Compile Include="Tipo.cs" />
+    <Compile Include="TipoPortada.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ModeloEntidad.cd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,401 @@
+<div class="container">
+      <!-- *ngIf="!pedidoIngresado()" -->
+      <div class="row">
+            <div class="col-12 font-weight-bolder text-center">
+                  <span class="text-gray-900 mr-2">&nbsp;&nbsp;</span>
+            </div>
+      </div>
+      <div class="row">
+            <div class="col-12 font-weight-bolder text-center">
+                  <span class="text-gray-900 mr-2">&nbsp;&nbsp;</span>
+            </div>
+      </div>
+      <div class="row">
+            <div class="col-12 font-weight-bolder text-center">
+                  <span class="text-gray-900 mr-2">&nbsp;&nbsp;</span>
+            </div>
+      </div>
+
+      <div class="row pt-4">
+            <div class="card shadow ">
+
+                  <div class="card-body">
+                        <div infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" [fromRoot]="true"
+                              (scrolled)="onScroll()">
+                              <div class="row">
+                                    <div class="col-sm-6 col-lg-4" *ngFor="let item of pedido.Items">
+                                          <div class="card shadow border border-secondary m-2 p-1" [ngClass]="{ 'border border-success border-left-success bg-confirmado': item.Confirmado,
+                                                       'border border-danger border-left-danger': item.SinStock  }">
+                                                <div class="row">
+                                                      <div class="col-6">
+                                                            <div class="cropped">
+                                                                  <img class="card-img-top"
+                                                                        src="{{item.Producto.FotoLink}}"
+                                                                        alt="{{item.Producto.Foto}}">
+                                                            </div>
+                                                      </div>
+                                                      <div class="col-6">
+                                                            <div class="w-100"
+                                                                  *ngIf="!estaComprando() && item.Producto.Ubicacion>0">
+                                                                  <span class="font-weight-normal">Ubicación:
+                                                                  </span>
+                                                                  <span
+                                                                        class="h3 font-weight-bold">{{item.Producto.Ubicacion}}</span>
+                                                            </div>
+                                                            <div class="w-100">
+                                                                  <span class="font-weight-normal">
+                                                                        {{item.Producto.Descripcion}}
+                                                                  </span><br />
+                                                            </div>
+                                                            <div class="w-100" *ngIf="esVentaMayorista()">
+
+                                                                  <span *ngIf="item.Producto.PrecioPorPeso">
+                                                                        Peso: {{item.Producto.Peso}} GR
+                                                                  </span><br />
+
+                                                                  <span class="font-weight-bold text-primary h4"
+                                                                        *ngIf="item.Producto.PrecioPorPeso">
+                                                                        {{pedido.Moneda}}
+                                                                        {{ item.Producto.Peso * item.Precio | number: '1.2-2' }}
+                                                                  </span>
+                                                                  <span class="font-weight-bold text-primary h4"
+                                                                        *ngIf="item.Producto.PrecioPorPieza">
+                                                                        {{pedido.Moneda}}
+                                                                        {{item.Precio | number: '1.2-2' }}
+                                                                  </span>
+
+                                                            </div>
+                                                            <div class="w-100">
+                                                                  <span class="font-weight-normal">Código:
+                                                                  </span>
+                                                                  <span
+                                                                        class="h4 font-weight-bold">{{item.Producto.Codigo}}</span>
+                                                            </div>
+
+                                                            <div class="text-rigth w-100 mt-2">
+                                                                  <span
+                                                                        class="h4 font-weight-bold text-primary ml-1">{{pedido.Moneda}}</span>
+                                                                  <span
+                                                                        class="h3 font-weight-bold text-primary ml-1">{{item.Subtotal | number: '1.2-2'}}</span>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                                <div class="row no-gutters"
+                                                      *ngFor="let itemMedida of item.ItemProductos">
+                                                      <div class="col-12">
+                                                            <table>
+                                                                  <tr
+                                                                        *ngIf="itemMedida.Cantidad > 0 || verTodasLasMedidas">
+                                                                        <td style="width: 10%;">
+                                                                              <!-- <span class="icon text-success"
+                                                                                    style="font-size: 2.3em;">
+                                                                                    <i class="fas fa-check-circle"></i>
+                                                                              </span> -->
+                                                                              <div *ngIf="itemMedida.Cantidad > 0">
+                                                                                    <span *ngIf="itemMedida.StockDisponible > 0 && itemMedida.StockDisponible < itemMedida.Cantidad"
+                                                                                          class="icon text-warning"
+                                                                                          style="font-size: 2em;">
+                                                                                          <i
+                                                                                                class="fas fa-exclamation"></i>
+                                                                                    </span>
+                                                                                    <span *ngIf="itemMedida.StockDisponible == 0"
+                                                                                          class="icon text-danger"
+                                                                                          style="font-size: 2em;">
+                                                                                          <i class="fas fa-times"></i>
+                                                                                    </span>
+                                                                              </div>
+                                                                        </td>
+                                                                        <td style="width: 40%;">
+
+                                                                              <div>
+                                                                                    <span>
+                                                                                          {{itemMedida.Medida.Observaciones}}
+                                                                                    </span>
+                                                                              </div>
+                                                                              <div
+                                                                                    *ngIf="usuarioAdministrador() && itemMedida.StockReservado > 0">
+                                                                                    <span>
+                                                                                          Reservado:
+                                                                                          {{itemMedida.StockReservado}}
+                                                                                    </span>
+                                                                              </div>
+                                                                              <div *ngIf="itemMedida.Cantidad > 0">
+                                                                                    <span *ngIf="itemMedida.StockDisponible > 0 && itemMedida.StockDisponible < itemMedida.Cantidad"
+                                                                                          class="text-warning">
+                                                                                          Disponible:
+                                                                                          {{itemMedida.StockDisponible}}
+                                                                                    </span>
+                                                                                    <span *ngIf="itemMedida.StockDisponible == 0"
+                                                                                          class="text-danger">
+                                                                                          Sin Stock
+                                                                                          {{itemMedida.StockDisponible}}
+                                                                                    </span>
+                                                                              </div>
+                                                                        </td>
+                                                                        <td style="width: 50%;">
+                                                                              <div class="p-2" style="width: 100%;"
+                                                                                    *ngIf="!mostrarCantidadPorMedida( itemMedida.Medida.Id, item.Producto )">
+                                                                                    <span
+                                                                                          class="text-danger text-center ml-5">
+                                                                                          Sin Stock
+                                                                                    </span>
+                                                                              </div>
+                                                                              <table
+                                                                                    *ngIf="mostrarCantidadPorMedida( itemMedida.Medida.Id, item.Producto )">
+                                                                                    <tr>
+                                                                                          <td style="width: 20%;">
+                                                                                                <button type="button"
+                                                                                                      class="btn btn-fab btn-round"
+                                                                                                      (click)="restaCantidadMedida( $event, itemMedida )">
+                                                                                                      <span class="icon text-white-50"
+                                                                                                            style="font-size: 0.7em;">
+                                                                                                            <i
+                                                                                                                  class="fas fa-minus"></i>
+                                                                                                      </span>
+                                                                                                </button>
+                                                                                          </td>
+                                                                                          <td style="width: 60%;">
+                                                                                                <input type="number"
+                                                                                                      class="form-control text-center "
+                                                                                                      [ngClass]="{'font-weight-bold': itemMedida.Cantidad > 0 }"
+                                                                                                      [(ngModel)]="itemMedida.Cantidad"
+                                                                                                      (ngModelChange)="verificarCantidadPorMedida( itemMedida, item )" />
+
+                                                                                          </td>
+                                                                                          <td style="width: 20%;">
+                                                                                                <button type="button"
+                                                                                                      class="btn btn-fab btn-round"
+                                                                                                      (click)="sumaCantidadPorMedida( $event, itemMedida, item )">
+                                                                                                      <span class="icon text-white-50"
+                                                                                                            style="font-size: 0.7em;">
+                                                                                                            <i
+                                                                                                                  class="fas fa-plus"></i>
+                                                                                                      </span>
+                                                                                                </button>
+                                                                                          </td>
+                                                                                    </tr>
+                                                                              </table>
+                                                                        </td>
+                                                                  </tr>
+                                                            </table>
+                                                      </div>
+                                                      <div class="col-12"
+                                                            *ngIf="productIdAlertaModalMedida == itemMedida.Id">
+                                                            <div id="alertErrorMedidas_{{itemMedida.Id}}" role="alert"
+                                                                  class="alert alert-warning p-1">
+                                                                  <div class="container text-body">
+                                                                        <span class="">{{mensajeError}}</span>
+                                                                        <button type="button" class="close"
+                                                                              data-dismiss="alert" aria-label="Close">
+                                                                              <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                  </div>
+                                                            </div>
+                                                      </div>
+
+                                                </div>
+
+                                                <!-- Fila Comentada -->
+                                                <!-- <div class="row mt-1">
+
+                                                      <div class="col-6" *ngIf="pedidoIngresado()">
+                                                            <div class="row">
+                                                                  <table>
+                                                                        <tr>
+                                                                              <td style="width: 10%;">
+                                                                                    <button type="button"
+                                                                                          class="btn btn-fab btn-round"
+                                                                                          (click)="restaCantidad( $event, item )">
+                                                                                          <span class="icon text-white-50"
+                                                                                                style="font-size: 0.7em;">
+                                                                                                <i
+                                                                                                      class="fas fa-minus"></i>
+                                                                                          </span>
+                                                                                    </button>
+                                                                              </td>
+                                                                              <td style="width: 70%;">
+                                                                                    <input type="number" min="1"
+                                                                                          class="form-control text-center font-weight-bolder"
+                                                                                          [(ngModel)]="item.Cantidad"
+                                                                                          (ngModelChange)="cantidadChanged($event, item)" />
+                                                                              </td>
+                                                                              <td style="width: 10%;">
+                                                                                    <button type="button"
+                                                                                          class="btn btn-fab btn-round"
+                                                                                          (click)="sumaCantidad( $event, item )">
+                                                                                          <span class="icon text-white-50"
+                                                                                                style="font-size: 0.7em;">
+                                                                                                <i
+                                                                                                      class="fas fa-plus"></i>
+                                                                                          </span>
+                                                                                    </button>
+                                                                              </td>
+                                                                        </tr>
+                                                                  </table>
+                                                            </div>
+                                                      </div>
+                                                      <div class="col-5" *ngIf="!pedidoIngresado()">
+                                                            <div class="form-group">
+                                                                  <span class="font-weight-normal">Cantidad:
+                                                                  </span>
+                                                                  <span
+                                                                        class="h3 font-weight-bold">{{item.Cantidad}}</span>
+                                                            </div>
+                                                      </div>
+                                                </div> -->
+                                                <!-- Fila Comentada -->
+
+                                                <div class="row mb-1" *ngIf="!pedidoIngresado()">
+                                                      <div class="col p-3">
+                                                            <span class="h4 mb-2">Cantidad: </span><span
+                                                                  class="h3 mb-2">{{item.Cantidad}}</span><br />
+                                                            <span>Obseraciones: {{item.Observaciones}}</span>
+                                                      </div>
+                                                </div>
+
+                                                <div class="row" *ngIf="itemAlerta == item.Id">
+                                                      <div class="col-12">
+                                                            <div id="alertError_{{item.Id}}" role="alert" [ngClass]="{
+                                                                        'alert alert-info fade hide p-1': tipoAlerta == '',
+                                                                        'alert alert-success fade hide p-1': tipoAlerta == 'success',
+                                                                        'alert alert-warning fade hide p-1': tipoAlerta == 'warning',
+                                                                        'alert alert-danger fade hide p-1': tipoAlerta == 'danger'
+                                                                  }">
+                                                                  <div class="container p-2">
+                                                                        <button type="button" class="close"
+                                                                              data-dismiss="alert" aria-label="Close">
+                                                                              <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                        <span class="text-body">{{mensajeError}}</span>
+                                                                  </div>
+                                                            </div>
+                                                      </div>
+                                                </div>
+
+                                                <div class="row" *ngIf="pedidoIngresado() || pedidoEnProceso()">
+
+                                                      <div class="col-6" *ngIf="pedidoIngresado()">
+                                                            <a href="#" class="btn btn-danger btn-block"
+                                                                  (click)="confirmarEliminacionItem( $event, item )">
+                                                                  <span class="icon text-white-50 m-2">
+                                                                        <i class="fas fa-trash-alt"></i>
+                                                                  </span>
+                                                                  <span class="text">Eliminar</span>
+                                                            </a>
+                                                      </div>
+                                                      <div class="col-6" *ngIf="!pedidoIngresado()">
+                                                            <div
+                                                                  *ngIf="mostrarBotonVerTodasLasMedidas( item.Producto )">
+
+                                                                  <!-- <a href="#" class="btn btn-danger btn-block"
+                                                                              (click)="registrarEstadoItem( $event, item, ESTADO_ITEM_SIN_STOCK)">
+                                                                              <span class="icon text-white-50 m-2">
+                                                                                    <i class="fas fa-times"></i>
+                                                                              </span>
+                                                                              <span class="text">Sin Stock</span>
+                                                                        </a> -->
+                                                                  <a href="#" class="btn btn-block"
+                                                                        (click)="onClickVerTodasLasMedidas( $event )">
+
+                                                                        <span class="icon text-dark"
+                                                                              *ngIf="!verTodasLasMedidas">
+                                                                              <i class="fas fa-plus"></i>
+                                                                              Ver todas
+                                                                        </span>
+
+                                                                        <span class="icon text-dark"
+                                                                              *ngIf="verTodasLasMedidas">
+                                                                              <i class="fas fa-minus"></i>
+                                                                              Ocultar en cero
+                                                                        </span>
+                                                                  </a>
+                                                            </div>
+                                                      </div>
+
+                                                      <div class="col-6">
+                                                            <div *ngIf="!procesando">
+                                                                  <a href="#" class="btn btn-success btn-block"
+                                                                        *ngIf="pedidoIngresado()"
+                                                                        (click)="guardar( $event, item )">
+                                                                        <span class="icon text-white-50 m-2">
+                                                                              <i class="fas fa-save"></i>                                                                        </span>
+                                                                        <span>Guardar</span>                                                                        
+                                                                  </a>
+
+                                                                  <a href="#" class="btn btn-success btn-block"
+                                                                        *ngIf="pedidoEnProceso()" 
+                                                                        (click)="registrarEstadoItem( $event, item, ESTADO_ITEM_CONFIRTMADO) ">
+                                                                        <span class="icon text-white-50 m-2">
+                                                                              <i class="fas fa-save"></i>                                                                        </span>
+                                                                        <span>Confirmar</span>
+                                                                  </a>
+                                                            </div>
+                                                            <div *ngIf="procesando">
+                                                                  <a class="btn btn-success btn-block"
+                                                                        aria-disabled="true">
+                                                                        <span class="spinner-border spinner-border-sm"
+                                                                              role="status" aria-hidden="true"></span>
+                                                                        <span class="text">Procesando...</span>
+                                                                  </a>
+                                                            </div>
+                                                      </div>
+                                                </div>
+
+                                                <div class="modal fade" id="modalConfirmaEliminacion" tabindex="-1"
+                                                      role="dialog" aria-labelledby="modalConfirmaEliminacionTitle"
+                                                      aria-hidden="true">
+                                                      <div class="modal-dialog modal-dialog-scrollable" role="document">
+                                                            <div class="modal-content">
+                                                                  <div class="modal-header">
+                                                                        <h5 class="modal-title"
+                                                                              id="modalConfirmaEliminacionTitle">
+                                                                              Pedido</h5>
+                                                                        <button type="button" class="close"
+                                                                              data-dismiss="modal" aria-label="Close">
+                                                                              <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                  </div>
+                                                                  <div class="modal-body">
+                                                                        <div class="alert alert-danger" role="alert">
+                                                                              ¿Desea eliminar
+                                                                              el producto del pedido?
+                                                                        </div>
+                                                                  </div>
+                                                                  <div class="modal-footer">
+                                                                        <!-- data-dismiss="modal" -->
+                                                                        <button type="button" class="btn"
+                                                                              (click)="cancelarEliminar( $event )">
+                                                                              <span class="icon text-white-50 m-2">
+                                                                                    <i class="fas fa-times"></i>
+                                                                              </span>
+                                                                              Cancelar
+                                                                        </button>
+                                                                        <button type="button" class="btn btn-danger"
+                                                                              (click)="eliminar( $event )">
+                                                                              <span class="icon text-white-50 m-2">
+                                                                                    <i class="fas fa-trash-alt"></i>
+                                                                              </span>
+                                                                              Eliminar
+                                                                        </button>
+                                                                  </div>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+
+                        <div class="shadow-lg p-2 bg-light rounded text-center" *ngIf="cargandoProductos">
+                              <div class="spinner-border text-secondary" role="status">
+                                    <span class="sr-only">Cargando...</span>
+                              </div>
+                        </div>
+                  </div>
+
+
+            </div>
+      </div>
+
+</div>
+<notifier-container></notifier-container>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping assembly="tiendapome.Entidades" namespace="tiendapome.Entidades" xmlns="urn:nhibernate-mapping-2.2">
+    <class name="tiendapome.Entidades.SubcategoriaMerge" table="tp_subcategoriasmerge" lazy="false">
+        <id name="Id" column="IdSubcategoriaMerge">
+            <generator class="identity" />
+        </id>
+        <property name="IdSubcategoriaMinorista" column="IdSubcategoriaMinorista" />
+        <property name="IdSubcategoriaMayorista" column="IdSubcategoriaMayorista" />
+        <property name="Etiqueta" column="EtiquetaMayorista" />
+    </class>
+</hibernate-mapping>

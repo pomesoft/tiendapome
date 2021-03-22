@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping assembly="tiendapome.Entidades" namespace="tiendapome.Entidades" xmlns="urn:nhibernate-mapping-2.2">
+    <class name="tiendapome.Entidades.SubcategoriaMedida" table="tp_SubcategoriaMedidas" >
+        <id name="Id" column="IdSubcategoriaMedida">
+            <generator class="identity" />
+        </id>
+        <property name="IdSubcategoria" column="IdSubcategoria" />
+        <many-to-one name="Medida" column="IdMedida" class="tiendapome.Entidades.Medida" />
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping assembly="tiendapome.Entidades" namespace="tiendapome.Entidades" xmlns="urn:nhibernate-mapping-2.2">
+    <class name="tiendapome.Entidades.Cliente" table="tp_clientes" lazy="false">
+        <id name="Id" column="IdCliente">
+            <generator class="identity" />
+        </id>
+        <many-to-one name="Rol" column="IdRol" class="tiendapome.Entidades.Rol" />
+        <property name="Email" column="Email" />
+        <property name="Clave" column="Clave" />
+        <property name="Apellido" column="Apellido" />
+        <property name="Nombre" column="Nombre" />
+        <property name="Celular" column="Celular" />
+        <property name="IdentificacionTributaria" column="IdentificacionTributaria" />        
+        <property name="RazonSocial" column="RazonSocial" />
+        <property name="NombreFantasia" column="NombreFantasia" />
+        <property name="Vigente" column="Vigente" />
+        <property name="ComisionApp" column="ComisionApp" />
+        <property name="Direccion" column="Direccion" />
+        <property name="Localidad" column="Localidad" />
+        <property name="CodigoPostal" column="CodigoPostal" />
+        <many-to-one name="Provincia" column="IdProvincia" class="tiendapome.Entidades.Provincia" />
+        <many-to-one name="SituacionIVA" column="IdSituacionIVA" class="tiendapome.Entidades.SituacionIVA" />
+        <property name="Observaciones" column="Observaciones" />
+        
+        <!--
+        <bag name="ListasPrecio" inverse="true" lazy="false" cascade="all-delete-orphan">
+            <key column="IdCliente" />
+            <one-to-many class="tiendapome.Entidades.ClienteLista" />
+        </bag>
+        -->
+    </class>
+</hibernate-mapping>

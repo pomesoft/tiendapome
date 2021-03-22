@@ -1,0 +1,714 @@
+<notifier-container></notifier-container>
+
+<div class="container-fluid">
+      <div class="row">
+            <div class="col-12 col-lg-3">
+                  <div class="card">
+                        <div class="card-header card-header-primary">
+                              <div class="row">
+                                    <div class="col-7">
+                                          Categorías
+                                    </div>
+                                    <div class="col-5">
+                                          <a href="#" class="btn btn-icon-split"
+                                                (click)="mostrarOcultarFiltros( $event )">
+                                                <span class="icon text-white-50" *ngIf="mostrarPanelFiltros">
+                                                      <i class="fas fa-angle-double-up"></i>
+                                                </span>
+                                                <span class="icon text-white-50" *ngIf="!mostrarPanelFiltros">
+                                                      <i class="fas fa-angle-double-down"></i>
+                                                </span>
+                                          </a>
+                                    </div>
+                              </div>
+                        </div>
+                        <div class="card-body">
+                              <div *ngIf="mostrarPanelFiltros">
+                                    <div class="list-group panel" id="MenuProductos" role="tablist"
+                                          *ngFor="let tipo of menu">
+                                          <a href="#tipo{{tipo.Id}}" class="list-group-item list-group-item-action"
+                                                role="tab" data-toggle="collapse" data-parent="#MainMenu">
+                                                <span class="text-gray-600 mr-1" style="font-size: 1.3em;">
+                                                      <i class="fab fa-google-play"></i>
+                                                </span>
+                                                {{tipo.Descripcion}}
+                                                <i class="fa fa-caret-down"></i>
+                                          </a>
+                                          <div class="list-group-submenu pl-3" id="tipo{{tipo.Id}}"
+                                                *ngFor="let categoria of tipo.Categorias">
+                                                <a href="#categoria{{categoria.Id}}"
+                                                      class="list-group-item list-group-item-action" role="tab"
+                                                      data-toggle="collapse">
+                                                      <span class="text-gray-400 mr-1" style="font-size: 1em;">
+                                                            <i class="fab fa-google-play"></i>
+                                                      </span>
+                                                      {{categoria.Descripcion}}
+                                                      <i class="fa fa-caret-down"></i>
+                                                </a>
+                                                <div class="collapse list-group-submenu pl-2"
+                                                      id="categoria{{categoria.Id}}"
+                                                      *ngFor="let subcategoria of categoria.Subcategorias">
+                                                      <a href="#" class="list-group-item list-group-item-action "
+                                                            [ngClass]="{'active':  subcategoria.Id == subCategoriaSeleccionada.Id}"
+                                                            (click)="mostrarProductos( $event, subcategoria, categoria, tipo)">
+                                                            {{subcategoria.Descripcion}}
+                                                      </a>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+            <div class="col-12 col-lg-9">
+                  <div class="card">
+                        <div class="card-header card-header-primary">
+                              <div class="nav-tabs-navigation">
+                                    <div class="nav-tabs-wrapper">
+                                          <ul class="nav nav-tabs" data-tabs="tabs">
+                                                <li class="nav-item">
+                                                      <a class="nav-link active" href="#datos" data-toggle="tab">
+                                                            <i class="fas fa-edit mr-2"></i>
+                                                            Datos
+                                                      </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                      <a class="nav-link" href="#listado" data-toggle="tab">
+                                                            <i class="fas fa-bars mr-2"></i>
+                                                            Listado
+                                                      </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                      <a class="nav-link" href="#" data-toggle="tab" [routerLink]="['/tipos']" >
+                                                            <i class="fas stream fa-bars mr-2"></i>
+                                                            Administrar Categorías
+                                                      </a>
+                                                </li>
+                                          </ul>
+                                    </div>
+                              </div>
+                        </div>
+                        <div class="card-body">
+
+                              <div class="tab-content text-center">
+                                    <div class="tab-pane active" id="datos">
+
+                                          <div class="row">
+                                                <div class="col-lg-3">
+                                                      <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                  <input class="form-check-input" type="checkbox"
+                                                                        id="buscarPorCodigo"
+                                                                        [(ngModel)]="buscarPorCodigoChequed">
+                                                                  Solo por código
+                                                                  <span class="form-check-sign">
+                                                                        <span class="check"></span>
+                                                                  </span>
+                                                            </label>
+                                                      </div>
+                                                </div>
+                                                <div class="col-lg-7">
+                                                      <div class="input-group">
+                                                            <input type="text" class="form-control"
+                                                                  (keydown.enter)="busquedaProducto( $event )"
+                                                                  placeholder="Búsqueda de productos"
+                                                                  [(ngModel)]="textoBuscarProducto">
+                                                            <div class="input-group-append">
+                                                                  <button class="btn btn-primary" type="button"
+                                                                        (click)="busquedaProducto( $event )">
+                                                                        <i class="fa fa-search"></i>
+                                                                  </button>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                      <a href="#" class="btn btn-primary btn-block"
+                                                            (click)="agregar( $event )">
+                                                            <span class="icon text-white-50 m-2">
+                                                                  <i class="fas fa-plus-square"></i>
+                                                            </span>
+                                                            <span class="text">Agregar</span>
+                                                      </a>
+                                                </div>
+                                          </div>
+
+                                          <span class="h4"
+                                                *ngIf="subCategoriaSeleccionada">{{subCategoriaSeleccionada.DescripcionFull}}</span>
+
+                                          <div class="row">
+                                                <div class="col-12"
+                                                      *ngFor="let prod of productos | paginate: { id: 'server', itemsPerPage: 10, currentPage: numeroPagina, totalItems: totalFilas }">
+                                                      <div class="card shadow mb-2 p-1">
+                                                            <div class="row border-top border-secondary">
+                                                                  <div class="col-12 col-md-5 col-lg-3">
+                                                                        <img class="card-img-top" *ngIf="prod.Id>0"
+                                                                              src="{{prod.FotoLink}}"
+                                                                              alt="{{prod.Codigo}}">
+                                                                  </div>
+                                                                  <div class="col-12 col-md-7 col-lg-9">
+                                                                        <div class="row">
+                                                                              <div class="col-12 col-lg-3">
+                                                                                    <div class="form-group"
+                                                                                          *ngIf="prod.Id>-1">
+                                                                                          <label>Código</label>
+                                                                                          <input type="text"
+                                                                                                class="form-control"
+                                                                                                [(ngModel)]="prod.Codigo" />
+                                                                                    </div>
+                                                                              </div>
+                                                                              <div class="col-6 col-lg-8">
+                                                                                    <div class="form-group">
+                                                                                          <label>Descripción</label>
+                                                                                          <input type="text"
+                                                                                                class="form-control"
+                                                                                                [(ngModel)]="prod.Descripcion" />
+                                                                                    </div>
+                                                                              </div>                                                                              
+                                                                        </div>
+                                                                        <div class="row">                                                                              
+                                                                              <div class="col-6 col-lg-3">
+                                                                                    <div class="form-group">
+                                                                                          <label>Tipo de Precio</label>
+                                                                                          <select class="custom-select"
+                                                                                                [(ngModel)]="prod.TipoPrecio"
+                                                                                                (change)="onChangeTipoPrecio($event, prod)">
+                                                                                                <option [value]="1">POR
+                                                                                                      PESO
+                                                                                                </option>
+                                                                                                <option [value]="2">POR
+                                                                                                      PIEZA
+                                                                                                </option>
+                                                                                          </select>
+                                                                                    </div>
+                                                                              </div>
+                                                                              <div class="col-6 col-lg-3">
+                                                                                    <div class="form-group"
+                                                                                          *ngIf="prod.TipoPrecio && prod.TipoPrecio == 1">
+                                                                                          <label>Peso</label>
+                                                                                          <input type="number"
+                                                                                                class="form-control"
+                                                                                                required
+                                                                                                [(ngModel)]="prod.Peso" />
+                                                                                    </div>
+                                                                                    <div class="form-group"
+                                                                                          *ngIf="prod.TipoPrecio && prod.TipoPrecio == 2">
+                                                                                          <label>Precio Unitario
+                                                                                                (USD)</label>
+                                                                                          <input type="number"
+                                                                                                class="form-control"
+                                                                                                required
+                                                                                                [(ngModel)]="prod.PrecioUnitario" />
+                                                                                    </div>
+                                                                              </div>
+                                                                              <div class="col-6 col-lg-6">
+                                                                                    <div class="form-group">
+                                                                                          <label>Lista de Precio</label>
+                                                                                          <select class="custom-select"
+                                                                                                [(ngModel)]="prod.ListaPrecio.Id"
+                                                                                                (change)="onChangeLista($event, prod)">
+                                                                                                <option
+                                                                                                      *ngFor="let lista of listaPrecios"
+                                                                                                      [value]="lista.Id">
+                                                                                                      {{ lista.Codigo }}
+                                                                                                </option>
+                                                                                          </select>
+                                                                                    </div>
+                                                                              </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                              <div class="col-6 col-lg-4">
+                                                                                    <div class="form-group">
+                                                                                          <label>Ubicación</label>
+                                                                                          <input type="number"
+                                                                                                class="form-control"
+                                                                                                [(ngModel)]="prod.Ubicacion" />
+                                                                                    </div>
+
+                                                                              </div>
+                                                                              <div class="col-6 col-lg-8">
+                                                                                    <div class="form-group">
+                                                                                          <label>Grupo Orden</label>
+                                                                                          <select class="custom-select"
+                                                                                                [(ngModel)]="prod.GrupoOrden.Id"
+                                                                                                (change)="onChangeGrupoOrden($event, prod)">
+                                                                                                <option
+                                                                                                      *ngFor="let item of listaGruposOrden"
+                                                                                                      [value]="item.Id">
+                                                                                                      {{ item.Descripcion }}
+                                                                                                </option>
+                                                                                                <option
+                                                                                                      [value]="9999">
+                                                                                                      Agregar grupo orden
+                                                                                                </option>
+                                                                                          </select>
+                                                                                    </div>
+                                                                              </div>
+                                                                        </div>
+                                                                        <!-- Combos => TIPO - CATEGORIA - SUBCATEGORIA -->
+                                                                        <div class="row" *ngIf="!modoBusqueda">
+                                                                              <div class="col-12 col-md-4">
+                                                                                    <div class="form-group">
+                                                                                          <label>Tipo</label>
+                                                                                          <select class="custom-select"
+                                                                                                placeholder="Tipo"
+                                                                                                [(ngModel)]="prod.IdTipo"
+                                                                                                (change)="onChangeListaTipo( $event )">
+                                                                                                <option
+                                                                                                      *ngFor="let lista of menu"
+                                                                                                      [value]="lista.Id">
+                                                                                                      {{ lista.Descripcion }}
+                                                                                                </option>
+                                                                                          </select>
+                                                                                    </div>
+                                                                              </div>
+                                                                              <div class="col-12 col-md-4">
+                                                                                    <div class="form-group">
+                                                                                          <label>Categoría</label>
+                                                                                          <select class="custom-select"
+                                                                                                placeholder="Categoría"
+                                                                                                [(ngModel)]="prod.IdCategoria"
+                                                                                                (change)="onChangeListaCategpria( $event )">
+                                                                                                <option
+                                                                                                      *ngFor="let lista of listaCategorias"
+                                                                                                      [value]="lista.Id">
+                                                                                                      {{ lista.Descripcion }}
+                                                                                                </option>
+                                                                                          </select>
+                                                                                    </div>
+                                                                              </div>
+                                                                              <div class="col-12 col-md-4">
+                                                                                    <div class="form-group">
+                                                                                          <label>Subcategoría</label>
+                                                                                          <select class="custom-select"
+                                                                                                placeholder="Subcategoría"
+                                                                                                [(ngModel)]="prod.Subcategoria.Id"
+                                                                                                (change)="onChangeListaSubcategoria( $event , prod )">
+                                                                                                <option
+                                                                                                      *ngFor="let lista of listaSubcategorias"
+                                                                                                      [value]="lista.Id">
+                                                                                                      {{ lista.Descripcion }}
+                                                                                                </option>
+                                                                                          </select>
+                                                                                    </div>
+                                                                              </div>
+                                                                        </div>
+                                                                        <!-- ProductoStock -  -->
+                                                                        <div class="row">
+                                                                              <div class="col-12 col-md-6 col-lg-4">
+                                                                                    <div class="form-group">
+                                                                                          <span class="h5">Stock Real:
+                                                                                          </span>
+                                                                                          <span
+                                                                                                class="h3">{{prod.StockReal}}</span>
+                                                                                    </div>
+                                                                              </div>
+                                                                              <div class="col-12 col-md-6 col-lg-4">
+                                                                                    <div class="form-group">
+                                                                                          <span class="h5">Stock
+                                                                                                Reservado: </span>
+                                                                                          <span
+                                                                                                class="h3">{{prod.StockReservado}}</span>
+                                                                                    </div>
+                                                                              </div>
+                                                                              <div class="col-12 col-md-6 col-lg-4">
+                                                                                    <div class="form-group">
+                                                                                          <span class="h4">Stock
+                                                                                                Disponible: </span>
+                                                                                          <span
+                                                                                                class="h3">{{prod.Stock}}</span>
+                                                                                    </div>
+                                                                              </div>
+                                                                        </div>
+                                                                        <div class="row" *ngIf="!modoBusqueda">
+                                                                              <div class="col-6 col-md-4 col-lg-2"
+                                                                                    *ngFor="let itemStock of prod.ProductoStock">
+                                                                                    <div class="row">
+                                                                                          <div class="col">
+                                                                                                <span>{{itemStock.Medida.Observaciones}}</span>
+                                                                                          </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                          <div class="col">
+                                                                                                <input type="number"
+                                                                                                      class="form-control"
+                                                                                                      [(ngModel)]="itemStock.Stock"
+                                                                                                      (change)="onChangeCantidadStock( prod )" />
+                                                                                          </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                          <div class="col">
+                                                                                                <small>Reservado:</small>
+                                                                                                {{  itemStock.Reservado}}
+                                                                                          </div>
+
+                                                                                    </div>
+                                                                              </div>
+                                                                        </div>
+                                                                        <!-- modo busquda - solo lectura => TIPO - CATEGORIA - SUBCATEGORIA -->
+                                                                        <div class="row" *ngIf="modoBusqueda">
+                                                                              <div class="col-12 col-lg-9">
+                                                                                    <div class="form-group">
+                                                                                          <label>{{prod.DescripcionTipo}}
+                                                                                                -
+                                                                                                {{prod.DescripcionCategoria}}
+                                                                                                -
+                                                                                                {{prod.DescripcionSubcategoria}}
+                                                                                          </label>
+                                                                                    </div>
+                                                                              </div>
+                                                                              <div class="col-12 col-lg-3">
+                                                                                    <a href="#" class="btn btn-block"
+                                                                                          (click)="editarProducto($event, prod.Codigo)">
+                                                                                          <span
+                                                                                                class="icon text-white-50 m-2">
+                                                                                                <i
+                                                                                                      class="fas fa-edit"></i>
+                                                                                          </span>
+                                                                                          Editar
+                                                                                    </a>
+                                                                              </div>
+                                                                        </div>
+                                                                        <!-- botones => SUBIR FOTO -  ELIMINAR - GUARDAR -->
+                                                                        <div class="row" *ngIf="!modoBusqueda">
+                                                                              <div class="col-12 col-lg-6">
+                                                                                    <div class="form-group"
+                                                                                          *ngIf="prod.Id>0">
+                                                                                          <div *ngIf="!productoFoto">
+                                                                                                <a href="#"
+                                                                                                      class="btn btn-primary mr-2"
+                                                                                                      (click)="subirFoto( $event, prod )">
+                                                                                                      <span
+                                                                                                            class="icon text-white-50  m-2">
+                                                                                                            <i
+                                                                                                                  class="fas fa-cloud-upload-alt"></i>
+                                                                                                      </span>
+                                                                                                      <span
+                                                                                                            class="text">Subir
+                                                                                                            foto</span>
+                                                                                                </a>
+                                                                                                <label>Foto:
+                                                                                                      {{prod.Foto}}</label>
+                                                                                          </div>
+
+                                                                                          <div
+                                                                                                *ngIf="productoFoto && productoFoto.Id == prod.Id">
+                                                                                                <a href="#"
+                                                                                                      class="btn mr-2"
+                                                                                                      (click)="cancelarSubirFoto( $event )">
+                                                                                                      <span
+                                                                                                            class="icon text-white-50 m-2">
+                                                                                                            <i
+                                                                                                                  class="fas fa-times"></i>
+                                                                                                      </span>
+                                                                                                      Cancelar
+                                                                                                </a>
+                                                                                                <label for="fileFoto"
+                                                                                                      class="btn btn-primary subir mr-1">
+                                                                                                      <i
+                                                                                                            class="fas fa-cloud-upload-alt"></i>
+                                                                                                      Seleccionar
+                                                                                                      archivo
+                                                                                                </label>
+                                                                                                <input type="file"
+                                                                                                      id="fileFoto"
+                                                                                                      style="display: none;"
+                                                                                                      (change)="fileCapturarEvento( $event )" />
+                                                                                          </div>
+                                                                                    </div>
+                                                                              </div>
+                                                                              <div class="col-6 col-lg-3">
+                                                                                    <a href="#"
+                                                                                          class="btn btn-danger btn-block"
+                                                                                          *ngIf="prod.Id>0"
+                                                                                          (click)="confirmarEliminacion( $event, prod )">
+                                                                                          <span
+                                                                                                class="icon text-white-50 m-2">
+                                                                                                <i
+                                                                                                      class="fas fa-trash-alt"></i>
+                                                                                          </span>
+                                                                                          Eliminar
+                                                                                    </a>
+                                                                                    <a href="#" class="btn btn-block"
+                                                                                          *ngIf="prod.Id<0"
+                                                                                          (click)="cancelar($event)">
+                                                                                          <span
+                                                                                                class="icon text-white-50 m-2">
+                                                                                                <i
+                                                                                                      class="fas fa-times"></i>
+                                                                                          </span>
+                                                                                          Cancelar
+                                                                                    </a>
+                                                                              </div>
+                                                                              <div class="col-6 col-lg-3 text-right">
+                                                                                    <div *ngIf="!procesando">
+                                                                                          <a href="#"
+                                                                                                class="btn btn-success btn-block"
+                                                                                                (click)="guardar( $event, prod )">
+                                                                                                <span
+                                                                                                      class="icon text-white-50  m-2">
+                                                                                                      <i
+                                                                                                            class="fas fa-save"></i>
+                                                                                                </span>
+                                                                                                <span
+                                                                                                      class="text">Guardar</span>
+                                                                                          </a>
+                                                                                    </div>
+                                                                                    <div *ngIf="procesando">
+                                                                                          <a class="btn btn-success btn-block"
+                                                                                                aria-disabled="true">
+                                                                                                <span class="spinner-border spinner-border-sm"
+                                                                                                      role="status"
+                                                                                                      aria-hidden="true"></span>
+                                                                                                <span
+                                                                                                      class="text">Procesando...</span>
+                                                                                          </a>
+                                                                                    </div>
+
+                                                                              </div>
+                                                                        </div>
+                                                                  </div>
+                                                            </div>
+                                                      </div>
+                                                </div>
+
+                                                <div class="has-text-centered">
+                                                      <pagination-controls id="server"
+                                                            (pageChange)="pageChangeProductos($event)" maxSize="10"
+                                                            directionLinks="true" autoHide="true" responsive="true"
+                                                            previousLabel="Anterior" nextLabel="Siguiente"
+                                                            screenReaderPaginationLabel="Paginación"
+                                                            screenReaderPageLabel="página"
+                                                            screenReaderCurrentLabel="Página actual">
+                                                      </pagination-controls>
+                                                </div>
+                                          </div>
+                                    </div>
+                                    <div class="tab-pane" id="listado">
+                                          <div class="row">
+                                                <div class="col-6">
+                                                      <span class="h4"
+                                                            *ngIf="subCategoriaSeleccionada">{{subCategoriaSeleccionada.DescripcionFull}}</span>
+                                                </div>
+                                                <div class="col-3">
+                                                      <nav class="navbar navbar-expand-lg  bg-light">
+                                                            <div class="container">
+                                                                <div class="navbar-translate">
+                                                                    <ul class="navbar-nav">
+                                                                        <li class="dropdown nav-item">
+                                                                            <a href="#"
+                                                                                class="btn btn-primary btn-icon-split btn-block dropdown-toggle nav-link"
+                                                                                data-toggle="dropdown">
+                                                                                <span class="icon text-white mr-1">
+                                                                                    <i class="fas fa-folder-plus fa-sm fa-fw mr-2"></i>
+                                                                                    Listar
+                                                                                </span>
+                                                                            </a>
+                                                                            <div class="dropdown-menu">
+                                                                                <a class="dropdown-item" href="#"
+                                                                                    (click)="onClickListarProductos( $event, 1 )">
+                                                                                    <span class="icon mr-1">
+                                                                                        <i class="fas fa-file-invoice-dollar"></i>
+                                                                                    </span>
+                                                                                    <span class="text">Todos los productos</span>
+                                                                                </a>
+                                                                                <a class="dropdown-item" href="#"
+                                                                                    (click)="onClickListarProductos( $event, 2 )">
+                                                                                    <span class="icon mr-1">
+                                                                                        <i class="fas fa-file-invoice-dollar"></i>
+                                                                                    </span>
+                                                                                    <span class="text">Solo productos CON Stock</span>
+                                                                                </a>
+                                                                                <a class="dropdown-item" href="#"
+                                                                                    (click)="onClickListarProductos( $event, 3 )">
+                                                                                    <span class="icon mr-1">
+                                                                                        <i class="fas fa-file-invoice-dollar"></i>
+                                                                                    </span>
+                                                                                    <span class="text">Solo productos SIN Stock</span>
+                                                                                </a>
+                                                                            </div>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </nav>
+                                                </div>
+                                                <div class="col-3">
+                                                      <a href="#" class="btn btn-info btn-block"
+                                                            (click)="onClickExportarListadoProductos($event)">
+                                                            <span class="icon text-white-50  m-2">
+                                                                  <i class="fas fa-file-excel"></i>
+                                                            </span>
+                                                            <span class="text">Exportar</span>
+                                                      </a>
+                                                </div>
+                                          </div>
+
+                                          <div class="row" style="height: 800px;">
+                                                <div class="table-responsive">
+                                                      <table class="table table-striped table-hover" id="dtCtaCte"
+                                                            width="100%" cellspacing="0">
+                                                            <thead>
+                                                                  <tr>
+                                                                        <th style="width: 20%;">Foto</th>
+                                                                        <th style="width: 20%;">Categoría</th>
+                                                                        <th style="width: 10%;">Código</th>
+                                                                        <th style="width: 10%;">Descripción</th>
+                                                                        <th style="width: 8%;">Peso</th>
+                                                                        <th style="width: 8%;">Ubicación</th>
+                                                                        <th style="width: 8%;">Stock Real</th>
+                                                                        <th style="width: 8%;">Reservado</th>
+                                                                        <th style="width: 8%;">Stock Disponible</th>
+                                                                  </tr>
+                                                            </thead>
+                                                      </table>
+                                                </div>
+
+                                                <div class="table-responsive mygrid-wrapper-div">
+                                                      <table class="table table-striped table-hover" id="dtCtaCte"
+                                                            width="100%" cellspacing="0">
+                                                            <tbody>
+                                                                  <tr
+                                                                        *ngFor="let item of listadoProductos  | paginate: { id: 'serverLP', itemsPerPage: 50, currentPage: numeroPaginaLP, totalItems: totalFilasLP }">
+                                                                        <td style="width: 15%;">
+                                                                              <img class="card-img-top"
+                                                                                    src="{{item.FotoLink}}"
+                                                                                    alt="{{item.Codigo}}">
+                                                                        </td>
+                                                                        <td style="width: 20%;">
+                                                                              <span
+                                                                                    class="text-break">{{item.Subcategoria.DescripcionFull}}</span>
+                                                                        </td>
+                                                                        <td style="width: 10%;">
+                                                                              <span>{{item.Codigo}}</span>
+                                                                        </td>
+                                                                        <td style="width: 10%;">
+                                                                              <span>{{item.Descripcion}}</span>
+                                                                        </td>
+                                                                        <td style="width: 8%;">
+                                                                              <span>{{item.Peso}}</span>
+                                                                        </td>
+                                                                        <td style="width: 8%;">
+                                                                              <span>{{item.Ubicacion}}</span>
+                                                                        </td>
+                                                                        <td style="width: 8%;">
+                                                                              <span>{{item.StockReal}}</span>
+                                                                        </td>
+                                                                        <td style="width: 8%;">
+                                                                              <span>{{item.StockReservado}}</span>
+                                                                        </td>
+                                                                        <td style="width: 8%;">
+                                                                              <span>{{item.Stock}}</span>
+                                                                        </td>
+                                                                  </tr>
+                                                            </tbody>
+                                                      </table>
+                                                </div>
+
+                                                <div class="has-text-centered">
+                                                      <pagination-controls id="serverLP"
+                                                            (pageChange)="pageChangeProductosLP($event)" maxSize="10"
+                                                            directionLinks="true" autoHide="true" responsive="true"
+                                                            previousLabel="Anterior" nextLabel="Siguiente"
+                                                            screenReaderPaginationLabel="Paginación"
+                                                            screenReaderPageLabel="página"
+                                                            screenReaderCurrentLabel="Página actual">
+                                                      </pagination-controls>
+                                                </div>
+                                          </div>
+
+                                    </div>
+                              </div>
+
+
+
+                        </div>
+                  </div>
+            </div>
+      </div>
+</div>
+
+<div class="modal fade" id="modalConfirmaEliminacion" tabindex="-1" role="dialog"
+      aria-labelledby="modalConfirmaEliminacionTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                  <div class="modal-header">
+                        <h5 class="modal-title" id="modalConfirmaEliminacionTitle">
+                              Productos</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                        </button>
+                  </div>
+                  <div class="modal-body">
+                        <div class="alert alert-danger" role="alert">
+                              ¿Desea eliminar el producto?
+                        </div>
+                  </div>
+                  <div class="modal-footer">
+                        <button type="button" class="btn" data-dismiss="modal">
+                              <span class="icon text-white-50 m-2">
+                                    <i class="fas fa-times"></i>
+                              </span>
+                              Cancelar
+                        </button>
+                        <button type="button" class="btn btn-danger" (click)="eliminar( $event )">
+                              <span class="icon text-white-50 m-2">
+                                    <i class="fas fa-trash-alt"></i>
+                              </span>
+                              Eliminar
+                        </button>
+                  </div>
+            </div>
+      </div>
+</div>
+
+
+
+
+ 
+<div class="modal fade" id="modalGrupoOrden" tabindex="-1" role="dialog"
+    aria-labelledby="modalGrupoOrdenTitle" aria-hidden="true" *ngIf="grupoOrdenSeleccionado">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalGrupoOrdenTitle">
+                    Grupo Orden</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Descripción:</label>
+                            <input type="text" class="form-control" aria-describedby="descripcion-addon"
+                                [(ngModel)]="grupoOrdenSeleccionado.Descripcion">
+                        </div>
+                    </div>
+                </div>                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn mr-3" data-dismiss="modal">
+                    <span class="icon text-white-50 m-2">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    Cancelar
+                </button>
+                <div *ngIf="!procesando">
+                    <button type="button" class="btn btn-success" (click)="onClickGuardarGrupoOrden( $event )">
+                        <span class="icon text-white-50 m-2">
+                            <i class="fas fa-save"></i>
+                        </span>
+                        Guardar
+                    </button>
+                </div>
+                <div *ngIf="procesando">
+                    <a class="btn btn-success" aria-disabled="true">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span class="text">Procesando...</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

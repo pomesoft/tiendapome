@@ -1,0 +1,698 @@
+<notifier-container></notifier-container>
+
+<div class="container-fluid">
+
+    <div class="row p-2">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header card-header-primary">
+                    Bandeja de Ventas
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-2">
+                            <nav class="navbar navbar-expand-lg  bg-light">
+                                <div class="container">
+                                    <div class="navbar-translate">
+                                        <ul class="navbar-nav">
+                                            <li class="dropdown nav-item">
+                                                <a href="#"
+                                                    class="btn btn-primary btn-icon-split btn-block dropdown-toggle nav-link"
+                                                    data-toggle="dropdown">
+                                                    <span class="icon text-white mr-1">
+                                                        <i class="fas fa-folder-plus fa-sm fa-fw mr-2"></i>
+                                                        Comprobante
+                                                    </span>
+                                                </a>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="#"
+                                                        (click)="onClickNotaPedido( $event )">
+                                                        <span class="icon mr-1">
+                                                            <i class="fas fa-file-invoice-dollar"></i>
+                                                        </span>
+                                                        <span class="text">Nota de Pedido</span>
+                                                    </a>
+                                                    <a class="dropdown-item" href="#"
+                                                        (click)="onClickNotaCredito( $event )">
+                                                        <span class="icon mr-1">
+                                                            <i class="fas fa-file-invoice-dollar"></i>
+                                                        </span>
+                                                        <span class="text">Nota de Crédito</span>
+                                                    </a>
+                                                    <a class="dropdown-item" href="#" (click)="onClickRecibo( $event )">
+                                                        <span class="icon mr-1">
+                                                            <i class="fas fa-cash-register"></i>
+                                                        </span>
+                                                        <span class="text">Recibo de Pago</span>
+                                                    </a>
+                                                    <a class="dropdown-item" href="#"
+                                                        (click)="onClickAjustePositivo( $event )">
+                                                        <span class="icon mr-1">
+                                                            <i class="fas fa-plus"></i>
+                                                        </span>
+                                                        <span class="text">Ajuste Cuenta Corriente Positivo</span>
+                                                    </a>
+
+                                                    <a class="dropdown-item" href="#"
+                                                        (click)="onClickAjusteNegativo( $event )">
+                                                        <span class="icon mr-1">
+                                                            <i class="fas fa-minus"></i>
+                                                        </span>
+                                                        <span class="text">Ajuste Cuenta Corriente Negativo</span>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </nav>
+                        </div>
+
+                        <div class="col-8 mb-2">
+                            <ng-template #rtCliente let-r="result" let-t="term">
+                                <ngb-highlight [result]="r.ClienteList" [term]="t"></ngb-highlight>
+                            </ng-template>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        Buscar Cliente:
+                                    </span>
+                                </div>
+                                <input id="typeahead-basic" type="text" class="form-control h4"
+                                    [(ngModel)]="clienteSeleccionado" [ngbTypeahead]="buscarCliente"
+                                    [resultTemplate]="rtCliente" [inputFormatter]="formatterCliente" />
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-white btn-raised btn-fab btn-round">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-white btn-raised btn-fab btn-round"
+                                        (click)="onClickLimpiarCliente( $event )">
+                                        <i class="fas fa-times-circle"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-2">
+                            <div *ngIf="!cargando">
+                                <a href="#" class="btn btn-success btn-icon-split btn-block"
+                                    (click)="aplicarFiltros( $event )">
+                                    <span class="icon text-white-50 mr-1">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                    <span class="text">Aplicar</span>
+                                </a>
+                            </div>
+                            <div *ngIf="cargando">
+                                <a class="btn btn-success btn-icon-split btn-block" aria-disabled="true">
+                                    <span class="spinner-border spinner-border-sm icon text-white-50 mr-2" role="status"
+                                        aria-hidden="true"></span>
+                                    <span class="text text-white-50">Cargando...</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-2"></div>
+                        <div class="col-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        Desde:
+                                    </span>
+                                </div>
+                                <input class="form-control" placeholder="dd/mm/yyyy" name="dpFrom"
+                                    [(ngModel)]="fechaDesde" (ngModelChange)="fechaDesde = $event" ngbDatepicker
+                                    #dFrom="ngbDatepicker" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm btn-outline-secondary btn-round btn-icon"
+                                        (click)="dFrom.toggle()">
+                                        <i class="fa fa-calendar"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        Hasta:
+                                    </span>
+                                </div>
+                                <input class="form-control" placeholder="dd-mm-yyyy" name="dpTo"
+                                    [(ngModel)]="fechaHasta" (ngModelChange)="fechaHasta= $event" ngbDatepicker
+                                    #dTo="ngbDatepicker" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm btn-outline-secondary btn-round btn-icon"
+                                        (click)="dTo.toggle()">
+                                        <i class="fa fa-calendar"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2"></div>
+                        <div class="col-2">
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-2">
+                            <ul class="nav nav-pills nav-pills-primary nav-pills-icons flex-column" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#ctacte" data-toggle="tab">
+                                        <i class="fas fa-stream mr-1"></i> Cuenta Corriente por Cliente
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#resumensaldos" data-toggle="tab">
+                                        <i class="fas fa-list mr-1"></i> Saldos de Clientes
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#cobranzas" data-toggle="tab">
+                                        <i class="fas fa-cash-register mr-1"></i> Listado de Cobranzas
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#anulados" data-toggle="tab">
+                                        <i class="fas fa-window-close mr-1"></i> Comprobantes Anulados
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-10">
+                            <div class="card">
+                                <div class="tab-content text-center">
+                                    <div class="tab-pane active" id="ctacte">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <span class="h5">Cuenta Corriente por Cliente</span>
+                                            </div>
+                                            <div class="col-4">
+                                                <nav class="navbar navbar-expand-lg  bg-light">
+                                                    <div class="container">
+                                                        <div class="navbar-translate">
+                                                            <ul class="navbar-nav">
+                                                                <li class="dropdown nav-item">
+                                                                    <a href="#"
+                                                                        class="btn btn-warning btn-icon-split btn-block dropdown-toggle nav-link"
+                                                                        data-toggle="dropdown">
+                                                                        <span class="icon text-white mr-1">
+                                                                            <i class="fas fa-folder-plus fa-sm fa-fw mr-2"></i>
+                                                                            Exportar
+                                                                        </span>
+                                                                    </a>
+                                                                    <div class="dropdown-menu">
+                                                                        <a class="dropdown-item" href="#"
+                                                                            (click)="onClickExportCtaCtePDF( $event )">
+                                                                            <span class="icon mr-1">
+                                                                                <i class="fas fa-file-invoice-dollar"></i>
+                                                                            </span>
+                                                                            <span class="text">Exportar a PDF</span>
+                                                                        </a>
+                                                                        <a class="dropdown-item" href="#"
+                                                                            (click)="onClickExportCtaCteExcel( $event )">
+                                                                            <span class="icon mr-1">
+                                                                                <i class="fas fa-file-invoice-dollar"></i>
+                                                                            </span>
+                                                                            <span class="text">Exportar a Excel</span>
+                                                                        </a>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </nav>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="shadow bg-white rounded p-2 mb-3 w-100 text-center "
+                                                    [ngClass]="{ 'border border-success text-success': ctaCteSinDeuda,
+                                                                'border border-danger text-danger': !ctaCteSinDeuda }">
+                                                    <span class="h4 mr-2">Saldo: </span>
+                                                    <span class="h3 mr-2">USD {{saldoCC | number: '1.2-2'}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped table-hover" id="dtCtaCte"
+                                                        width="100%" cellspacing="0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th
+                                                                    style="width: 30%; text-align: center; vertical-align: middle;">
+                                                                </th>
+                                                                <th
+                                                                    style="width: 10%; text-align: center; vertical-align: middle;">
+                                                                    Fecha
+                                                                </th>
+                                                                <th
+                                                                    style="width: 30%; text-align: center; vertical-align: middle;">
+                                                                    Comprobante</th>
+                                                                <th
+                                                                    style="width: 10%; text-align: center; vertical-align: middle;">
+                                                                    Pedido Facturado
+                                                                </th>
+                                                                <th
+                                                                    style="width: 10%; text-align: center; vertical-align: middle;">
+                                                                    Débito
+                                                                </th>
+                                                                <th
+                                                                    style="width: 10%; text-align: center; vertical-align: middle;">
+                                                                    Crédito
+                                                                </th>
+                                                                <th
+                                                                    style="width: 10%; text-align: center; vertical-align: middle;">
+                                                                    Saldo
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td style="text-align: left; vertical-align: middle;">
+                                                                    <span>Saldo Inicial</span>
+                                                                </td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td style="text-align: right; vertical-align: middle;">
+                                                                    <span>{{saldoInicialClienteCC | number: '1.2-2'}}</span>
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                            <!-- *ngFor="let item of listadoCtaCte  | paginate: { id: 'serverCC', itemsPerPage: 10, currentPage: numeroPaginaCC, totalItems: totalFilasCC }" -->
+                                                            <tr
+                                                                *ngFor="let item of listadoCtaCte">
+                                                                <td>
+                                                                    <div class="text-center">
+                                                                        <a href="#"
+                                                                            class="btn btn-primary btn-icon-split btn-sm mr-1"
+                                                                            data-toggle="tooltip" data-placement="top"
+                                                                            title="Ver Comprobante"
+                                                                            (click)="verComprobante( $event, item )">
+                                                                            <span class="icon text-white-50">
+                                                                                <i class="fas fa-fw fa-edit"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                        <a href="#"
+                                                                            class="btn btn-warning btn-icon-split btn-sm mr-1"
+                                                                            data-toggle="tooltip" data-placement="top"
+                                                                            title="Exportr a PDF"
+                                                                            (click)="imprimirComprobante( $event, item )">
+                                                                            <span class="icon text-white-50">
+                                                                                <i class="fas fa-print"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                        <a href="#"
+                                                                            class="btn btn-danger btn-icon-split btn-sm mr-1"
+                                                                            data-toggle="tooltip" data-placement="top"
+                                                                            title="Anular Comprobante"
+                                                                            (click)="onClickConfirmarAnularComprobante( $event, item )">
+                                                                            <span class="icon text-white-50">
+                                                                                <i class="fas fa-window-close"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                    </div>
+                                                                </td>
+                                                                <td style="text-align: left; vertical-align: middle;">
+                                                                    <span>{{item.Fecha | date: 'dd/MM/yyyy'}}</span>
+                                                                </td>
+                                                                <td style="text-align: left; vertical-align: middle;">
+                                                                    <span>{{item.TipoComprobante.Descripcion}}
+                                                                        {{formatNumero(item.Numero)}}</span>
+                                                                </td>
+                                                                <td style="text-align: right; vertical-align: middle;">
+                                                                    <span
+                                                                        *ngIf="item.NumeroPedido">{{formatNumero(item.NumeroPedido)}}</span>
+                                                                </td>
+                                                                <td style="text-align: right; vertical-align: middle;">
+                                                                    <span class="text-danger"
+                                                                        *ngIf="item.Debe>0">{{item.Debe | number: '1.2-2'}}</span>
+                                                                </td>
+                                                                <td style="text-align: right; vertical-align: middle;">
+                                                                    <span class="text-success"
+                                                                        *ngIf="item.Haber>0">{{item.Haber | number: '1.2-2'}}</span>
+                                                                </td>
+                                                                <td style="text-align: right; vertical-align: middle;">
+                                                                    <span>{{item.Saldo | number: '1.2-2'}}</span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <!-- <div class="has-text-centered">
+                                                    <pagination-controls id="serverCC"
+                                                        (pageChange)="pageChangeCC($event)" maxSize="10"
+                                                        directionLinks="true" responsive="true" previousLabel="Anterior"
+                                                        nextLabel="Siguiente" screenReaderPaginationLabel="Paginación"
+                                                        screenReaderPageLabel="página"
+                                                        screenReaderCurrentLabel="Página actual">
+                                                    </pagination-controls>
+                                                </div> -->
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane" id="resumensaldos">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <span class="h5">Resúmen de Saldos Clientes</span>
+                                            </div>
+                                            <div class="col-4">
+                                                <nav class="navbar navbar-expand-lg  bg-light">
+                                                    <div class="container">
+                                                        <div class="navbar-translate">
+                                                            <ul class="navbar-nav">
+                                                                <li class="dropdown nav-item">
+                                                                    <a href="#"
+                                                                        class="btn btn-warning btn-icon-split btn-block dropdown-toggle nav-link"
+                                                                        data-toggle="dropdown">
+                                                                        <span class="icon text-white mr-1">
+                                                                            <i class="fas fa-folder-plus fa-sm fa-fw mr-2"></i>
+                                                                            Exportar
+                                                                        </span>
+                                                                    </a>
+                                                                    <div class="dropdown-menu">
+                                                                        <a class="dropdown-item" href="#"
+                                                                            (click)="onClickExportrResumenSaldoExcel( $event )">
+                                                                            <span class="icon mr-1">
+                                                                                <i class="fas fa-file-invoice-dollar"></i>
+                                                                            </span>
+                                                                            <span class="text">Exportar a Excel</span>
+                                                                        </a>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </nav>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-hover" id="dtPendientes"
+                                                width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th
+                                                            style="width: 35%; text-align: center; vertical-align: middle;">
+                                                            Cliente
+                                                        </th>
+                                                        <th
+                                                            style="width: 25%; text-align: center; vertical-align: middle;">
+                                                            Nombre Fantasía</th>
+                                                        <th
+                                                            style="width: 10%; text-align: center; vertical-align: middle;">
+                                                            Débitos</th>
+                                                        <th
+                                                            style="width: 10%; text-align: center; vertical-align: middle;">
+                                                            Créditos
+                                                        </th>
+                                                        <th
+                                                            style="width: 10%; text-align: center; vertical-align: middle;">
+                                                            Saldo
+                                                        </th>                                                        
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- *ngFor="let item of listadoResumenSaldo  | paginate: { id: 'serverRS', itemsPerPage: 10, currentPage: numeroPaginaRS, totalItems: totalFilasRS }" -->
+                                                    <tr
+                                                        *ngFor="let item of listadoResumenSaldo">
+                                                        <td style="text-align: left; vertical-align: middle;">
+                                                            <span>({{item.Campo1}}) - {{item.Campo2}}</span>
+                                                        </td>
+                                                        <td style="text-align: left; vertical-align: middle;">
+                                                            <span>{{item.Campo3}}</span>
+                                                        </td>
+                                                        <td>
+                                                            <span>{{item.Campo4 | number: '1.2-2'}}</span>
+                                                        </td>
+                                                        <td>
+                                                            <span>{{item.Campo5 | number: '1.2-2'}}</span>
+                                                        </td>
+                                                        <td>
+                                                            <span>{{item.Campo6 | number: '1.2-2'}}</span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- <div class="has-text-centered">
+                                            <pagination-controls id="serverRS" (pageChange)="pageChangeRS($event)"
+                                                maxSize="10" directionLinks="true" responsive="true"
+                                                previousLabel="Anterior" nextLabel="Siguiente"
+                                                screenReaderPaginationLabel="Paginación" screenReaderPageLabel="página"
+                                                screenReaderCurrentLabel="Página actual">
+                                            </pagination-controls>
+                                        </div> -->
+                                    </div>
+                                    <div class="tab-pane" id="cobranzas">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <span class="h5">Listado de Cobranzas</span>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="shadow bg-white rounded p-2 mb-3 w-100 text-right ">
+                                                    <span class="h4">Total: </span>
+                                                    <span class="h3">USD {{saldoCOB | number: '1.2-2'}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-hover" id="dtCobranzas" width="100%"
+                                                cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="text-align: center; vertical-align: middle;"></th>
+                                                        <th
+                                                            style="text-align: center; vertical-align: middle; width: 30%;">
+                                                            Comprobante / Cliente</th>
+                                                        <th style="text-align: center; vertical-align: middle;">Total
+                                                        </th>
+                                                        <th style="text-align: center; vertical-align: middle;">Dólares
+                                                        </th>
+                                                        <th style="text-align: center; vertical-align: middle;">Pesos
+                                                        </th>
+                                                        <th style="text-align: center; vertical-align: middle;">Tarjeta
+                                                        </th>
+                                                        <th style="text-align: center; vertical-align: middle;">M. Pago
+                                                        </th>
+                                                        <th style="text-align: center; vertical-align: middle;">
+                                                            Dep/Trans
+                                                        </th>
+                                                        <th style="text-align: center; vertical-align: middle;">Cheques
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let item of listadoCobranzas  | paginate: { id: 'serverCOB', itemsPerPage: 10, currentPage: numeroPaginaCOB, totalItems: totalFilasCOB }">
+                                                        <td>
+                                                            <div class="text-center">
+                                                                <a href="#"
+                                                                    class="btn btn-primary btn-icon-split btn-sm mr-1"
+                                                                    data-toggle="tooltip" data-placement="top"
+                                                                    title="Ver Comprobante"
+                                                                    (click)="verComprobante( $event, item )">
+                                                                    <span class="icon text-white-50">
+                                                                        <i class="fas fa-fw fa-edit"></i>
+                                                                    </span>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                        <td style="text-align: left; vertical-align: middle;">
+                                                            <span>{{item.Fecha | date: 'dd/MM/yyyy'}} -
+                                                                {{item.TipoComprobante.Descripcion}}
+                                                                {{formatNumero(item.Numero)}}</span><br />
+                                                            <span class="text-break" *ngIf="item.Cliente">
+                                                                ({{item.Cliente.Id}}) -
+                                                                {{item.Cliente.Nombre}}
+                                                                {{item.Cliente.Apellido}} -
+                                                                {{item.Cliente.NombreFantasia}}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span>{{item.Total | number: '1.2-2'}}</span>
+                                                        </td>
+                                                        <td>
+                                                            <span>{{item.Dolares | number: '1.2-2'}}</span>
+                                                        </td>
+                                                        <td>
+                                                            <span>{{item.Efectivo / item.EfectivoCotizaDolar | number: '1.2-2'}}</span>
+                                                        </td>
+                                                        <td>
+                                                            <span>{{item.Tarjeta / item.TarjetaCotizaDolar | number: '1.2-2'}}</span>
+                                                        </td>
+                                                        <td>
+                                                            <span>{{item.MercadoPago / item.MercadoPagoCotizaDolar | number: '1.2-2'}}</span>
+                                                        </td>
+                                                        <td>
+                                                            <span>{{item.DepositoTransferencia / item.DepositoTransferCotizaDolar | number: '1.2-2'}}</span>
+                                                        </td>
+                                                        <td>
+                                                            <span>{{item.Cheques / item.ChequesCotizaDolar | number: '1.2-2'}}</span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="has-text-centered">
+                                            <pagination-controls id="serverCOB" (pageChange)="pageChangeCOB($event)"
+                                                maxSize="10" directionLinks="true" responsive="true"
+                                                previousLabel="Anterior" nextLabel="Siguiente"
+                                                screenReaderPaginationLabel="Paginación" screenReaderPageLabel="página"
+                                                screenReaderCurrentLabel="Página actual">
+                                            </pagination-controls>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="anulados">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <span class="h5">Comprobantes Anulados</span>
+                                            </div>
+                                            <div class="col-4"></div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-hover" id="dtAnulados" width="100%"
+                                                cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th
+                                                            style="width: 15%; text-align: center; vertical-align: middle;">
+                                                        </th>
+                                                        <th
+                                                            style="width: 10%; text-align: center; vertical-align: middle;">
+                                                            Fecha</th>
+                                                        <th
+                                                            style="width: 5%; text-align: center; vertical-align: middle;">
+                                                        </th>
+                                                        <th
+                                                            style="width: 15%; text-align: center; vertical-align: middle;">
+                                                            Comprobante</th>
+                                                        <th
+                                                            style="width: 35%; text-align: center; vertical-align: middle;">
+                                                            Cliente
+                                                        </th>
+                                                        <th
+                                                            style="width: 10%; text-align: center; vertical-align: middle;">
+                                                            Pedido
+                                                        </th>
+                                                        <th
+                                                            style="width: 10%; text-align: center; vertical-align: middle;">
+                                                            Total
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let item of listadoAnulados  | paginate: { id: 'serverCA', itemsPerPage: 10, currentPage: numeroPaginaCA, totalItems: totalFilasCA }">
+                                                        <td>
+                                                            <div class="text-center">
+                                                                <a href="#"
+                                                                    class="btn btn-primary btn-icon-split btn-sm mr-1"
+                                                                    data-toggle="tooltip" data-placement="top"
+                                                                    title="Ver Comprobante"
+                                                                    (click)="verComprobante( $event, item )">
+                                                                    <span class="icon text-white-50">
+                                                                        <i class="fas fa-fw fa-edit"></i>
+                                                                    </span>
+                                                                </a>
+                                                                <a href="#"
+                                                                    class="btn btn-warning btn-icon-split btn-sm mr-1"
+                                                                    data-toggle="tooltip" data-placement="top"
+                                                                    title="Deshacer"
+                                                                    (click)="onClickDeshacerAnulado( $event, item )">
+                                                                    <span class="icon text-white-50">
+                                                                        <i class="fas fa-undo"></i>
+                                                                    </span>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                        <td style="text-align: left; vertical-align: middle;">
+                                                            <span>{{item.Vencimiento | date: 'dd/MM/yyyy'}}</span>
+                                                        </td>
+                                                        <td style="text-align: left; vertical-align: middle;">
+                                                            <span class="h3 text-danger" *ngIf="estaVencido( item )">
+                                                                <i class="fas fa-exclamation-triangle"></i>
+                                                            </span>
+                                                        </td>
+                                                        <td style="text-align: left; vertical-align: middle;">
+                                                            <span>{{item.TipoComprobante.Descripcion}} -
+                                                                {{formatNumero(item.Numero)}}</span>
+                                                        </td>
+                                                        <td style="text-align: left; vertical-align: middle;">
+                                                            <span *ngIf="item.Cliente">
+                                                                ({{item.Cliente.Id}}) -
+                                                                {{item.Cliente.Nombre}}
+                                                                {{item.Cliente.Apellido}}<br />
+                                                                {{item.Cliente.NombreFantasia}}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span *ngIf="item.NumeroPedido">{{item.NumeroPedido}}</span>
+                                                        </td>
+                                                        <td>
+                                                            <span>{{item.Total | number: '1.2-2'}}</span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="has-text-centered">
+                                            <pagination-controls id="serverCA" (pageChange)="pageChangeCA($event)"
+                                                maxSize="10" directionLinks="true" responsive="true"
+                                                previousLabel="Anterior" nextLabel="Siguiente"
+                                                screenReaderPaginationLabel="Paginación" screenReaderPageLabel="página"
+                                                screenReaderCurrentLabel="Página actual">
+                                            </pagination-controls>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="modalConfirmaAnular" tabindex="-1" role="dialog" aria-labelledby="modalConfirmaAnularTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalConfirmaAnularTitle">
+                    Anular Comprobante</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" role="alert">
+                    {{textoConfirmaAnulacion}}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn mr-2" data-dismiss="modal">
+                    <span class="icon text-white-50 m-2">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-danger" (click)="onClickAnularComprobante( $event )">
+                    <span class="icon text-white-50 m-2">
+                        <i class="fas fa-trash-alt"></i>
+                    </span>
+                    Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+VPS IP:10.217.10.111
+Servidor: pomesoft
+User: pomelo
+Password: p0m3S0ft1!
+
+
+
+admin / fVwc684&
+
+SQL Server
+Host: pomesoft /  10.217.10.111
+user administrador: usr_tiendapome
+contraseña: usr_pomelo73
+
+usr_pomelo73
+
+169.254.254.28
+198.12.225.32
+
+
+mySQL
+
+
+usr_tiendapome
+q59Jj$x9

@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping assembly="tiendapome.Entidades" namespace="tiendapome.Entidades" xmlns="urn:nhibernate-mapping-2.2">
+    <class name="tiendapome.Entidades.Producto" table="tp_productos" lazy="false">
+        <id name="Id" column="IdProducto">
+            <generator class="identity" />
+        </id>
+        <property name="Descripcion" column="Descripcion" />
+        <property name="Vigente" column="Vigente" />
+        <property name="Codigo" column="Codigo" />
+        <property name="Peso" column="Peso" />
+        <property name="TipoPrecio" column="TipoPrecio" />
+        <property name="PrecioUnitario" column="PrecioUnitario" />
+        <property name="Ubicacion" column="Ubicacion" />
+        
+        <property name="Foto" column="Foto" />
+        <property name="StockPropio" column="StockPropio" />
+        <property name="FotoLink" column="FotoLink" />
+        <property name="Etiquetas" column="Etiquetas" />
+        
+        <many-to-one name="Subcategoria" column="IdSubcategoria" class="tiendapome.Entidades.Subcategoria" />
+        <many-to-one name="ListaPrecio" column="IdListaPrecio" class="tiendapome.Entidades.ListaPrecio" />
+        <many-to-one name="GrupoOrden" column="IdGrupoOrden" class="tiendapome.Entidades.ProductoGrupoOrden" />
+        
+        <bag name="ProductoStock" inverse="true" lazy="false" cascade="all-delete-orphan">
+            <key column="IdProducto" />
+            <one-to-many class="tiendapome.Entidades.ProductoStock" />
+        </bag>
+    </class>
+</hibernate-mapping>

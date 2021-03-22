@@ -1,0 +1,72 @@
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-12 col-lg-10">
+            <div class="card shadow">
+                <div class="card-header card-header-primary">
+                    {{titulo}}
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-4 col-lg-4" *ngFor="let item of Pedidos">
+                            <div class="card shadow mb-1">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-3 pt-3">
+                                            <a href="#" class="btn btn-primary btn-icon-split btn-sm"
+                                                data-toggle="tooltip" data-placement="top" title="Ver pedido"
+                                                (click)="editarItem( $event, item )">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-fw fa-edit"></i>
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <div class="col-9">
+                                            <a href="#" class="nav-link" (click)="editarItem( $event, item )">
+                                                {{item.Fecha | date: 'dd/MM/yyyy'}} <br />
+                                                {{item.Moneda}} {{item.Total | number: '1.2-2'}} <br />
+                                                N° {{item.Numero}} <br />
+                                                {{item.Estado.Descripcion}}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalMensajes" tabindex="-1" role="dialog" aria-labelledby="modalMensajesTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalMensajesTitle">
+                    Pedidos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div role="alert" [ngClass]="{ 'alert': mensajeUsuario_OK,
+                                           'alert alert-warning': !mensajeUsuario_OK  }">
+                    {{textoMensajeUsuario}}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn" [ngClass]="{ ' btn-success': mensajeUsuario_OK,
+                                           ' btn-warning': !mensajeUsuario_OK  }">
+                    <span class="icon text-white-50 m-2">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    {{textoBotonMensajeUsuario}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

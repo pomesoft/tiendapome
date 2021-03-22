@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="pome@app - Tienda Web - Web App PWA para disposiivos mobiles">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/ico" sizes="16x16" href="favicon.ico">
+    <title>pome@app</title>
+    <meta name="description" content="pome@app - Tienda Web App"> 
+    
+    <!-- Bootstrap Core CSS -->
+    <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Popup CSS -->
+    <link href="assets/plugins/Magnific-Popup-master/dist/magnific-popup.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+    <!-- page css -->
+    <link href="css/pages/user-card.css" rel="stylesheet">
+    <!-- You can change the theme colors from here -->
+    <link href="css/colors/blue.css" id="theme" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body class="fix-header card-no-border fix-sidebar">
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <div class="loader">
+            <div class="loader__figure"></div>
+            <p class="loader__label">pome@app</p>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <header class="topbar">
+            <nav class="navbar top-navbar navbar-expand-md navbar-light">
+                <!-- ============================================================== -->
+                <!-- Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-header">
+
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-collapse">
+                    <!-- ============================================================== -->
+                    <!-- toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <!-- <ul class="navbar-nav mr-auto">
+                        <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up waves-effect waves-dark"
+                                href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                        <li class="nav-item"> <a class="nav-link sidebartoggler hidden-sm-down waves-effect waves-dark"
+                                href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                        <li class="nav-item hidden-sm-down"></li>
+                    </ul> -->
+
+                    <ul class="navbar-nav my-lg-0">
+
+                        <li class="nav-item mr-4">
+                            <h1 class="text-light">pome@app</h1>
+                        </li>
+
+                        <li class="nav-item">
+                            <h4 class="text-light">características</h4>
+                        </li>
+
+                    </ul>
+
+
+                </div>
+            </nav>
+        </header>
+        <!-- ============================================================== -->
+        <!-- End Topbar header -->
+        <!-- ============================================================== -->
+        
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page">
+
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 m-t-30">
+                        <h3 class="m-b-0"></h3>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3 p-l-3 text-center">
+                        <!-- <img src="assets/images/Logo.jpg" alt="queenmary" /> -->
+                    </div>
+                    <div class="col-9">
+                        
+                    </div>
+                </div>
+
+                
+                <div class="row">
+                    <div class="col-12 col-md-2">
+                      <div class="list-group" id="list-tab" role="tablist">
+                        <a class="list-group-item list-group-item-action active" id="list-carrito-list" data-toggle="list" href="#list-carrito" role="tab" aria-controls="carrito">
+                            <i class="ti-check"></i> Tienda Web
+                        </a>
+                        <a class="list-group-item list-group-item-action " id="list-clientes-list" data-toggle="list" href="#list-clientes" role="tab" aria-controls="clientes">
+                            <i class="ti-check"></i> Clientes
+                        </a>
+                        <a class="list-group-item list-group-item-action" id="list-productos-list" data-toggle="list" href="#list-productos" role="tab" aria-controls="productos">
+                            <i class="ti-check"></i> Productos
+                        </a>
+                        <a class="list-group-item list-group-item-action" id="list-pedidos-list" data-toggle="list" href="#list-pedidos" role="tab" aria-controls="pedidos">
+                            <i class="ti-check"></i> Pedidos
+                        </a>
+                        <a class="list-group-item list-group-item-action" id="list-precios-list" data-toggle="list" href="#list-precios" role="tab" aria-controls="precios">
+                            <i class="ti-check"></i> Precios
+                        </a>                        
+                        <a class="list-group-item list-group-item-action" id="list-precios-list" data-toggle="list" href="#list-facturacion" role="tab" aria-controls="precios">
+                            <i class="ti-check"></i> Facturación
+                        </a>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-10">
+                      <div class="tab-content" id="nav-tabContent">                        
+                        <div class="tab-pane fade show active" id="list-carrito" role="tabpanel" aria-labelledby="list-carrito-list">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Tienda Web</h4>
+                                    <h6 class="card-subtitle mb-2 text-muted">Personalización a la imagen de la marca</h6>
+                                    <p class="card-text">
+                                        <i class="ti-check"></i> 
+                                        Cada tienda se personaliza con la imagen de la marca de la empresa, el logo de la app y la portada principal
+                                    </p>
+                                    <p class="card-text">
+                                        <i class="ti-check"></i> 
+                                        Está desarrollada con tecnología PWA Progressive Web App brindando la posibilidad de que cada cliente pueda instalarse la app en sus celulares en un simple paso, logrando mayor fidelización de los mismos con la empresa.
+                                    </p>
+                                    <div class="row">
+                                        <div class="col-12 col-md-4 text-center">
+                                            <p class="card-text"> <i class="ti-check"></i> Al ingresar al link de la tienda aparece la opción para instalar la app</p>
+                                            <img src="assets/images/manual/AutoInstall_1.jpeg" class="img-responsive radius" style="height: 400px; width: 200px;"/>                                            
+                                        </div>
+                                        <div class="col-12 col-md-4 text-center">
+                                            <p class="card-text"> <i class="ti-check"></i> El cliente solo tiene que aceptar</p><br/>
+                                            <img src="assets/images/manual/AutoInstall_2.jpeg" class="img-responsive radius" style="height: 400px; width: 200px;"/>                                            
+                                        </div>
+                                        <div class="col-12 col-md-4 text-center">
+                                            <p class="card-text"> <i class="ti-check"></i> Y la App queda instalada en el celular del cliente</p>
+                                            <img src="assets/images/manual/AutoInstall_3.jpeg" class="img-responsive radius" style="height: 400px; width: 200px;"/>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Registro de Clientes</h4>
+                                    <h6 class="card-subtitle mb-2 text-muted"></h6>
+                                    <p class="card-text">
+                                        Los clientes pueden registrarse para ingresar a la tienda web. Ingresando email, clave, nombre y apellido, numero de celular y nombre fantasía.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Solicitar pedidos</h4>
+                                    <h6 class="card-subtitle mb-2 text-muted"></h6>
+                                    <p class="card-text">
+                                        Los clientes registrado pueden solicitar pedidos seleccionando los productos y agregandolos al carrito
+                                    </p>
+                                    <div class="row">
+                                        <div class="col-12 col-md-4 text-center">
+                                            <p class="card-text"> <i class="ti-check"></i> Seleccionan el producto </p><br/>
+                                            <img src="assets/images/manual/Carrito_1.jpeg" class="img-responsive radius" style="height: 400px; width: 200px;"/>                                            
+                                        </div>
+                                        <div class="col-12 col-md-4 text-center">
+                                            <p class="card-text"> <i class="ti-check"></i> Ingresan cantidad solicitada</p><br/>
+                                            <img src="assets/images/manual/Carrito_2.jpeg" class="img-responsive radius" style="height: 400px; width: 200px;"/>                                            
+                                        </div>
+                                        <div class="col-12 col-md-4 text-center">
+                                            <p class="card-text"> <i class="ti-check"></i> Importante: los clientes deben finalizar para solicitar el pedido </p>
+                                            <img src="assets/images/manual/Carrito_3.jpeg" class="img-responsive radius" style="height: 400px; width: 200px;"/>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="tab-pane fade" id="list-clientes" role="tabpanel" aria-labelledby="list-clientes-list">                            
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Administración de Clientes</h4>
+                                    <h6 class="card-subtitle mb-2 text-muted">Solo para usuarios con rol Administrador</h6>
+                                    <p class="card-text">
+                                        Desde la pantalla de administración de clientes se puede agregar nuevos clientes, gestionar de información de clientes existentes y asignar listas de precios previamente configuradas
+                                    </p>
+                                    <img src="assets/images/manual/clientes.jpg" class="img-responsive radius" style="height: 500px; width: 800px;"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="list-productos" role="tabpanel" aria-labelledby="list-productos-list">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Administración de Productos</h4>
+                                    <h6 class="card-subtitle mb-2 text-muted">Solo para usuarios con rol Administrador</h6>
+                                    <p class="card-text">
+                                        Desde la pantalla de administración de productos se puede agregar nuevos productos, gestionar la siguiente información de productos existentes <br />                                        
+                                        Tipo de Precio: indica si el precio del producto es POR PIEZA ingresando el precio unitario del producto, ó POR PESO ingresando el peso del producto y el cálculo del precio se realiza con el precio por gramo de la lista de precios asignada. <br/>
+                                        Lista de Precio <br />
+                                        Se debe asingar Tipo, Categoría y Subcategoría a la que pertenece el producto <br />
+                                        Si está habilitado el control de stock, se ingresa el stock disponible por medida  <br />
+                                        Se sube una foto para el producto, que es la que se muestra a los clientes en el carrito y al solicitar un pedido. Se recomienda que no supere los 1200px de ancho y alto, y tamaño del archivo no supere los 80KB.
+                                    </p>
+                                    <img src="assets/images/manual/productos.jpg" class="img-responsive radius" style="height: 500px; width: 800px;" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="list-pedidos" role="tabpanel" aria-labelledby="list-pedidos-list">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Bandeja de pedidos</h4>
+                                    <h6 class="card-subtitle mb-2 text-muted">Solo para usuarios con rol Administrador</h6>
+                                    <p class="card-text">
+                                        Desde la bandeja de pedidos podrá gestionarlos por todos los estados hasta finalizar cada pedido, dejando el registro de toda la información para ser analizada posteriormente
+                                    </p>
+                                    <img src="assets/images/manual/pedidos.jpg" class="img-responsive radius" style="height: 500px; width: 800px;" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="list-precios" role="tabpanel" aria-labelledby="list-precios-list">                            
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Listas de Precios</h4>
+                                    <h6 class="card-subtitle mb-2 text-muted">Solo para usuarios con rol Administrador</h6>
+                                    <p class="card-text">
+                                        Las listas de precios se configuran en dos etapas: <br/>
+                                        <i class="ti-check"></i> Listas de Precio por Producto: son las listas que se le asignan a cada producto, y en base a esta lista se calcula el precio unitario final de cada uno  <br/>
+                                        <i class="ti-check"></i> Listas de Precio por Cliente: son las listas que se le asignan a cada cliente, y es el descuento que se le aplica al precio de cada producto
+                                    </p>
+                                    <img src="assets/images/manual/listasprecio.jpg" class="img-responsive radius" style="height: 250px; width: 700px;" />
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Cotización del Dólar</h4>
+                                    <h6 class="card-subtitle mb-2 text-muted">Solo para usuarios con rol Administrador</h6>
+                                    <p class="card-text">
+                                        El cálculo de precio se realiza según la última actualización del dólar, por lo que es indispenable mantener actualizada su cotización
+                                    </p>
+                                    <img src="assets/images/manual/cotizacion.jpg" class="img-responsive radius" style="height: 200px; width: 500px;" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="list-facturacion" role="tabpanel" aria-labelledby="list-facturacion-list">                            
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Facturación y Cuenta Corriente de Clientes</h4>
+                                    <h6 class="card-subtitle mb-2 text-muted">Solo para usuarios con rol Administrador</h6>
+                                    <p class="card-text">
+                                        Desde la bandeja de ventas podrá gestionar la Cuenta Corriente de cada clientes, generando Facturas, Notas de Credito y Recibos de Cobranzas <br/>
+                                        <i class="ti-check"></i> En la opción Cuenta Corriente puede ver el detalle de todos los movimientos del cliente con el saldo actual<br/>
+                                        <i class="ti-check"></i> En la opción Saldos de Clientes se lista el saldo actual de todos los clientes <br/>
+                                        <i class="ti-check"></i> En el Listado de cobranza se muestra el detalle de las cobranzas por medio de pago<br/>
+                                        <i class="ti-check"></i> Los listados se pueden exportar a PDF y Excel
+                                    </p>
+                                    <img src="assets/images/manual/bandejaVenta.jpg" class="img-responsive radius" style="height: 250px; width: 700px;" />
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Generación de Facturas</h4>
+                                    <p class="card-text">
+                                        Podrá generar facturas con las siguientes opciones:<br/>
+                                        <i class="ti-check"></i> Facturar automáticamente los pedidos finalizados<br/>
+                                        <i class="ti-check"></i> Facturar productos directamente<br/>
+                                        <i class="ti-check"></i> Facturar item manual que no están relacionados a ningun producto<br/>
+                                    </p>
+                                    <img src="assets/images/manual/generacionfactura.jpg" class="img-responsive radius" style="height: 200px; width: 500px;" />
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Las facturas se pueden exportar a PDF</h4>
+                                    <img src="assets/images/manual/pdffactura.jpg" class="img-responsive radius" style="height: 200px; width: 500px;" />
+                                </div>
+                            </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+                
+
+                <div class="row">
+                    <div class="col-12 m-t-30">
+                        <h3 class="m-b-0"></h3>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End PAge Content -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Container fluid  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <footer class="footer"> © 2021 <a href="http://pomeapp.ar/">pome@app</a> </footer>
+        <!-- ============================================================== -->
+        <!-- End footer -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="assets/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="assets/plugins/bootstrap/js/popper.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="js/perfect-scrollbar.jquery.min.js"></script>
+    <!--Wave Effects -->
+    <script src="js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="js/sidebarmenu.js"></script>
+    <!--stickey kit -->
+    <script src="assets/plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
+    <script src="assets/plugins/sparkline/jquery.sparkline.min.js"></script>
+    <!--Custom JavaScript -->
+    <script src="js/custom.min.js"></script>
+    <!-- Magnific popup JavaScript -->
+    <script src="assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup.min.js"></script>
+    <script src="assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
+    <!-- ============================================================== -->
+    <!-- Style switcher -->
+    <!-- ============================================================== -->
+    <script src="assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+</body>
+
+</html>

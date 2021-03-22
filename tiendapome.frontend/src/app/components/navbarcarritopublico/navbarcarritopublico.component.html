@@ -1,0 +1,49 @@
+<nav class="navbar bg-light">
+
+      <a class="nav-link" href="#" role="button" [routerLink]="['/menu']">
+            <img src="assets\img\logo.png" alt="" />
+      </a>
+
+      <!-- <h4 class="font-weight-bolder mr-5">Catálogo de Joyas</h4> -->
+
+      <a class="nav-link p-3" href="#" role="button" [routerLink]="['/registra']">
+            <span class="text-dark" style="font-size: 1.2em;">
+                  <i class="far fa-smile-wink"></i>
+            </span>
+            <span class="text-dark" style="font-size: 0.9em;">
+                  Registrate
+            </span>
+      </a>
+
+      <a class="nav-link p-3" href="#" role="button" [routerLink]="['/login']">
+            <span class="text-dark" style="font-size: 1.2em;">
+                  <i class="far fa-smile"></i>
+            </span>
+            <span class="text-dark" style="font-size: 0.9em;">
+                  Ingresar
+            </span>
+      </a>
+
+</nav>
+
+<div class="container  bg-light">
+      <div class="row">
+            <div class="col-12 p-1" *ngIf="mostrarBotonesCarrito">
+                  <div class="font-weight-bolder text-center w-100">
+                        <table>
+                              <tr>
+                                    <td style="width: 10%;">
+                                          <button type="button" class="btn btn-white btn-raised btn-fab btn-round"
+                                                (click)="volverAtras( $event )">
+                                                <i class="fas fa-arrow-left"></i>
+                                          </button>
+                                    </td>
+                                    <td style="width: 80%;">
+                                          <span class="text-gray-900 mr-2">{{ textoSubcategoriaCarrito }}</span>
+                                    </td>
+                              </tr>
+                        </table>
+                  </div>
+            </div>
+      </div>
+</div>

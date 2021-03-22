@@ -1,0 +1,48 @@
+{
+  "$schema": "./node_modules/@angular/service-worker/config/schema.json",
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "tiendapome_v3.00",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.html",
+          "/manifest.json",
+          "/*.css",
+          "/*.js"
+        ]
+      }
+    }, {
+      "name": "tiendapome_v3.00",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/assets/css/**",
+          "/assets/img/**",
+          "/assets/js/**",
+          "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani|css|js)"
+        ]
+      }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "backend-api",
+      "urls": [
+        "**/api/tipo",
+        "**/api/tipo/**",
+        "**/api/parametro/**"
+      ],
+      "cacheConfig": {
+        "maxSize": 50,
+        "maxAge": "5h",
+        "timeout": "5s",
+        "strategy": "performance"
+      }
+    }
+  ]
+}

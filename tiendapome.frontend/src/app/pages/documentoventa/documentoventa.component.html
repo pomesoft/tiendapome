@@ -1,0 +1,596 @@
+<notifier-container></notifier-container>
+
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <!-- <div class="card-header card-header-primary">
+            {{titulo}}
+        </div> -->
+        <div class="card-body" *ngIf="docVenta">
+            <div class="row">
+                <div class="col-12 col-md-8">
+                    <ng-template #rtCliente let-r="result" let-t="term">
+                        <ngb-highlight [result]="r.ClienteList" [term]="t"></ngb-highlight>
+                    </ng-template>
+
+                    <div class="input-group">
+
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                Cliente:
+                            </span>
+                        </div>
+                        <input id="typeahead-basic" type="text" class="form-control h4"
+                            [(ngModel)]="clienteSeleccionado" [ngbTypeahead]="buscarCliente"
+                            [resultTemplate]="rtCliente" [inputFormatter]="formatterCliente" />
+
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-white btn-raised btn-fab btn-round">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="col-12 col-md-2">
+                    <div class="shadow pt-3 pb-2 pl-2 mb-3 bg-white rounded text-center">
+                        <span class="h4">{{titulo}}</span>
+                    </div>
+                </div>
+                <div class="col-12 col-md-2">
+                    <div class="shadow p-2 mb-3 bg-white rounded text-center">
+                        <span class="h3 text-right">{{NumeroDocumento}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-5 col-lg-5">
+                    <div class="input-group mb-3" *ngIf="clienteSeleccionado && clienteSeleccionado.Observaciones">
+                        <textarea class="form-control" aria-label="Observaciones" rows="2" readonly
+                        [(ngModel)]="clienteSeleccionado.Observaciones"></textarea>
+                    </div>                    
+                </div>
+                <div class="col-12 col-md-3 col-lg-3">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="fecha-addon">Fecha: </span>
+                        </div>
+                        <input type="date" class="form-control" aria-describedby="fecha-addon"
+                            [ngModel]="docVenta.Fecha | date:'yyyy-MM-dd'"
+                            [value]="docVenta.Fecha | date:'yyyy-MM-dd'" />
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="fecha-addon">Vencimiento: </span>
+                        </div>
+                        <input type="date" class="form-control" aria-describedby="fecha-addon"
+                            [ngModel]="docVenta.Vencimiento | date:'yyyy-MM-dd'"
+                            [value]="docVenta.Vencimiento | date:'yyyy-MM-dd'" />
+                    </div>
+                </div>
+                <div class="col-12 col-md-2 col-lg-2">
+                    <div class="shadow p-2 mb-3 bg-white rounded text-center" *ngIf="NumeroPedidoFacturado!=''">
+                        <span>Nro Pedido Web: </span>
+                        <span class="h4 text-right ml-2">{{NumeroPedidoFacturado}}</span>
+                    </div>
+                </div>
+                <div class="col-12 col-md-2 col-lg-2">
+                    <div *ngIf="!procesando">
+                        <a href="#" class="btn btn-success btn-block" (click)="onClickGuardar( $event )">
+                            <span class="icon text-white-50  m-2">
+                                <i class="fas fa-save"></i>
+                            </span>
+                            <span class="text">Guardar</span>
+                        </a>
+                    </div>
+                    <div *ngIf="procesando">
+                        <a class="btn btn-success  btn-block" aria-disabled="true">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            <span class="text">Procesando...</span>
+                        </a>
+                    </div>
+                    <a href="#" class="btn btn-block" (click)="onClickVolver( $event )">
+                        <span class="icon text-white-50  m-2">
+                            <i class="fas fa-arrow-left"></i>
+                        </span>
+                        <span class="text">Volver</span>
+                    </a>
+                </div>
+            </div>
+            <div class="row" *ngIf="docVenta.Numero">
+                <div class="col-12 col-md-9">
+                    <div class="card">
+                        <div class="row">
+                            <div class="col-12 col-md-3">
+                                <span class="h4 pl-4"></span>
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <a href="#" class="btn btn-info btn-block" *ngIf="HabilitarSeleccionPedidos"
+                                    (click)="onClickAgregarItemsPedido( $event )">
+                                    <span class="icon text-white-50  m-2">
+                                        <i class="fas fa-list"></i>
+                                    </span>
+                                    <span class="text">Pedidos</span>
+                                </a>
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <a href="#" class="btn btn-info btn-block" *ngIf="HabilitarSeleccionProductos"
+                                    (click)="onClickAgregarItemsProducto( $event )">
+                                    <span class="icon text-white-50  m-2">
+                                        <i class="fas fa-list"></i>
+                                    </span>
+                                    <span class="text">Productos</span>
+                                </a>
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <a href="#" class="btn btn-info btn-block" (click)="onClickAgregarItem( $event )">
+                                    <span class="icon text-white-50  m-2">
+                                        <i class="fas fa-edit"></i>
+                                    </span>
+                                    <span class="text">Ítem Manual</span>
+                                </a>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="dtPendientes" width="100%"
+                                cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20%"></th>
+                                        <th style="width: 10%; text-align:center; vertical-align: middle;">
+                                            #Item</th>
+                                        <th style="width: 40%; text-align:center; vertical-align: middle;">
+                                            Descripción</th>
+                                        <th style="width: 10%; text-align: center; vertical-align: middle;">
+                                            Cantidad</th>
+                                        <th style="width: 10%; text-align: center; vertical-align: middle;">
+                                            Precio Unitario</th>
+                                        <th style="width: 10%; text-align: center; vertical-align: middle;">
+                                            Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of docVenta.Items">
+                                        <td style="text-align: center; vertical-align: middle;">
+                                            <div class="text-center">
+                                                <a href="#" class="btn btn-primary btn-icon-split btn-sm mr-1"
+                                                    *ngIf="item.IdProductoStock<=0" 
+                                                    data-toggle="tooltip" data-placement="top" title="Editar Ítem"
+                                                    (click)="onClickEditarItem( $event, item )">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-fw fa-edit"></i>
+                                                    </span>
+                                                </a>
+                                                <a href="#" class="btn btn-danger btn-icon-split btn-sm mr-1"
+                                                    *ngIf="item.IdPedidoItemProducto<=0" 
+                                                    data-toggle="tooltip" data-placement="top" title="Eliminar Ítem"
+                                                    (click)="onClickEliminarItem( $event, item )">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td style="text-align: right; vertical-align: middle;">
+                                            <span>{{item.NroItem}}</span>
+                                        </td>
+                                        <td style="text-align: left; vertical-align: middle;">
+                                            <span>{{item.Descripcion}}</span>
+                                        </td>
+                                        <td style="text-align: right; vertical-align: middle;">
+                                            <span>{{item.Cantidad}}</span>
+                                        </td>
+                                        <td style="text-align: right; vertical-align: middle;">
+                                            <span>{{item.PrecioUnitario | number: '1.2-2'}}</span>
+                                        </td>
+                                        <td style="text-align: right; vertical-align: middle;">
+                                            <span>{{item.Precio | number: '1.2-2'}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="card">
+                        <div class="row">
+                            <div class="col">
+                                <a href="#" class="btn btn-warning btn-block" (click)="onClickImprimir( $event )">
+                                    <span class="icon text-white-50  m-2">
+                                        <i class="fas fa-print"></i>
+                                    </span>
+                                    <span class="text">Exportar a PDF</span>
+                                </a>
+                            </div>
+                        </div>
+                        <span class="h4 pl-4">Totales</span>
+                        <hr>
+                        <div class="row">
+                            <div class="col-4 pt-2">
+                                <span class="h5">Subtotal: </span>
+                            </div>
+                            <div class="col-8">
+                                <div class="shadow bg-white rounded p-2 mb-3 w-100 text-right ">
+                                    <span class="h4">{{docVenta.Gravado | number: '1.2-2'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text h5" id="descuento-addon">Descuento:
+                                        </span>
+                                    </div>
+                                    <input type="number" class="form-control text-right"
+                                        aria-describedby="descuento-addon" [(ngModel)]="docVenta.Descuento"
+                                        (ngModelChange)="calcularTotales()">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <hr>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 pt-2">
+                                <span class="h4">Total: </span>
+                            </div>
+                            <div class="col-8">
+                                <div class="shadow bg-white rounded p-2 mb-3 w-100 text-right ">
+                                    <span class="h4">USD {{docVenta.Total | number: '1.2-2'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row p-2">
+        <div class="col-12">
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="modalItemPedido" tabindex="-1" role="dialog" aria-labelledby="modalItemPedidoTitle"
+    aria-hidden="true" *ngIf="docVentaItem">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalItemPedidoTitle">
+                    {{titulo}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover" id="dtPedidosFinalizados" width="100%"
+                        cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Pedido</th>
+                                <th>Fecha</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <!-- <th>Observaciones</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor=" let item of pedidosFinalizados ">
+                                <td>                                    
+                                    <div class="text-center">
+                                        <div *ngIf="!procesando">
+                                            <a href="#" class="btn btn-success btn-icon-split btn-sm mr-1"
+                                                data-toggle="tooltip" data-placement="top" title="Factuar"
+                                                (click)="onClickGuardarItemsPedido( $event, item )">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-file-invoice-dollar"></i>
+                                                </span>
+                                            </a>
+                                        </div>
+                                        <div *ngIf="procesando">
+                                            <a class="btn btn-success btn-icon-split btn-sm mr-1" aria-disabled="true">
+                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                <span class="text">Procesando...</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span>{{item.Numero}}</span></td>
+                                <td><span>{{item.Fecha | date: 'dd/MM/yyyy'}}</span></td>
+                                <td><span>{{item.Moneda}} {{item.Total | number: '1.2-2'}}</span></td>
+                                <td><span>{{item.Estado.Descripcion}}</span></td>
+                                <!-- <td>
+                                    <span *ngIf="cobrarComisionApp( item )">
+                                        <img src="assets\img\logo-pome.png" alt="" /> <br />
+                                        {{item.Cliente.ComisionApp}} % Comisión<br />
+                                    </span>
+                                    <span *ngIf="item.NumeroPedidoMinorista!=0">
+                                        Pedido cliente: {{item.NumeroPedidoMinorista}}
+                                    </span>
+                                </td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn mr-3" data-dismiss="modal">
+                    <span class="icon text-white-50 m-2">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="modalItemManual" tabindex="-1" role="dialog" aria-labelledby="modalItemManualTitle"
+    aria-hidden="true" *ngIf="docVentaItem">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalItemManualTitle">
+                    {{titulo}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Descripción:</label>
+                            <input type="text" class="form-control" aria-describedby="descripcion-addon"
+                                [(ngModel)]="docVentaItem.Descripcion">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label>Cantidad:</label>
+                            <input type="number" class="form-control" aria-describedby="cantidad-addon"
+                                [(ngModel)]="docVentaItem.Cantidad" (ngModelChange)="onModelChangeCalcularTotalItem()">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label>Precio Unitario:</label>
+                            <input type="number" class="form-control" aria-describedby="precio-addon"
+                                [(ngModel)]="docVentaItem.PrecioUnitario"
+                                (ngModelChange)="onModelChangeCalcularTotalItem()">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label>Total:</label>
+                            <input type="number" class="form-control" aria-describedby="cantidad-addon" readonly
+                                [(ngModel)]="docVentaItem.Precio">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn mr-3" data-dismiss="modal">
+                    <span class="icon text-white-50 m-2">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-success" (click)="onClickGuardarItem( $event )">
+                    <span class="icon text-white-50 m-2">
+                        <i class="fas fa-save"></i>
+                    </span>
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalMensajes" tabindex="-1" role="dialog" aria-labelledby="modalMensajesTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalMensajesTitle">
+                    {{titulo}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div role="alert" [ngClass]="{ 'alert': MensajeUsuario_OK,
+                                                'alert alert-warning': !MensajeUsuario_OK  }">
+                    {{MensajeUsuario}}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn" [ngClass]="{ ' btn-success': MensajeUsuario_OK,
+                                             ' btn-warning': !MensajeUsuario_OK  }">
+                    <span class="icon text-white-50 m-2">
+                        <i class="far fa-check-square"></i>
+                    </span>
+                    {{TextoBotonMensajeUsuario}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalConfirmaEliminarItem" tabindex="-1" role="dialog"
+    aria-labelledby="modalConfirmaEliminarItem" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalConfirmaEliminarItem">
+                    {{titulo}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" role="alert" *ngIf="docVentaItem">
+                    {{textoConfirmaEliminarItem}}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn mr-2" data-dismiss="modal">
+                    <span class="icon text-white-50 m-2">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    Volver atrás
+                </button>
+                <button type="button" class="btn btn-danger" (click)="EliminarItemPedido( $event )">
+                    <span class="icon text-white-50 m-2">
+                        <i class="fas fa-trash-alt"></i>
+                    </span>
+                    Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalItemProducto" tabindex="-1" role="dialog" aria-labelledby="modalItemProductoTitle"
+    aria-hidden="true" *ngIf="docVentaItem">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalItemProductoTitle">
+                    {{titulo}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Código Producto:</span>
+                            </div>
+                            <input type="number" class="form-control" (keydown.enter)="busquedaProducto( $event )"
+                                placeholder="Ingrese código de producto" [(ngModel)]="codigoProducto">
+                            <div class="input-group-append">
+                                <div *ngIf="!procesando">
+                                    <button type="button" class="btn btn-white btn-raised btn-fab btn-round"
+                                        (click)="busquedaProducto( $event )">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                                <div *ngIf="procesando">
+                                    <button type="button" class="btn btn-white btn-raised btn-fab btn-round">
+                                        <span class="spinner-border spinner-border-sm" role="status"
+                                            aria-hidden="true"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group" *ngIf="productoSeleccionado">
+                            <label>Precio Unitario: </label>
+                            <span class="h4" *ngIf="productoSeleccionado.PrecioPorPeso">
+                                {{productoSeleccionado.MonedaVenta}}
+                                {{ productoSeleccionado.Peso * productoSeleccionado.PrecioUnitarioFinal | number: '1.2-2' }}
+                            </span>
+                            <span class="h4" *ngIf="productoSeleccionado.PrecioPorPieza">
+                                {{productoSeleccionado.MonedaVenta}}
+                                {{ productoSeleccionado.PrecioUnitarioFinal | number: '1.2-2' }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="productoSeleccionado">
+                    <div class="col-12 col-md-1"></div>
+                    <div class="col-12 col-md-4">
+                        <div class="cropped">
+                            <img class="card-img-top" src="{{productoSeleccionado.FotoLink}}"
+                                alt="{{productoSeleccionado.Foto}}">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="row" *ngFor="let itemMedida of productoSeleccionado.ProductoStock">
+                            <div class="col-6 pt-2">
+                                <span>{{itemMedida.Medida.Observaciones}}</span> <br/>
+                                <span *ngIf="itemMedida.StockDisponible > 0" class="text-warning">
+                                    Disponible: {{itemMedida.StockDisponible}}
+                                </span>
+                                <span *ngIf="itemMedida.StockDisponible == 0" class="text-danger">
+                                    Sin Stock
+                                </span>
+                            </div>
+                            <div class="col-6">
+                                <table>
+                                    <tr>
+                                        <td style="width: 10%;">
+                                            <button type="button" class="btn btn-fab btn-round"
+                                                (click)="restaCantidadMedida( $event, itemMedida )">
+                                                <span class="icon text-white-50" style="font-size: 0.7em;">
+                                                    <i class="fas fa-minus"></i>
+                                                </span>
+                                            </button>
+                                        </td>
+                                        <td style="width: 70%;">
+                                            <input type="number" class="form-control text-center  font-weight-bolder"
+                                                [(ngModel)]="itemMedida.CantidadPedido" />
+                                        </td>
+                                        <td style="width: 10%;">
+                                            <button type="button" class="btn btn-fab btn-round"
+                                                (click)="sumaCantidadPorMedida( $event, itemMedida )">
+                                                <span class="icon text-white-50" style="font-size: 0.7em;">
+                                                    <i class="fas fa-plus"></i>
+                                                </span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-1"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn mr-3" data-dismiss="modal">
+                    <span class="icon text-white-50 m-2">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    Cancelar
+                </button>
+                <div *ngIf="!procesando">
+                    <button type="button" class="btn btn-success" (click)="onClickGuardarItemProducto( $event )">
+                        <span class="icon text-white-50 m-2">
+                            <i class="fas fa-save"></i>
+                        </span>
+                        Guardar
+                    </button>
+                </div>
+                <div *ngIf="procesando">
+                    <a class="btn btn-success" aria-disabled="true">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span class="text">Procesando...</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

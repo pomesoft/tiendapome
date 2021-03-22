@@ -1,0 +1,240 @@
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-12 col-md-3">
+            <!-- <span class="font-weight-bold" *ngIf="clienteLogin">{{clienteLogin.Nombre}}!</span> -->
+            <div class="" *ngIf="clienteLogin">
+                <a class="btn btn-block" href="#" [routerLink]="['/pedidoscliente']">
+                    <span class="icon">
+                        <i class="fas fa-list mr-2"></i>
+                    </span>
+                    Mis pedidos
+                </a>
+            </div>            
+        </div>
+        <div class="col-12 col-md-9">
+            <div class="input-group" *ngIf="listarTipos">
+                <input type="text" class="form-control" (keydown.enter)="busquedaProducto( $event )"
+                    placeholder="Buscar" [(ngModel)]="textoBuscarProducto">
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-white btn-raised btn-fab btn-round"
+                        (click)="busquedaProducto( $event )">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 
+    <div class="row">        
+        <div class="col" *ngIf="mostrarWhatsApp">
+            <a class="btn btn-success btn-block" href="#" (click)="enviarWhatsApp( $event )">
+                <span class="icon" style="font-size: 1.2em;">
+                    <i class="fab fa-whatsapp mr-3"></i>
+                </span>
+                Consultas
+            </a>
+        </div>
+    </div> 
+    -->
+    <div id="panelTipos" class="row" *ngIf="listarTipos">
+        <div class="col-sm-4 col-lg-3" *ngFor="let tipo of menu">
+            <a href="#" (click)="mostrarCategorias( $event, tipo)"
+                *ngIf="tipo.Visible">
+                <div class="card shadow">
+
+                    <img class="card-img-top" src="assets\img\{{tipo.Foto}}" rel="nofollow" alt="Card image cap"
+                        *ngIf="tipo.Foto">
+                    <span class="w-100 text-center text-primary p-3" style="font-size: 3em;" *ngIf="!tipo.Foto"><i
+                            class="fas fa-gem"></i></span>
+                    <div class="card-body">
+                        <div class="card-title text-center text-uppercase w-100">
+                            <span>{{tipo.Descripcion}}</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+
+    <div id="panelCategorias" class="row" *ngIf="listarCategorias">
+        <div class="col">
+            <div class="row">
+                <div class="font-weight-bold text-center w-100">
+                    <table>
+                        <tr>
+                            <td style="width: 20%;">
+                                <button type="button" class="btn btn-white btn-raised btn-fab btn-round"
+                                    (click)="volverTipos( $event )">
+                                    <i class="fas fa-arrow-left"></i>
+                                </button>
+                            </td>
+                            <td class="text-primary text-uppercase text-center" style="width: 80%;">
+                                <h4>{{ tipoSeleccionado.Descripcion }}</h4>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 col-sm-4 col-lg-4 pl-2 pr-2" *ngFor="let cate of tipoSeleccionado.Categorias">
+                    <a href="#" (click)="mostrarSubcategorias( $event, cate)"
+                        *ngIf="cate.Visible">
+                        <div class="card shadow m-2">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <i class="fab fa-google-play mr-2"></i>
+                                        <span class="card-title text-center text-uppercase">{{cate.Descripcion}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="panelSubcategorias" class="row" *ngIf="categoriaSeleccionada && listarSubcategorias">
+        <div class="col">
+            <div class="row">
+                <div class="font-weight-bold text-center w-100">
+                    <table>
+                        <tr>
+                            <td style="width: 20%;">
+                                <button type="button" class="btn btn-white btn-raised btn-fab btn-round"
+                                    (click)="volverCategorias( $event )">
+                                    <i class="fas fa-arrow-left"></i>
+                                </button>
+                            </td>
+                            <td class="text-primary text-uppercase text-center" style="width: 80%;">
+                                <h4>{{  categoriaSeleccionada.Descripcion }}</h4>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 col-sm-4 col-lg-3 pl-2 pr-2" *ngFor="let subcate of listadoSubcategorias">
+                    <a href="#" (click)="mostrarProductos( $event, subcate)">
+                        <div class="card shadow m-2">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <i class="fab fa-google-play mr-2"></i>
+                                        <span class="card-title text-center text-uppercase">{{subcate.Descripcion}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 font-weight-bolder text-center">
+            <span class=" mr-2">&nbsp;&nbsp;</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 font-weight-bolder text-center">
+            <span class=" mr-2">&nbsp;&nbsp;</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 font-weight-bolder text-center">
+            <span class=" mr-2">&nbsp;&nbsp;</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 font-weight-bolder text-center">
+            <span class=" mr-2">&nbsp;&nbsp;</span>
+        </div>
+    </div>
+</div>
+
+<div class="shadow-lg p-2 bg-light rounded text-center" *ngIf="cargandoProductos">
+    <div class="spinner-border text-secondary" role="status">
+        <span class="sr-only">Cargando...</span>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="modalBannerBienvenida" tabindex="-1" role="dialog"
+    aria-labelledby="modalBannerBienvenidaTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img src="assets\img\BannerBienvenida.jpeg" alt="" style="width: 100%;" />
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-secondary" data-dismiss="modal">
+                    <span class="icon text-white-50 mr-2">
+                        <i class="fas fa-window-close"></i>
+                    </span>
+                    Cancelar
+                </a>
+                <a href="#" class="btn btn-success btn-block"  data-dismiss="modal" [routerLink]="['/registra']">
+                    <span class="icon text-white-50 mr-2">
+                        <i class="fas fa-arrow-right"></i>
+                    </span>
+                    Quiero registrarme
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalBannerPromo" tabindex="-1" role="dialog"
+    aria-labelledby="modalBannerPromoTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img src="assets\img\BannerPromo.jpeg" alt="" style="width: 100%;" />
+            </div>
+            <div class="modal-footer">                
+                <a href="#" class="btn btn-success btn-block"  data-dismiss="modal"
+                    (click)="mostrarProductosPromo( $event )">
+                    <span class="icon text-white-50 mr-2">
+                        <i class="fas fa-arrow-right"></i>
+                    </span>
+                    Entendido, no mostrar más...
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalUpdate" tabindex="-1" role="dialog" aria-labelledby="modalUpdateTitle"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                  <div class="modal-header">
+                        <img src="assets\img\logo.png" alt="" style="height: 40px;  " />
+                        <span class="h3 ml-5">Nueva versión desponible</span>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                        </button>
+                  </div>
+                  <div class="modal-body">
+                        Se actualizó la versión de la tienda correctamtente.
+                  </div>
+                  <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-success"
+                              (click)="actualizarVersion( $event )">
+                              <span class="icon text-white-50 m-2">
+                                    <i class="fas fa-download"></i>
+                              </span>
+                              Aceptar
+                        </button>
+                  </div>
+            </div>
+      </div>
+</div>

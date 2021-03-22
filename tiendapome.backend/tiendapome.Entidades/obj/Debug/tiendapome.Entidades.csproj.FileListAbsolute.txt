@@ -1,0 +1,6 @@
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Entidades\bin\Debug\tiendapome.Entidades.dll
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Entidades\bin\Debug\tiendapome.Entidades.pdb
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Entidades\bin\Debug\Newtonsoft.Json.dll
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Entidades\obj\Debug\tiendapome.Entidades.csprojResolveAssemblyReference.cache
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Entidades\obj\Debug\tiendapome.Entidades.dll
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Entidades\obj\Debug\tiendapome.Entidades.pdb

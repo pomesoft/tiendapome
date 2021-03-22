@@ -1,0 +1,26 @@
+<div class="container-fluid">
+      <div class="card shadow">
+            <div class="card-body">
+                  <div class="row">
+                        <div class="col">
+                              <div class="alert " 
+                                    [ngClass]="{ 'alert-warning': mostrarAlertWarning(),
+                                                'alert-success': mostrarAlertSuccess()  }"
+                                    role="alert">
+                                    <p>{{mensaje}}</p>
+                              </div>
+                        </div>
+                  </div>
+                  <div class="row">
+                        <div class="col">
+                              <a class="btn btn-primary btn-block" href="#" (click)="continuar( $event )">
+                                    <span class="icon text-white-50 m-2">
+                                          <i class="fas fa-arrow-left"></i>
+                                    </span>
+                                    Continuar
+                              </a>
+                        </div>
+                  </div>
+            </div>
+      </div>
+</div>

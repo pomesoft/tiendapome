@@ -1,0 +1,94 @@
+<nav class="navbar bg-light">
+
+      <a class="nav-link" [routerLink]="['/menu']" href="#" role="button">
+            <img src="assets\img\logo.png" alt="" />
+      </a>
+
+      <a class="nav-link" href="#" role="button" (click)="irAlCarrito( $event )">
+            <span class="text-success" style="font-size: 0.9em;">
+                  <i class="fas fa-shopping-cart"></i>
+            </span>
+            <span class="badge badge-success badge-counter" style="font-size: 0.8em;">{{carritoCantItems}}</span>
+            <span class="border border-success text-success text-success font-weight-bold p-2">
+                  <span style="font-size: 0.8em;">{{carritoMoneda}} </span>
+                  <span class="font-weight-bolder"
+                        style="font-size: 1em;">{{carritoImporteTotal | number: '1.2-2'}}</span>
+            </span>
+      </a>
+
+      <!-- 
+      <a class="nav-link p-1" href="#" role="button" [routerLink]="['/pedidoscliente']">
+            <span class="text-secondary" style="font-size: 1.2em;">
+                  <i class="fas fa-list fa-sm fa-fw"></i>
+            </span>
+      </a> 
+
+      <a class="nav-link p-1" href="#" role="button" (click)="cerrarSesion( $event );">
+            <span class="text-secondary" style="font-size: 1.2em;">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw"></i>
+            </span>
+      </a>
+      -->
+</nav>
+
+<div class="container  bg-light">
+
+      <div class="row">
+            <div class="col-12 p-1" *ngIf="mostrarBotonesCarrito">
+                  <table style="width: 100%;">
+                        <tr>
+                              <td style="width: 10%; text-align: center;">
+                                    <button type="button" class="btn btn-white btn-raised btn-fab btn-round"
+                                          (click)="volverAtras( $event )">
+                                          <i class="fas fa-arrow-left"></i>
+                                    </button>
+                              </td>
+                              <td style="width: 70%; text-align: center;">
+                                    <span class="text-bolder mr-2">{{ textoSubcategoriaCarrito }}</span>
+                              </td>
+                              <td style="width: 10%; text-align: center;">
+                                    <button type="button" class="btn btn-white btn-raised btn-fab btn-round"
+                                          (click)="irAlCarrito( $event )">
+                                          <i class="fas fa-arrow-right"></i>
+                                    </button>
+                              </td>
+                        </tr>
+                  </table>
+            </div>
+
+            <div class="col-12 p-1" *ngIf="mostrarBotonesPedido">
+                  <div class="border border-primary font-weight-bolder p-1 text-center">
+                        <span>{{leyenda}}</span>
+                  </div>
+                  <div class="row">
+                        <div class="col-6">
+                              <a class="btn btn-primary btn-block" href="#" [routerLink]="['/menu']">
+                                    <span class="icon text-white-50 m-2">
+                                          <i class="fas fa-arrow-left"></i>
+                                    </span>
+                                    Continuar
+                              </a>
+                        </div>
+                        <div class="col-6">
+                              <div *ngIf="!finalizando">
+                                    <a class="btn btn-success btn-block" href="#" (click)="finalizar( $event )"
+                                          *ngIf="mostrarBotonFinalizar">
+                                          <span class="icon text-white-50 m-2">
+                                                <i class="fas fa-check"></i>
+                                          </span>
+                                          Finalizar
+                                    </a>
+                              </div>
+                              <div *ngIf="finalizando">
+                                    <a class="btn btn-success btn-block" aria-disabled="true">
+                                          <span class="spinner-border spinner-border-sm icon text-white-50 mr-2"
+                                                role="status" aria-hidden="true"></span>
+                                          <span class="text text-white-50">Finalizando...</span>
+                                    </a>
+                              </div>
+                        </div>
+                  </div>
+
+            </div>
+      </div>
+</div>

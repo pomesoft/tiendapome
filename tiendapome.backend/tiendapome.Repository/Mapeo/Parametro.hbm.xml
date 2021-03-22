@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping assembly="tiendapome.Entidades" namespace="tiendapome.Entidades" xmlns="urn:nhibernate-mapping-2.2">
+    <class name="tiendapome.Entidades.Parametro" table="tp_parametros" lazy="false">
+        <id name="Id" column="IdParametro">
+            <generator class="identity" />
+        </id>
+        <property name="Descripcion" column="Descripcion" />
+        <property name="Vigente" column="Vigente" />
+        <property name="Clave" column="Clave" />
+        <property name="Valor" column="Valor" />
+        <property name="Editable" column="Editable" />
+    </class>
+</hibernate-mapping>

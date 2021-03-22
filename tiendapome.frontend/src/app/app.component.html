@@ -1,0 +1,138 @@
+<header id="header">
+
+
+      <div *ngIf="identificado; then panelIdentificado else panelNoIdentificado "></div>
+
+      <ng-template #panelIdentificado>
+
+            <div *ngIf="esRolCliente(); then navbarCarrito else navbarBackoffice "></div>
+
+            <ng-template #navbarBackoffice>
+                  <navbarbackoffice></navbarbackoffice>
+            </ng-template>
+            <ng-template #navbarCarrito>
+                  <navbarcarrito></navbarcarrito>
+            </ng-template>
+
+      </ng-template>
+
+      <ng-template #panelNoIdentificado>
+
+            <navbarcarritopublico></navbarcarritopublico>
+
+      </ng-template>
+
+
+</header>
+<section id="content">
+      <div class="footer" *ngIf="!esRolAdministrador()">
+            <button [routerLink]="['/menu']">
+                  <i class="fa fa-home fa-lg"></i>
+            </button>
+            <button *ngIf="esRolCliente()" (click)="irAlCarrito( $event )">
+                  <i class="fas fa-shopping-cart fa-lg"></i>
+            </button>
+            <button *ngIf="esRolCliente()" [routerLink]="['/pedidoscliente']">
+                  <i class="fa fa-list fa-lg"></i>                  
+            </button>
+
+            <button (click)="enviarWhatsApp( $event )">
+                  <i class="fab fa-whatsapp fa-lg"></i>
+            </button>
+           
+            <button *ngIf="identificado" (click)="cerrarSesion( $event );">
+                  <i class="fa fa-sign-out-alt fa-lg"></i>
+            </button>
+            <button *ngIf="!identificado" [routerLink]="['/login']">
+                  <i class="far fa-smile fa-lg"></i>
+                  <span style="font-size: 0.9em;">
+                        Ingresar
+                  </span>
+            </button>
+      </div>
+      <router-outlet></router-outlet>
+</section>
+
+
+
+
+
+
+<div class="modal fade" id="modalInstall" tabindex="-1" role="dialog" aria-labelledby="modalInstallTitle"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                  <div class="modal-header">
+                        <img src="assets\img\logo.png" alt="" style="height: 40px;  " />
+                        <span class="h3 ml-5">Instalar APP</span>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                        </button>
+                  </div>
+                  <div class="modal-body">
+                        <div class="row mb-3">
+                              <div class="col">
+                                    <h4>¿Agregar la tienda a la pantalla de inicio?</h4>
+                                    <small>Agrega la tienda a la pantalla de inicio para acceder de forma rápida y fácil</small>
+                              </div>
+                        </div>
+                        <div class="row">
+                              <div class="col">
+                                    <button type="button" data-dismiss="modal" class="btn btn-success btn-block"
+                                          (click)="instalarAPP( $event )">
+                                          <i class="fas fa-download"></i>
+                                            Agregar a la pantalla de inicio
+                                    </button>
+                              </div>
+                        </div>
+                  </div>
+                  <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-secondary mr-2"
+                              (click)="cancelarInstalacionANDROID( $event )">
+                              <span class="icon text-white-50 m-2">
+                                    <i class="fas fa-download"></i>
+                              </span>
+                              Cancelar
+                        </button>
+                  </div>
+            </div>
+      </div>
+</div>
+
+
+
+<div class="modal fade" id="modalIPhone" tabindex="-1" role="dialog" aria-labelledby="modalIPhoneTitle"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                  <div class="modal-header">
+                        <img src="assets\img\logo.png" alt="" style="height: 40px;  " />
+                        <span class="h3 ml-5">Instalar APP</span>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                        </button>
+                  </div>
+                  <div class="modal-body">
+                        <!-- <div>{{textIOS}}</div> -->
+                        <h4>¿Agregar la tienda a la pantalla de inicio?</h4>
+                        <small>Agrega la tienda a la pantalla de inicio para acceder de forma rápida y fácil</small>
+                        <h5>Toque el botón Menú y luego el botón 'Agregar a la pantalla de inicio'</h5>
+                        <div><img src="../assets/img/ios-menu-btn.png"> <i class="fas fa-arrow-right"></i> <span
+                                    class="ml-3 mr-1">Agregar a Inicio </span> <img src="../assets/img/ios-add-btn.png">
+                        </div>
+                  </div>
+                  <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-secondary"
+                              (click)="cancelarInstalacionIOS( $event )">
+                              <span class="icon text-white-50 m-2">
+                                    <i class="fas fa-download"></i>
+                              </span>
+                              Cerrar
+                        </button>
+                  </div>
+            </div>
+      </div>
+</div>
+
+
+

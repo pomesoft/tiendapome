@@ -1,0 +1,165 @@
+<nav class="navbar navbar-expand-lg  bg-light">
+      <div class="container">
+            <div class="navbar-translate">
+                  <ul class="navbar-nav">
+                        <li class="dropdown nav-item">
+                              <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                                    <img src="assets\img\logo.png" alt="" />
+                              </a>
+                              <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#" [routerLink]="['/clientesbo']"
+                                          (click)="colapsarMenu( $event )">
+                                          <i class="fas fa-users fa-sm fa-fw mr-2"></i>
+                                          <span class="text-dark">Clientes</span>
+                                    </a>
+                                    <a class="dropdown-item" href="#" *ngIf="mostrarMenuProductos"
+                                          [routerLink]="['/productosbo']" (click)="colapsarMenu( $event )">
+                                          <i class="fab fa-google-play fa-sm fa-fw mr-2"></i>
+                                          <span class="text-dark">Productos</span>
+                                    </a>
+                                    <a class="dropdown-item" href="#" [routerLink]="['/pedidoslist']"
+                                          (click)="colapsarMenu( $event )">
+                                          <i class="fas fa-list fa-sm fa-fw mr-2"></i>
+                                          <span class="text-dark">Pedidos</span>
+                                    </a>
+
+                                    <a class="dropdown-item" href="#"  *ngIf="mostrarMenuFacturacion"
+                                          [routerLink]="['/ventaslist']"
+                                          (click)="colapsarMenu( $event )">
+                                          <i class="fas fa-file-invoice-dollar mr-2"></i>
+                                          <span class="text-dark">Facturación</span>
+                                    </a>
+
+                                    <a class="dropdown-item" href="#" [routerLink]="['/cotizacionesbo']"
+                                          (click)="colapsarMenu( $event )">
+                                          <i class="fas fa-money-bill fa-sm fa-fw mr-2"></i>
+                                          <span class="text-dark">Cotizaciones</span>
+                                    </a>
+
+                                    <a class="dropdown-item" href="#" [routerLink]="['/listasprecio']"
+                                          (click)="colapsarMenu( $event )">
+                                          <i class="fas fa-dollar-sign fa-sm fa-fw mr-2"></i>
+                                          <span class="text-dark">Listas de precio</span>
+                                    </a>
+                                    
+                                    <a class="dropdown-item" href="#" [routerLink]="['/parametro']"
+                                          (click)="colapsarMenu( $event )">
+                                          <i class="fas fa-tools fa-sm fa-fw mr-2"></i><br />
+                                          <span class="text-dark">Parametros</span>
+                                    </a>
+
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#" (click)="cerrarSesion( $event );">
+                                          <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>
+                                          <span class="text-dark">Salir</span>
+                                    </a>
+                              </div>
+                        </li>
+                  </ul>
+            </div>
+            <div class="navbar-collapse">
+                  <ul class="navbar-nav">
+                        <li class="nav-item" routerLinkActive="active">
+                              <a class="nav-link" href="#" [routerLink]="['/clientesbo']"
+                                    (click)="colapsarMenu( $event )">
+                                    <i class="fas fa-users fa-sm fa-fw mr-2"></i><br />
+                                    <span class="text-dark">Clientes</span>
+                              </a>
+                        </li>
+                        <li class="nav-item" routerLinkActive="active" *ngIf="mostrarMenuProductos">
+                              <a class="nav-link" href="#" [routerLink]="['/productosbo']"
+                                    (click)="colapsarMenu( $event )">
+                                    <i class="fab fa-google-play fa-sm fa-fw mr-2"></i><br />
+                                    <span class="text-dark">Productos</span>
+                              </a>
+                        </li>
+                        <li class="nav-item" routerLinkActive="active">
+                              <a class="nav-link" href="#" [routerLink]="['/pedidoslist']"
+                                    (click)="colapsarMenu( $event )">
+                                    <i class="fas fa-list fa-sm fa-fw mr-2"></i><br />
+                                    <span class="text-dark">Pedidos</span>
+                              </a>
+                        </li>
+
+                        <li class="nav-item" routerLinkActive="active" *ngIf="mostrarMenuFacturacion">
+                              <a class="nav-link" href="#" [routerLink]="['/ventaslist']"
+                                    (click)="colapsarMenu( $event )">
+                                    <i class="fas fa-file-invoice-dollar mr-2"></i><br />
+                                    <span class="text-dark">Facturación</span>
+                              </a>
+                        </li>
+
+                        <li class="nav-item" routerLinkActive="active">
+                              <a class="nav-link" href="#" [routerLink]="['/cotizacionesbo']"
+                                    (click)="colapsarMenu( $event )">
+                                    <i class="fas fa-money-bill fa-sm fa-fw mr-2"></i><br />
+                                    <span class="text-dark">Cotizaciones</span>
+                              </a>
+                        </li>
+                        <li class="nav-item" routerLinkActive="active">
+                              <a class="nav-link" href="#" [routerLink]="['/listasprecio']"
+                                    (click)="colapsarMenu( $event )">
+                                    <i class="fas fa-dollar-sign fa-sm fa-fw mr-2"></i><br />
+                                    <span class="text-dark">Listas de precio</span>
+                              </a>
+                        </li>
+                        <li class="nav-item" routerLinkActive="active">
+                              <a class="nav-link" href="#" [routerLink]="['/parametro']"
+                                    (click)="colapsarMenu( $event )">
+                                    <i class="fas fa-tools fa-sm fa-fw mr-2"></i><br />
+                                    <span class="text-dark">Parametros</span>
+                              </a>
+                        </li>
+                        <li class="nav-item" routerLinkActive="active">
+                              <a class="nav-link" href="#" (click)="cerrarSesion( $event );">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i><br />
+                                    <span class="text-dark">Salir</span>
+                              </a>
+                        </li>
+                  </ul>
+            </div>
+      </div>
+</nav>
+
+
+<div class="container  bg-light" *ngIf="mostrarBotonesPedido">
+      <div class="row">
+            <div class="col-12 col-sm-12  col-md-6 text-left pl-2 pt-2">
+                  <span style="font-size: 0.8em;">{{cliente}}</span><br />
+                  <span style="font-size: 0.8em;">{{leyenda}}</span>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 text-right pr-2" *ngIf="pedido">
+                  <a class="nav-link" href="#" role="button" (click)="irAlCarrito( $event )">
+                        <span class="text-success" style="font-size: 1.3em;">
+                              <i class="fas fa-shopping-cart"></i>
+                        </span>
+                        <span class="badge badge-success badge-counter"
+                              style="font-size: 1em;">{{carritoCantItems}}</span>
+                        <span class="border border-success text-success text-success font-weight-bold p-2">
+                              <span style="font-size: 0.9em;">{{carritoMoneda}} </span>
+                              <span class="font-weight-bolder"
+                                    style="font-size: 1.3em;">{{carritoImporteTotal | number: '1.2-2'}}</span>
+                        </span>
+                  </a>
+            </div>
+      </div>
+      <div class="row">
+            <div class="col-6">
+                  <a href="#" class="btn btn-primary btn-block" [routerLink]="['/pedidoslist']">
+                        <span class="icon text-white-50 m-2">
+                              <i class="fas fa-arrow-left"></i>
+                        </span>
+                        Volver
+                  </a>
+            </div>
+            <div class="col-6">
+                  <a href="#" class="btn btn-success  btn-block" *ngIf="pedidoEnProceso()"
+                        (click)="finalizarProceso( $event )">
+                        <span class="icon text-white-50 m-2">
+                              <i class="fas fa-archive"></i>
+                        </span>
+                        Confirmar
+                  </a>
+            </div>
+      </div>
+</div>

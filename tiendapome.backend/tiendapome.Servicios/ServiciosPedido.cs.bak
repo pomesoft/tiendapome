@@ -1,0 +1,277 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using tiendapome.Entidades;
+using tiendapome.Repository;
+using tiendapome.Servicios.Cache;
+
+
+namespace tiendapome.Servicios
+{
+    public class ServiciosPedido : AbstractService
+    {
+        const string gobalKeyCache = "TiendaPome";
+        public ServiciosPedido() { }
+
+
+        public List<PedidoItem> PedidoItemsObtenerCache(int idPedido)
+        {
+            List<PedidoItem> listReturn = new List<PedidoItem>();
+            string keyItem = "GetPedidoItems_" + idPedido.ToString();
+
+            var itemsCache = CacheManager.GetToCache<List<PedidoItem>>(gobalKeyCache, keyItem);
+
+            if (itemsCache == null || !itemsCache.Any())
+            {
+                listReturn = this.Listar<PedidoItem>("IdPedido", idPedido).ToList<PedidoItem>();
+                CacheManager.AddToCache(gobalKeyCache, keyItem, listReturn);
+            }
+            else
+            {
+                listReturn = itemsCache;
+            }
+            return listReturn;
+        }
+
+        public List<Pedido> PedidoListar()
+        {
+            return this.Listar<Pedido>().ToList<Pedido>();
+        }
+
+        public List<Pedido> PedidoListar(string estados, int idCliente, string fechaDesde, string fechaHasta)
+        {
+            PedidoRepository repository = new PedidoRepository();
+
+            List<Estado> listEstados = this.ListarVigentes<Estado>().ToList<Estado>();
+            List<Estado> listEstadosParams = null;
+                        
+            string[] ids = estados.Split(',');
+
+            if (ids.Length > 0)
+            {
+                listEstadosParams = new List<Estado>();
+                for (int i = 0; i < ids.Length; i++)
+                {
+                    int idEstado = ids[i].ConvertirInt();
+                    if (idEstado > 0)
+                        listEstadosParams.Add(listEstados.Find(item => item.Id.Equals(idEstado)));
+                }
+            }
+    
+            List<Pedido> listReturn = repository.ObtenerPedidos(listEstadosParams, 
+                                                                idCliente, 
+                                                                fechaDesde.ConvertirDateTimeNulleable(), 
+                                                                fechaHasta.ConvertirDateTimeNulleable(), 
+                                                                false, -1, -1);
+            return listReturn;
+        }
+                
+        public Pedido PedidoObtener(int id)
+        {
+            Pedido pedido = this.ObtenerObjeto<Pedido>(id);
+            pedido.Items = this.Listar<PedidoItem>("IdPedido", id)
+                                .OrderBy(item => item.Producto.Ubicacion)
+                                .ToList<PedidoItem>();
+            return pedido;
+        }
+        //devuelve el pedido con estado INGRESADO del cliente
+        //si no existe lo crea
+        public Pedido PedidoObtenerClienteIngresado(int idCliente)
+        {
+            Cliente cliente = this.ObtenerObjeto<Cliente>(idCliente);
+            List<Pedido> pedidosCliente = this.Listar<Pedido>("Cliente", cliente).ToList<Pedido>()
+                                              .OrderByDescending(item => item.Id).ToList<Pedido>();
+            Pedido pedido = pedidosCliente.Find(item => item.Estado.Id == (int)ESTADOS.INGRESADO_);
+            
+            if (pedido == null)
+                pedido = this.PedidoCrear(idCliente);
+            
+            pedido.Items = this.Listar<PedidoItem>("IdPedido", pedido.Id).ToList<PedidoItem>();
+            
+            return pedido;
+        }
+        public Pedido PedidoGrabar(Pedido datosGraba)
+        {
+            RepositoryGenerico<Pedido> repository = new RepositoryGenerico<Pedido>();
+            Pedido dato;
+
+            int _id = datosGraba.Id;
+            if (_id == -1)
+                dato = new Pedido();
+            else
+                dato = repository.Obtener(_id);
+
+            dato.Numero = datosGraba.Numero;
+            if (_id == -1) dato.Fecha = DateTime.Now;
+            dato.Cliente = this.ObtenerObjeto<Cliente>(datosGraba.Cliente.Id); 
+            dato.Estado = this.ObtenerObjeto<Estado>(datosGraba.Estado.Id);
+            dato.Observaciones = datosGraba.Observaciones;
+            dato.Total = datosGraba.Total;
+            
+            repository.Actualizar(dato);
+
+            return this.PedidoObtener(dato.Id);
+        }
+        public Pedido PedidoCrear(int idCliente)
+        {
+            RepositoryGenerico<Pedido> repository = new RepositoryGenerico<Pedido>();
+            Pedido dato = new Pedido();
+
+            dato.Numero = -1;
+            dato.Fecha = DateTime.Now;
+            dato.Cliente = this.ObtenerObjeto<Cliente>(idCliente); 
+            dato.Estado = this.ObtenerObjeto<Estado>((int)ESTADOS.INGRESADO_);
+            repository.Actualizar(dato);
+            dato.Numero = dato.Id;
+            repository.Actualizar(dato);
+            return this.PedidoObtener(dato.Id);
+        }
+        public Pedido PedidoAvanzar(Pedido datosGraba)
+        {
+            //1ro Actualizamos el pedido
+            Pedido pedido = this.PedidoGrabar(datosGraba);
+            
+            //2do Validamos que esté completo
+            string validaciones = pedido.Validar();
+            if(validaciones!=string.Empty)
+                throw new ApplicationException(validaciones);
+
+            //si está todo OK avanzamos el estado y actualizamos el pedido
+            pedido.Estado = this.ObtenerObjeto<Estado>(pedido.Estado.PorximoEstado);
+            pedido = this.PedidoGrabar(pedido);
+
+            return pedido;
+        }
+
+        public Pedido PedidoGrabarTotal(int id)
+        {
+            RepositoryGenerico<Pedido> repository = new RepositoryGenerico<Pedido>();
+            Pedido dato = repository.Obtener(id);
+            List<PedidoItem> items = this.Listar<PedidoItem>("IdPedido", id).ToList<PedidoItem>();
+
+            decimal total = 0;
+            int cantidad = 0;
+            items.ForEach(delegate(PedidoItem item) 
+            {
+                total += item.Subtotal;
+                cantidad++;
+            });
+
+            ServicioGenerico servGenerico = new ServicioGenerico();
+            Parametro paramProcentaje = servGenerico.ParametroListar().FirstOrDefault(item => item.Clave.Equals("PORCENTAJE_SUBTOTAL"));
+
+            dato.Porcentaje = decimal.Parse(paramProcentaje.Valor);
+
+            dato.Total = total + ((total * dato.Porcentaje) / 100);
+            dato.CantidadItems = cantidad;
+            
+            repository.Actualizar(dato);
+
+            return dato;
+        }
+
+        public Pedido PedidoItemGrabar(PedidoItem datosGraba)
+        {
+            ServicioGenerico servGenerico = new ServicioGenerico();
+            RepositoryGenerico<PedidoItem> repository = new RepositoryGenerico<PedidoItem>();
+            PedidoRepository repositoryPedido = new PedidoRepository();
+            
+            
+            if (datosGraba.Producto.Id == -1)
+                throw new ApplicationException("Falta indicar Producto.");
+
+            PedidoItem itemProducto = repositoryPedido.ObtenerItemPorProducto(datosGraba.IdPedido, datosGraba.Producto.Id);
+
+            PedidoItem dato = null;
+            if (itemProducto == null)
+                dato = new PedidoItem();
+            else
+                dato = repository.Obtener(itemProducto.Id);
+                        
+            dato.IdPedido = datosGraba.IdPedido;
+            dato.Producto = this.ObtenerObjeto<Producto>(datosGraba.Producto.Id);
+            dato.EstadoItem = datosGraba.EstadoItem;
+            dato.Cantidad = datosGraba.Cantidad;
+
+            //determinar precio del producto puede ser de la lista del producto o la asignada al cliente
+            decimal precioListaCliente = this.DamePrecioListaCliente(dato.IdPedido, dato.Producto);
+            if (precioListaCliente != -1)
+            {
+                if (dato.Producto.PrecioPorPeso)
+                    dato.Precio = precioListaCliente;
+                else
+                    dato.Precio = dato.Producto.PrecioUnitario - ((precioListaCliente * dato.Producto.PrecioUnitario) / 100);
+            }
+            else
+            {
+                if (dato.Producto.PrecioPorPeso)
+                    dato.Precio = dato.Producto.ListaPrecio.Precio;
+                else
+                    dato.Precio = dato.Producto.PrecioUnitario;
+            }
+
+            dato.Porcentaje = 0;
+            
+            // PrecioUnitario => (Peso * PrecioGramo)
+            decimal precioUnitario = 0;
+            if (dato.Producto.PrecioPorPeso)
+                precioUnitario = dato.Producto.Peso * dato.Precio;
+            else
+                precioUnitario = dato.Precio;
+            
+            // ((PrecioUnitario * Cantidad) 
+            if (dato.SinStock)
+            {
+                ServiciosProductos servProductos = new ServiciosProductos();
+                dato.Producto = servProductos.ProductoSinStock(dato.Producto.Id);
+                dato.Subtotal = 0;
+            }
+            else
+                dato.Subtotal = (precioUnitario * dato.Cantidad);
+            
+            repository.Actualizar(dato);
+
+
+
+            return this.PedidoGrabarTotal(dato.IdPedido);
+        }
+
+        public decimal DamePrecioListaCliente(int idPedido, Producto producto)
+        {
+            ServicioClientes servClientes = new ServicioClientes();
+            decimal precioReturn = -1;            
+            ListaPrecio listaProducto = producto.ListaPrecio;
+            if (listaProducto != null)
+            {
+                int idCliente = this.PedidoObtener(idPedido).Cliente.Id;
+
+                //List<ClienteLista> lista = this.Listar<ClienteLista>("IdCliente", idCliente).ToList<ClienteLista>();
+                List<ClienteLista> lista = servClientes.ClienteListaObtenerVigentesCache()
+                                                        .Where(item => item.IdCliente == idCliente)
+                                                        .ToList<ClienteLista>();
+
+                if (lista != null)
+                {
+                    ClienteLista cliLista = lista.Find(item => item.ListaPrecio == listaProducto);
+                    if (cliLista != null)
+                        precioReturn = cliLista.ListaPrecioCliente.Precio;
+                }
+            }
+            return precioReturn;
+        }
+
+        public void PedidoItemEliminar(int idPedidoItem)
+        {
+            ServicioGenerico servGenerico = new ServicioGenerico();
+            RepositoryGenerico<PedidoItem> repository = new RepositoryGenerico<PedidoItem>();
+            PedidoItem dato = repository.Obtener(idPedidoItem);
+
+            repository.Eliminar(dato);
+
+            this.PedidoGrabarTotal(dato.IdPedido);
+        }
+    }
+}

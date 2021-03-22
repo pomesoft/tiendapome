@@ -1,0 +1,16 @@
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Repository\bin\Debug\tiendapome.Repository.dll
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Repository\bin\Debug\tiendapome.Repository.pdb
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Repository\bin\Debug\log4net.dll
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Repository\bin\Debug\NHibernate.dll
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Repository\bin\Debug\tiendapome.Entidades.dll
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Repository\bin\Debug\Newtonsoft.Json.dll
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Repository\bin\Debug\Iesi.Collections.dll
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Repository\bin\Debug\tiendapome.Entidades.pdb
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Repository\bin\Debug\NHibernate.pdb
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Repository\bin\Debug\NHibernate.xml
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Repository\bin\Debug\Newtonsoft.Json.xml
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Repository\bin\Debug\Iesi.Collections.pdb
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Repository\bin\Debug\Iesi.Collections.xml
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Repository\obj\Debug\tiendapome.Repository.csprojResolveAssemblyReference.cache
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Repository\obj\Debug\tiendapome.Repository.dll
+C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Repository\obj\Debug\tiendapome.Repository.pdb
