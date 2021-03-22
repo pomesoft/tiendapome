@@ -9,7 +9,10 @@ Landing/css/
 Landing/img/
 Landing/js/
 Landing/scss/
-publicar/
+publicar/002_Backend/
+publicar/003_Frontend/
+publicar/004_assets/
+publicar/005_Redirect/
 tiendapome.catalogo.backend/
 tiendapome.catalogo.frontend/
 tiendapome.frontend/node_modules/
