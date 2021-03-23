@@ -15,7 +15,8 @@
         <property name="NombreFantasia" column="NombreFantasia" />
         <property name="Vigente" column="Vigente" />
         <property name="ComisionApp" column="ComisionApp" />
-        <property name="Direccion" column="Direccion" />
+		<property name="DescuentoOculto" column="DescuentoOculto" />
+		<property name="Direccion" column="Direccion" />
         <property name="Localidad" column="Localidad" />
         <property name="CodigoPostal" column="CodigoPostal" />
         <many-to-one name="Provincia" column="IdProvincia" class="tiendapome.Entidades.Provincia" />

@@ -43,6 +43,9 @@ namespace tiendapome.Entidades
         [JsonProperty("ComisionApp")]
         public virtual int ComisionApp { get; set; }
 
+        [JsonProperty("DescuentoOculto")]
+        public virtual int DescuentoOculto { get; set; }
+
         [JsonProperty("Direccion")]
         public virtual string Direccion { get; set; }
 
