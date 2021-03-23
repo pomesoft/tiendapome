@@ -426,6 +426,22 @@ namespace tiendapome.Servicios
                 };
                 dato.Items.Add(dvItem);
             }
+            if (pedido.Cliente.DescuentoOculto > 0)
+            {
+                DocumentoVentaItem dvItem = new DocumentoVentaItem()
+                {
+                    Id = -1,
+                    IdVenta = dato.Id,
+                    NroItem = dato.Items.Count + 1,
+                    Descripcion = string.Format("Descuento cliente {0}% (NO SE IMPRIME)", pedido.Cliente.ComisionApp),
+                    IdProductoStock = -1,
+                    IdPedidoItemProducto = -1,
+                    Cantidad = 1,
+                    PrecioUnitario = (pedido.Total * pedido.Cliente.DescuentoOculto) / 100,
+                    Precio = (pedido.Total * pedido.Cliente.DescuentoOculto) / 100
+                };
+                dato.Items.Add(dvItem);
+            }
 
             /************************/
             pedido.Estado = this.ObtenerObjeto<Estado>((int)ESTADOS.FACTURADO_);

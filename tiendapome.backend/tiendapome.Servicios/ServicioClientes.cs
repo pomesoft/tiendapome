@@ -88,8 +88,8 @@ namespace tiendapome.Servicios
             else
             {
                 dato = repository.Obtener(datoGraba.Id);
-                if (dato == null) 
-                    throw new ApplicationException("No existe el Cliente");                
+                if (dato == null)
+                    throw new ApplicationException("No existe el Cliente");
             }
 
             if (datoGraba.Rol == null || datoGraba.Rol.Id < 0)
@@ -97,7 +97,7 @@ namespace tiendapome.Servicios
 
             Cliente validar = null;
             validar = repository.Obtener("Email", datoGraba.Email);
-            if(validar != null && validar.Id != datoGraba.Id)
+            if (validar != null && validar.Id != datoGraba.Id)
                 throw new ApplicationException("Ya existe un cliente con el Email ingresado");
 
             dato.Email = datoGraba.Email;
@@ -116,6 +116,8 @@ namespace tiendapome.Servicios
             dato.CodigoPostal = datoGraba.CodigoPostal;
             dato.SituacionIVA = this.ObtenerObjeto<SituacionIVA>(datoGraba.SituacionIVA.Id);
             dato.Observaciones = datoGraba.Observaciones;
+            dato.ComisionApp = datoGraba.ComisionApp;
+            dato.DescuentoOculto = datoGraba.DescuentoOculto;
             
             repository.Actualizar(dato);
 
