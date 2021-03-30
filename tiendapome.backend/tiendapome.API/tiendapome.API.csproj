@@ -20,6 +20,8 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -257,10 +259,6 @@
     <ProjectReference Include="..\tiendapome.Impresion\tiendapome.Impresion.csproj">
       <Project>{04c16e7e-162a-4fe9-b23a-32260bd6d6f7}</Project>
       <Name>tiendapome.Impresion</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\tiendapome.Repository\tiendapome.Repository.csproj">
-      <Project>{89c9af1c-3301-4447-9175-d19d1a512197}</Project>
-      <Name>tiendapome.Repository</Name>
     </ProjectReference>
     <ProjectReference Include="..\tiendapome.Servicios\tiendapome.Servicios.csproj">
       <Project>{91770031-bd85-44d4-9009-3bc960ef2e8a}</Project>

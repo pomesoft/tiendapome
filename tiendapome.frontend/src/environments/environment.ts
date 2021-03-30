@@ -6,7 +6,7 @@ export const environment = {
   production: false
 };
 
-export const ApiURL = {  
+export const ApiURL = { 
   url:  'http://localhost:61044/api/'
 }
 

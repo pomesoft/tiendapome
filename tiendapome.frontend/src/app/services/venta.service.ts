@@ -118,8 +118,8 @@ export class DocumentoVentaService {
     printNotaPedido(
         idVenta: number
     ) {
-        //let urlAPI: string = 'https://tiendapome.com.ar/api/venta/imprimirnp?idVenta=' + idVenta
         let urlAPI: string = 'https://backend.tradingjoyas.com/api/venta/imprimirnp?idVenta=' + idVenta
+        //let urlAPI: string = this.url + 'venta/imprimirnp?idVenta=' + idVenta
         console.log(urlAPI);
         window.open(urlAPI, '_blank');
     }
@@ -129,7 +129,7 @@ export class DocumentoVentaService {
         fechaDesde: string,
         fechaHasta: string
     ) {
-        let urlAPI: string = 'https://backend.tradingjoyas.com/api/venta/exportctactetopdf?fechaDesde=' + fechaDesde + '&fechaHasta=' + fechaHasta + '&idCliente=' + idCliente;
+        let urlAPI: string = this.url + 'venta/exportctactetopdf?fechaDesde=' + fechaDesde + '&fechaHasta=' + fechaHasta + '&idCliente=' + idCliente;
         console.log(urlAPI);
         window.open(urlAPI, '_blank');
     }
@@ -139,13 +139,13 @@ export class DocumentoVentaService {
         fechaDesde: string,
         fechaHasta: string
     ) {
-        let urlAPI: string = 'https://backend.tradingjoyas.com/api/venta/exportctactetocsv?fechaDesde=' + fechaDesde + '&fechaHasta=' + fechaHasta + '&idCliente=' + idCliente;
+        let urlAPI: string = this.url + 'venta/exportctactetocsv?fechaDesde=' + fechaDesde + '&fechaHasta=' + fechaHasta + '&idCliente=' + idCliente;
         console.log(urlAPI);
         window.open(urlAPI, '_blank');
     }
 
     exportResumenSaldosToExcel() {
-        let urlAPI: string = 'https://backend.tradingjoyas.com/api/venta/exportresumensaldotocsv';
+        let urlAPI: string = this.url + 'venta/exportresumensaldotocsv';
         console.log(urlAPI);
         window.open(urlAPI, '_blank');
     }

@@ -240,7 +240,7 @@
                                     </div>
                               </div>
                               <div class="row">
-                                    <div class="col-8">
+                                    <div class="col-4">
                                           <div class="form-group">
                                                 <label>Situacion IVA</label>
                                                 <select class="custom-select"
@@ -256,6 +256,13 @@
                                                 <label>Comision App (%)</label>
                                                 <input type="number" class="form-control"
                                                       [(ngModel)]="clienteSeleccionado.ComisionApp" />
+                                          </div>
+                                    </div>                                    
+                                    <div class="col-4">
+                                          <div class="form-group">
+                                                <label>Descuento (%) [NO SE IMPRIME]</label>
+                                                <input type="number" class="form-control"
+                                                      [(ngModel)]="clienteSeleccionado.DescuentoOculto" />
                                           </div>
                                     </div>
                               </div>

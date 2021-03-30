@@ -2,14 +2,14 @@ export const environment = {
     production: true
 };
 export const ApiURL = {
-    url: 'https://joyasqueenmary.com.ar/api/'
+    url: 'https://tradingjoyas.com/backend/api/'
 }
 
 /*
 url: 'https://testing.tiendapome.com.ar/api/'
 url: 'https://flordejoyasmayorista.com.ar/api/'
 url: 'https://plataimportadapormayor.com.ar/api/'
-url: 'https://tradingjoyas.com/api/'
+url: 'https://tradingjoyas.com/backend/api/'
 url: 'https://joyeriapallitto.com/api/'
 url: 'https://catalogodejoyas.com/api/'
 url: 'https://anisajoyas.com.ar/api/'
