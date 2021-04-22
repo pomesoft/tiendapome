@@ -20,6 +20,7 @@ export class Pedido {
     NumeroPedidoProveedor: number;
     IdPedidoMinorista: number;
     NumeroPedidoMinorista: number;
+    ExsportoEtiquetasCSV: boolean;
 
     constructor() {
         this.Items = new Array<PedidoItem>();

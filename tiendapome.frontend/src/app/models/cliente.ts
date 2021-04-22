@@ -14,6 +14,7 @@ export class Cliente {
       NombreFantasia: string;
       Vigente: boolean;
       ComisionApp: number;
+      DescuentoOculto: number;
       Direccion: string;
       Localidad: string;
       Provincia: Provincia;

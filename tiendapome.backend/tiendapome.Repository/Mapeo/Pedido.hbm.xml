@@ -15,7 +15,8 @@
         <property name="IdPedidoProveedor" column="IdPedidoProveedor" />
         <property name="NumeroPedidoProveedor" column="NumeroPedidoProveedor" />
         <property name="IdPedidoMinorista" column="IdPedidoMinorista" />
-        <property name="NumeroPedidoMinorista" column="NumeroPedidoMinorista" />        
-        <many-to-one name="Estado" column="IdEstado" class="tiendapome.Entidades.Estado" />
-    </class>
+        <property name="NumeroPedidoMinorista" column="NumeroPedidoMinorista" />
+		<property name="ExsportoEtiquetasCSV" column="ExsportoEtiquetasCSV" />
+		<many-to-one name="Estado" column="IdEstado" class="tiendapome.Entidades.Estado" />
+	</class>
 </hibernate-mapping>

@@ -52,6 +52,9 @@ namespace tiendapome.Entidades
         [JsonProperty("NumeroPedidoMinorista")]
         public virtual int NumeroPedidoMinorista { get; set; }
 
+        [JsonProperty("ExsportoEtiquetasCSV")]
+        public virtual bool ExsportoEtiquetasCSV  { get; set; }
+
         [JsonProperty("Items")]
         public virtual List<PedidoItem> Items { get; set; }
 

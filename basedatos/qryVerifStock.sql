@@ -1,10 +1,10 @@
 
-use trading
+use tiendamayorista
 go
 
 declare @idPedido int
---set @idPedido = 1555
-select @idPedido = IdPedido from tp_Pedidos where Numero = 2928
+--set @idPedido = 5
+select @idPedido = Max(IdPedido) from tp_Pedidos --where Numero = 3
 
 
 select * from tp_Clientes where IdCliente in (select IdCliente from tp_Pedidos where IdPedido = @idPedido )
@@ -12,27 +12,14 @@ select p.Numero, e.Descripcion as Estado, * from tp_Pedidos p inner join tp_Esta
 select pr.Codigo, pit.* from tp_PedidoItems pit inner join tp_Productos pr on pit.IdProducto = pr.IdProducto where IdPedido = @idPedido order by pr.Codigo
 select * from tp_PedidoItemProducto where IdPedidoItem in (select IdPedidoItem from tp_PedidoItems where IdPedido = @idPedido ) and Cantidad > 0
 
-
-
-/* para cambiar el pedido a los precios mayoristas con el 25% de descuento
-update tp_Pedidos set Total = Total * 0.75 where IdPedido = @idPedido
-update tp_PedidoItems set Precio = Precio * 0.75, Subtotal = Subtotal * 0.75 where IdPedido = @idPedido
-*/
-
-/* corregir los pedidos que no se cobraron comision */
-select * from trading.dbo.tp_Pedidos where Numero = 2986
-select * from olka.dbo.tp_Pedidos where Numero = 309
-
---update trading.dbo.tp_Pedidos set NumeroPedidoMinorista = 309, IdPedidoMinorista = 1063 where Numero = 2986
-
-
 declare @idProducto int
 --set @idProducto = 11
-select @idProducto = IdProducto from tp_Productos where Codigo = 1661
-
+select @idProducto = IdProducto from tp_Productos where Codigo = 1306
 
 select * from tp_Productos where IdProducto = @idProducto
 select * from tp_ProductoStock where IdProducto = @idProducto
+
+
 
 --select * into dbo.tp_ProductoStock_BKP from tp_ProductoStock 
 
