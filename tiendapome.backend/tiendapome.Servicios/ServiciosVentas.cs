@@ -428,17 +428,18 @@ namespace tiendapome.Servicios
             }
             if (pedido.Cliente.DescuentoOculto > 0)
             {
+                decimal descuento = ((pedido.Total * pedido.Cliente.DescuentoOculto) / 100) * -1;
                 DocumentoVentaItem dvItem = new DocumentoVentaItem()
                 {
                     Id = -1,
                     IdVenta = dato.Id,
                     NroItem = dato.Items.Count + 1,
-                    Descripcion = string.Format("Descuento cliente {0}% (NO SE IMPRIME)", pedido.Cliente.ComisionApp),
+                    Descripcion = string.Format("Descuento cliente {0}% [NO SE IMPRIME]", pedido.Cliente.DescuentoOculto),
                     IdProductoStock = -1,
                     IdPedidoItemProducto = -1,
                     Cantidad = 1,
-                    PrecioUnitario = (pedido.Total * pedido.Cliente.DescuentoOculto) / 100,
-                    Precio = (pedido.Total * pedido.Cliente.DescuentoOculto) / 100
+                    PrecioUnitario = descuento,
+                    Precio = descuento
                 };
                 dato.Items.Add(dvItem);
             }
@@ -471,6 +472,21 @@ namespace tiendapome.Servicios
             if(docVenta==null)
                 throw new ApplicationException("No existe Nota de Pedido");
 
+            DocumentoVentaItem itemDtoOculto = docVenta.Items.FirstOrDefault(item => item.Descripcion.EndsWith("[NO SE IMPRIME]"));
+
+            List<DocumentoVentaItem> listadoItems = docVenta.Items.ToList<DocumentoVentaItem>()
+                                                            .FindAll(item => item != itemDtoOculto)
+                                                            .ToList<DocumentoVentaItem>();
+
+            decimal subtotal = docVenta.Gravado;
+            decimal total = docVenta.Total;
+
+            if (itemDtoOculto != null)
+            {
+                subtotal = docVenta.Gravado + (itemDtoOculto.Precio * -1);
+                total = docVenta.Total + (itemDtoOculto.Precio * -1);
+            }
+
             datos.Add("DescripcionComprobante", docVenta.TipoComprobante.Descripcion);
             datos.Add("Numero", string.Format("{0:00000}", docVenta.Numero));
             datos.Add("Fecha", string.Format("{0}", string.Format("{0:dd/MM/yyy}", docVenta.Fecha)));
@@ -478,7 +494,7 @@ namespace tiendapome.Servicios
             datos.Add("NombreFantasia", docVenta.Cliente.NombreFantasia.ConvertirString());
             datos.Add("RazonSocial", docVenta.Cliente.RazonSocial.ConvertirString());
             datos.Add("CodigoCliente", string.Format("{0:0000}", docVenta.Cliente.Id));
-            datos.Add("ListadoItems", docVenta.Items.ToList<DocumentoVentaItem>());
+            datos.Add("ListadoItems", listadoItems);
             datos.Add("NroPedido", string.Format("{0:00000}", docVenta.NumeroPedido > 0 ? docVenta.NumeroPedido : 0));
             datos.Add("Direccion", docVenta.Cliente.Direccion.ConvertirString());
             datos.Add("Localidad", docVenta.Cliente.Localidad.ConvertirString());
@@ -487,10 +503,10 @@ namespace tiendapome.Servicios
             datos.Add("Telefono", docVenta.Cliente.Celular.ConvertirString());
             datos.Add("Email", docVenta.Cliente.Email);
             datos.Add("SituacionIVA", docVenta.Cliente.SituacionIVA != null ? docVenta.Cliente.SituacionIVA.Descripcion : string.Empty);
-            datos.Add("Subtotal", string.Format("{0:#,##0.00}", docVenta.Gravado));
+            datos.Add("Subtotal", string.Format("{0:#,##0.00}", subtotal));
             datos.Add("Descuento", string.Format("{0:#,##0.00}", docVenta.Descuento));
             datos.Add("ImprimirSubtotal", string.Format("{0}", docVenta.Descuento != 0 ? 1 : 0));
-            datos.Add("Total", string.Format("{0:#,##0.00}", docVenta.Total));
+            datos.Add("Total", string.Format("{0:#,##0.00}", total));
             datos.Add("TextoPiePagina", string.Empty);
                         
             return datos;

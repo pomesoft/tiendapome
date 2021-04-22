@@ -149,7 +149,10 @@
                                                                   </a>
                                                                   <a href="#"
                                                                         *ngIf="mostrarLiberarStockPedido  && item.Estado != null && (item.Estado.Id == 2 || item.Estado.Id == 3)"
-                                                                        class="btn btn-info btn-icon-split btn-sm mr-1"
+                                                                        class="btn btn-icon-split btn-sm mr-1"
+                                                                        [ngClass]="{
+                                                                              'btn-info': !item.ExsportoEtiquetasCSV
+                                                                          }"
                                                                         data-toggle="tooltip" data-placement="top"
                                                                         title="Exportar Listado Etiquetas"
                                                                         (click)="exportarListadoEtiquetas( $event, item )">
@@ -157,18 +160,6 @@
                                                                               <i class="fas fa-print"></i>
                                                                         </span>
                                                                   </a>
-                                                                  <!-- 
-                                                                  <a href="#"
-                                                                        *ngIf="mostrarLiberarStockPedido  && item.Estado != null && (item.Estado.Id == 2 || item.Estado.Id == 3)"
-                                                                        class="btn btn-warning btn-icon-split btn-sm mr-1"
-                                                                        data-toggle="tooltip" data-placement="top"
-                                                                        title="Liberar Stock"
-                                                                        (click)="confirmarLiberarStock( $event, item )">
-                                                                        <span class="icon text-white-50">
-                                                                              <i class="fas fa-dolly"></i>
-                                                                        </span>
-                                                                  </a> 
-                                                                  -->
                                                             </td>
                                                             <td>
                                                                   <a href="#"

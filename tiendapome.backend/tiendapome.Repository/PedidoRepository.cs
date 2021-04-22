@@ -137,14 +137,10 @@ namespace tiendapome.Repository
         public List<PedidoItem> PedidoVerificarStock(int idPedido)
         {
             string sql = @" update pip
-                            set pip.StockDisponible = case
-                                                            when    pip.Cantidad = 0                        then null
-
+                            set pip.StockDisponible = case  when    pip.Cantidad = 0                        then null
 			                                                when    pip.Cantidad > 0
                                                                 and (b.Stock - b.Reservado) <= 0			then 0
-
 			                                                when (b.Stock - b.Reservado) >= pip.Cantidad	then pip.Cantidad  
-
 			                                                when	(b.Stock - b.Reservado) > 0 
 				                                                and (b.Stock - b.Reservado) < pip.Cantidad	then pip.Cantidad - (pip.Cantidad - (b.Stock - b.Reservado))
 		                                                end 
@@ -168,7 +164,11 @@ namespace tiendapome.Repository
 
         public void PedidoReservarStock(int idPedido)
         {
-            string sql = @" update pip set pip.StockReservado = pip.Cantidad 
+            string sql = @" update pip 
+                            set pip.StockReservado = case when pip.Cantidad > pip.StockDisponible 
+                                                            then pip.StockDisponible 
+                                                            else pip.Cantidad 
+                                                     end 
                             from tp_PedidoItemProducto	pip 
 	                            inner join tp_PedidoItems			pit	on pip.IdPedidoItem = pit.IdPedidoItem
                             where pit.IdPedido = " + idPedido + "; ";

@@ -2,7 +2,7 @@ export const environment = {
     production: true
 };
 export const ApiURL = {
-    url: 'https://joyasqueenmary.com.ar/api/'
+    url: ''
 }
 
 /*
@@ -20,3 +20,7 @@ url: 'https://joyasqueenmary.com.ar/api/'
 url: 'https://belladonamayorista.com.ar/api/'
 url: 'https://hannajoyasmayorista.com.ar/api/'
 */
+
+
+ 
+
