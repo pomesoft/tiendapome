@@ -149,7 +149,7 @@ export class DocumentoventaComponent implements OnInit {
     }
 
     getClientes() {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
 
             this._clienteService
                 .getClientes()
@@ -479,6 +479,8 @@ export class DocumentoventaComponent implements OnInit {
         this.docVentaItem = new DocumentoVentaItem();
         this.productoSeleccionado = null;
 
+        console.log('onClickAgregarItemsProducto()');
+
         $('#modalItemProducto').modal('show');
     }
 
@@ -487,6 +489,7 @@ export class DocumentoventaComponent implements OnInit {
     ) {
         this.procesando = true;
         this.productoSeleccionado = null;
+        console.log('busquedaProducto() => codigoProducto: ', this.codigoProducto);
         if (this.codigoProducto != '' && this.clienteSeleccionado) {
             this._productosServices.getProductoCodigo(true, this.codigoProducto, this.clienteSeleccionado.Id)
                 .subscribe(

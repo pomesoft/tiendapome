@@ -478,8 +478,14 @@ namespace tiendapome.Servicios
                                                             .FindAll(item => item != itemDtoOculto)
                                                             .ToList<DocumentoVentaItem>();
 
-            decimal subtotal = docVenta.Gravado + (itemDtoOculto.Precio * -1);
-            decimal total = docVenta.Total + (itemDtoOculto.Precio * -1);
+            decimal subtotal = docVenta.Gravado;
+            decimal total = docVenta.Total;
+
+            if (itemDtoOculto != null)
+            {
+                subtotal = docVenta.Gravado + (itemDtoOculto.Precio * -1);
+                total = docVenta.Total + (itemDtoOculto.Precio * -1);
+            }
 
             datos.Add("DescripcionComprobante", docVenta.TipoComprobante.Descripcion);
             datos.Add("Numero", string.Format("{0:00000}", docVenta.Numero));

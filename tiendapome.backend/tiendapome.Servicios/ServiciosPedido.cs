@@ -168,11 +168,12 @@ namespace tiendapome.Servicios
 
             dato.Numero = datosGraba.Numero;
             if (_id == -1) dato.Fecha = DateTime.Now;
-            dato.Cliente = this.ObtenerObjeto<Cliente>(datosGraba.Cliente.Id); 
+            dato.Cliente = this.ObtenerObjeto<Cliente>(datosGraba.Cliente.Id);
             dato.Estado = this.ObtenerObjeto<Estado>(datosGraba.Estado.Id);
             dato.Observaciones = datosGraba.Observaciones;
             dato.Total = datosGraba.Total;
             dato.IdPedidoProveedor = datosGraba.IdPedidoProveedor;
+            dato.ExsportoEtiquetasCSV = datosGraba.ExsportoEtiquetasCSV;
 
             repository.Actualizar(dato);
 
@@ -242,7 +243,7 @@ namespace tiendapome.Servicios
             //    return new MensajeResponse((int)ESTADOS_RESPONSE.ERROR_, validaciones); 
 
 
-            //3ro Actualizamos items modificacos en caso que hubiera
+            //3ro Actualizamos items modificados en caso que hubiera
             List<PedidoItem> itemsPedido = datosGraba.Items.FindAll(item => item.Modificado).ToList<PedidoItem>();
             if (itemsPedido != null && itemsPedido.Count > 0)
             {
@@ -274,8 +275,9 @@ namespace tiendapome.Servicios
                         && (!string.IsNullOrEmpty(esMayorista) && esMayorista.Equals("SI")))
                     {
                         pedido.Items = repository.PedidoVerificarStock(pedido.Id);
+
                         bool stockDisponibleOK = true;
-                        pedido.Items.ForEach(delegate(PedidoItem pi)
+                        pedido.Items.ForEach(delegate (PedidoItem pi)
                         {
                             //hago esta truchada para que si una vez da false no se pise con el true, y no puedo cortar la ejecucion del foreach
                             if (stockDisponibleOK)
@@ -774,7 +776,6 @@ namespace tiendapome.Servicios
             try
             {
                 
-            
                 //creamos nuevo pedido como ingresado   
                 Pedido nuevoPedido = this.PedidoCrear(datos.IdCliente);
 
@@ -849,10 +850,13 @@ namespace tiendapome.Servicios
                     nuevoPedido.IdPedidoMinorista = datos.IdPedidoMinorista;
                     nuevoPedido.NumeroPedidoMinorista = datos.NumeroPedidoMinorista;
 
+                    repository.PedidoReservarStock(nuevoPedido.Id);
+                    CacheManager.RemoveToCache(gobalKeyCache);
+
                     //Version OK pra cuando este funcionando todo ok
                     //nuevoPedido.Observaciones = string.Format("Falta de Stock - Numero Pedido: {0}", datos.NumeroPedidoMinorista);
                     //nuevoPedido.Estado = this.ObtenerObjeto<Estado>((int)ESTADOS.CANCELADO_);
-                    
+
                     return this.PedidoGrabar(nuevoPedido);
                 }
                 else
@@ -874,17 +878,16 @@ namespace tiendapome.Servicios
 
             Pedido pedido = this.PedidoObtener(idPedido);
 
-            //List<ItemListado> listado = new List<ItemListado>();
             int nroItem = 1;
             decimal precioUnitario = 0;
 
             registros.AppendLine("NroItem,Codigo,Cantidad,PrecioUnitario");
 
             pedido.Items.ToList<PedidoItem>()
-                .ForEach(delegate(PedidoItem pi)
+                .ForEach(delegate (PedidoItem pi)
                 {
                     pi.ItemProductos.ToList<PedidoItemProducto>()
-                        .ForEach(delegate(PedidoItemProducto pip)
+                        .ForEach(delegate (PedidoItemProducto pip)
                         {
                             if (pip.Cantidad > 0)
                             {
@@ -892,26 +895,15 @@ namespace tiendapome.Servicios
 
                                 registros.AppendLine(string.Format("{0},{1},{2},{3}", nroItem, pi.Producto.Codigo, pip.Cantidad, string.Format("{0} {1:0.00}", pedido.Moneda, precioUnitario)));
 
-
-                                //listado.Add(new ItemListado()
-                                //{
-                                //    Campo1 = nroItem.ToString(),
-                                //    Campo2 = pi.Producto.Codigo.ToString(),
-                                //    Campo3 = pip.Cantidad.ToString(),
-                                //    Campo4 = string.Format("{0} {1:0.00}", pedido.Moneda, precioUnitario)
-                                //});
                                 nroItem++;
 
                             }
                         });
                 });
 
+            pedido.ExsportoEtiquetasCSV = true;
+            this.PedidoGrabar(pedido);
 
-            //IDictionary datos = new Hashtable();
-
-            //datos.Add("Listado", listado);
-
-            
             return registros.ToString();
         }
     }    
