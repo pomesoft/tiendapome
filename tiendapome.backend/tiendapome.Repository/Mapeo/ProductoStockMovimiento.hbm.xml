@@ -6,8 +6,8 @@
         </id>
         <property name="IdProductoStock" column="IdProductoStock" />
         <property name="Fecha" column="Fecha" />
-        <property name="IdTipoMovimiento" column="IdTipoMovimiento" />
-        <property name="Cantidad" column="Cantidad" />
+		<many-to-one name="TipoMovimiento" column="IdTipoMovimiento" class="tiendapome.Entidades.TipoMovimientoStock" />
+		<property name="Cantidad" column="Cantidad" />
         <property name="Observaciones" column="Observaciones" />        
     </class>
 </hibernate-mapping>

@@ -77,6 +77,7 @@
     <Compile Include="Provincia.cs" />
     <Compile Include="ProductoGrupoOrden.cs" />
     <Compile Include="SituacionIVA.cs" />
+    <Compile Include="TipoMovimientoStock.cs" />
     <Compile Include="VentaTipoComprobante.cs" />
     <Compile Include="SubcategoriaMedida.cs" />
     <Compile Include="SubcategoriaMerge.cs" />

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping assembly="tiendapome.Entidades" namespace="tiendapome.Entidades" xmlns="urn:nhibernate-mapping-2.2">
+    <class name="tiendapome.Entidades.TipoMovimientoStock" table="tp_TiposMovimientoStock" lazy="false">
+        <id name="Id" column="IdTipoMovimiento">
+            <generator class="identity" />
+        </id>
+        <property name="Descripcion" column="Descripcion" />
+        <property name="Vigente" column="Vigente" />
+        <property name="Tipo" column="Tipo" />
+    </class>
+</hibernate-mapping>
