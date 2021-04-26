@@ -8,11 +8,27 @@ exec [dbo].[sp_ProcesarMovimientosStockDetalle]
 
 exec [dbo].[sp_ProcesarMovimientosStockInidicadores]
 
-select * from [dbo].[dm_MovimientosStock] where codigo = 997 order by Fecha
+select * from [dbo].[dm_MovimientosStock] where Codigo = 5897 order by Fecha
 
-select * from dbo.dm_MovimientosStockInidicadores where  StockFisico <> StockFisicoCalculado and IdProductoStock = 7308
-select * from tp_ProductoStockMovimientos_BKP where IdProductoStock = 7308
-select * from [dbo].[dm_MovimientosStockDetalle] where IdProductoStock = 7308 order by Orden, Fecha
+
+
+
+declare @idProductoStock int
+set @idProductoStock = 7402
+
+select * from dbo.dm_MovimientosStockInidicadores where  StockFisico <> StockFisicoCalculado and IdProductoStock = @idProductoStock
+
+select * from [dbo].[dm_MovimientosStockDetalle] where IdProductoStock = @idProductoStock order by Fecha, Orden
+select * from tp_ProductoStock where IdProductoStock = @idProductoStock
+--select * from tp_ProductoStockMovimientos_BKP where IdProductoStock = @idProductoStock
+select * from tp_ProductoStockMovimientos where IdProductoStock = @idProductoStock
+select p.Fecha, p.Numero, e.Descripcion as Estado, p.IdCliente, pip.*  from tp_Pedidos p inner join tp_Estados e on p.IdEstado = e.IdEstado inner join tp_PedidoItems pit on p.IdPedido = pit.IdPedido inner join tp_PedidoItemProducto pip on pit.IdPedidoItem = pip.IdPedidoItem 
+where IdProductoStock = @idProductoStock and pip.Cantidad > 0 and p.IdEstado in (2, 3, 4, 9)
+
+select  dvt.Descripcion as Movimiento, dv.Fecha, -1 as Pedido, 'Movimiento SIN Pedido - ' + dvt.Descripcion + ': ' + str(dv.Numero), 0 as IdMedida, '' as Medida, dvi.Cantidad  
+from tp_DocumentosVenta dv inner join tp_VentaTiposComprobante dvt on dv.IdTipo = dvt.IdVentaTipoComprobante inner join tp_DocumentoVentaItems dvi on  dv.IdVenta = dvi.IdVenta 
+where dvi.IdProductoStock = @idProductoStock  and isnull(dvi.IdPedidoItemProducto, 0) = 0
+
 
 
 

@@ -399,6 +399,7 @@ export class PedidoslistComponent implements OnInit {
             item: Pedido
       ) {
             event.preventDefault();
+            item.ExsportoEtiquetasCSV = true;
             this._pedidoService.exportListadoEtiquetas(item.Id);
       }
 

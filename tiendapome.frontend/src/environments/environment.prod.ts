@@ -2,7 +2,7 @@ export const environment = {
     production: true
 };
 export const ApiURL = {
-    url: ''
+    url: 'https://tradingjoyas.com/api/'
 }
 
 /*
@@ -24,3 +24,4 @@ url: 'https://hannajoyasmayorista.com.ar/api/'
 
  
 
+ 
