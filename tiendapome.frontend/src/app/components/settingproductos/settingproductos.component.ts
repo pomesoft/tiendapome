@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { NotifierService } from 'node_modules/angular-notifier';
 
 import { Tipo } from '../../models/tipo';
-import { Producto, ProductoGrupoOrden, ProductoList, ProductoStock } from '../../models/producto';
+import { MovimientoStockDetalle, Producto, ProductoGrupoOrden, ProductoList, ProductoStock, ProductoStockMovimiento, TipoMovimientoStock } from '../../models/producto';
 import { Categoria } from '../../models/categoria';
 import { Subcategoria } from '../../models/subcategoria';
 import { ListaPrecio } from '../../models/listaPrecio';
@@ -28,6 +28,8 @@ export class SettingproductosComponent implements OnInit {
       public menu: Array<Tipo>;
 
       public productoSeleccionado: Producto;
+      public codigoSeleccionado: string = '';
+      public productoStockSeleccionado: ProductoStock;
       public archivoFoto: Array<File>;
       public productoFoto: Producto;
 
@@ -36,11 +38,14 @@ export class SettingproductosComponent implements OnInit {
       public subCategoriaSeleccionada: Subcategoria;
 
       public grupoOrdenSeleccionado: ProductoGrupoOrden = new ProductoGrupoOrden();;
+      public movimientoStockSeleccionado: ProductoStockMovimiento = new ProductoStockMovimiento();
 
       public listaPrecios: Array<ListaPrecio>;
       public listaCategorias: Array<Categoria>;
       public listaSubcategorias: Array<Subcategoria>;
-      public listaGruposOrden: Array<ProductoGrupoOrden>
+      public listaGruposOrden: Array<ProductoGrupoOrden>;
+      public listaTiposMovimientoStock: Array<TipoMovimientoStock>;
+      public listaMovimientosStock: Array<MovimientoStockDetalle>;
 
       public files: Set<File> = new Set();
 
@@ -151,13 +156,17 @@ export class SettingproductosComponent implements OnInit {
                         response => {
                               if (response)
                                     this.listaGruposOrden = response;
-                              console.log('this.listaGruposOrden', this.listaGruposOrden);
+                              this.getTiposMovimientoStock();
                         },
                         error => {
                               console.log("ERROR::");
                               console.log(<any>error);
                         }
                   );
+      }
+
+      getTiposMovimientoStock() {
+            this.listaTiposMovimientoStock = this._productosServices.getTiposMovimientosStock();
       }
 
       mostrarProductos(
@@ -390,7 +399,6 @@ export class SettingproductosComponent implements OnInit {
       }
 
 
-
       onChangeListaTipo(
             option: any,
       ) {
@@ -472,7 +480,6 @@ export class SettingproductosComponent implements OnInit {
 
       guardarProducto(item: Producto) {
             return new Promise((resolve, reject) => {
-                  debugger;
                   this._productosServices.saveProducto(item).subscribe(
                         response => {
                               this.procesando = false;
@@ -538,6 +545,8 @@ export class SettingproductosComponent implements OnInit {
 
             var prodNuevo = new Producto(-1, '', '', new Subcategoria(-1), 0, lp, 0, 0, '', '', 0);
             this.productos.push(prodNuevo);
+
+            this.numeroPagina = 1;
       }
 
       cancelar(
@@ -597,6 +606,8 @@ export class SettingproductosComponent implements OnInit {
                                           this.productoSeleccionado.GrupoOrden = response;
 
                                           this.grupoOrdenSeleccionado = new ProductoGrupoOrden();
+                                          this.procesando = false;
+                                          $('#modalGrupoOrden').modal('hide');
 
                                           this._productosServices.getGruposOrden()
                                                 .subscribe(
@@ -604,16 +615,87 @@ export class SettingproductosComponent implements OnInit {
                                                             if (resp)
                                                                   this.listaGruposOrden = resp;
                                                             this.guardarProducto(this.productoSeleccionado);
-                                                            this.procesando = false;
-                                                            $('#modalGrupoOrden').modal('hide');
                                                       },
                                                       error => {
-                                                            this.procesando = false;
-                                                            $('#modalGrupoOrden').modal('hide');
                                                             console.log("ERROR::");
                                                             console.log(<any>error);
                                                       }
                                                 );
+                                    }
+                              },
+                              error => {
+                                    this.procesando = false;
+                                    $('#modalGrupoOrden').modal('hide');
+                                    console.log(<any>error);
+                              }
+                        );
+            }
+      }
+
+
+      onChangeListaTipoMovimientoStock(
+            option: any
+      ) {
+            this.movimientoStockSeleccionado.TipoMovimiento = this.listaTiposMovimientoStock.find(item => item.Id === +option.target.value);
+      }
+
+      onClickMovimientoStock(
+            event: any,
+            itemStock: ProductoStock,
+            codigo: string
+      ) {
+            event.preventDefault();
+            this.movimientoStockSeleccionado = new ProductoStockMovimiento();
+            this.movimientoStockSeleccionado.IdProductoStock = itemStock.Id;
+            this.productoStockSeleccionado = itemStock;
+            this.codigoSeleccionado = codigo;
+
+            console.log('this.movimientoStockSeleccionado', this.movimientoStockSeleccionado)
+
+            this._productosServices.getProductoMovimientosStock(itemStock.Id)
+                  .subscribe(
+                        resp => {
+                              if (resp)
+                                    this.listaMovimientosStock = resp;
+                              else
+                                    this.listaMovimientosStock = new Array<MovimientoStockDetalle>();
+                              console.log('this.listaMovimientosStock', this.listaMovimientosStock);
+
+                              $('#modalMovimientoStock').modal('show');
+                        },
+                        error => {
+                              console.log("ERROR::");
+                              console.log(<any>error);
+                        }
+                  );
+
+      }
+
+      onClickGuardarMovimientoStock(
+            event: any
+      ) {
+            event.preventDefault();
+
+            if (this.movimientoStockSeleccionado && this.movimientoStockSeleccionado.TipoMovimiento.Id != -1 && this.movimientoStockSeleccionado.Cantidad > 0) {
+                  this.procesando = true;
+                  this._productosServices.saveMovimientoStock(this.movimientoStockSeleccionado)
+                        .subscribe(
+                              (response: Producto) => {
+                                    if (response) {
+                                          console.log('response', response);
+
+                                          this.procesando = false;
+                                          $('#modalMovimientoStock').modal('hide');
+
+                                          for (let i = 0; i < this.productos.length; i++) {
+                                                if (this.productos[i].Id == response.Id) {
+                                                      this.productos[i] = response;
+                                                }
+                                          }
+                                          // if (this.textoBuscarProducto != '')
+                                          //       this.busquedaProducto(event);
+                                          // else
+                                          //       this.obtenerProductos(this.numeroPagina);
 
                                     }
                               },
@@ -624,6 +706,13 @@ export class SettingproductosComponent implements OnInit {
                               }
                         );
             }
+      }
+
+      onClickDescargarMovimientoStock(
+            event: any
+      ) {
+            event.preventDefault();
+            this._productosServices.exportMovimientosStockDetalle(this.movimientoStockSeleccionado.IdProductoStock);
       }
 
       public showNotification(type: string, message: string): void {

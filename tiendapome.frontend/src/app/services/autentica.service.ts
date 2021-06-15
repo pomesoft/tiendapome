@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { isNullOrUndefined } from "util";
 
-import { Cliente } from '../models/cliente';
+import { Cliente, Login } from '../models/cliente';
 import { PouchDBServices } from './pouch-db.services';
 import { GlobalService } from './global.service';
 import { PedidoService } from './pedido.service';
@@ -32,11 +32,11 @@ export class AutenticaService {
       }
 
       login(
-            usuario: string,
-            clave: string
+            loginData: Login
       ): Observable<any> {
+            let params = JSON.stringify(loginData);
             let headers = new HttpHeaders().set('Content-Type', 'application/json');
-            return this._http.get(this.url + 'login/' + usuario + '/' + clave, { headers: headers });
+            return this._http.post(this.url + 'postlogin', params, { headers: headers });
       }
 
       logout(): Observable<any> {
@@ -67,7 +67,7 @@ export class AutenticaService {
 
       getClienteLoguin(): Cliente {
             let cliente_string = localStorage.getItem("dboCLI");
-            if ( !isNullOrUndefined(cliente_string)) {
+            if (!isNullOrUndefined(cliente_string)) {
                   let cliente: Cliente = JSON.parse(cliente_string);
                   return cliente;
             } else {

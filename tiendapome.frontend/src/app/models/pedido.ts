@@ -78,5 +78,7 @@ export class PedidoItemProducto {
     Medida: Medida;
     Cantidad: number;
     IdEstadoItem: number;
+    StockReservado: number;
+    StockDisponible: number;
     constructor() { }
 }

@@ -56,7 +56,6 @@ export class ProductosComponent implements OnInit {
 
 
       public subcategoriaEnPromo: number = 101;
-      public porcentajeEnPromo: number = 12;
 
       public toLoad: boolean = false;
 
@@ -473,7 +472,7 @@ export class ProductosComponent implements OnInit {
       ) {
             if (this.verificarStock && prodStock.CantidadPedido > prodStock.StockDisponible) {
                   prodStock.CantidadPedido = prodStock.Stock;
-                  this.showAlertModalMedidas('warning', prodStock.Id, 'Stock disponible: ' + prodStock.Stock.toString());
+                  this.showAlertModalMedidas('warning', prodStock.Id, 'Stock disponible: ' + prodStock.StockDisponible.toString());
             }
       }
       irAlCarrito($event: any) {

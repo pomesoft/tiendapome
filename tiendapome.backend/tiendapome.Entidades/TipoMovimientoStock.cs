@@ -7,6 +7,8 @@ using Newtonsoft.Json;
 
 namespace tiendapome.Entidades
 {
+
+
     [JsonObject]
     public class TipoMovimientoStock : EntidadBaseParametrica
     {

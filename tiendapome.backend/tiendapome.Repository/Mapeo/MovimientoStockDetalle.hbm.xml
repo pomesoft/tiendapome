@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping assembly="tiendapome.Entidades" namespace="tiendapome.Entidades" xmlns="urn:nhibernate-mapping-2.2">
+    <class name="tiendapome.Entidades.MovimientoStockDetalle" table="MovimientoStockDetalle" >
+        <id name="Id" column="NroFila">
+        </id>
+		<property name="Tipo" column="Tipo" />
+		<property name="Categoria" column="Categoria" />
+		<property name="Subcategoria" column="Subcategoria" />
+		<property name="Codigo" column="Codigo" />
+		<property name="IdProductoStock" column="IdProductoStock" />
+		<property name="Orden" column="Orden" />
+		<property name="Movimiento" column="Movimiento" />
+		<property name="Fecha" column="Fecha" />
+		<property name="Pedido" column="Pedido" />
+		<property name="Observaciones" column="Observaciones" />
+		<property name="IdMedida" column="IdMedida" />
+		<property name="Medida" column="Medida" />
+		<property name="Cantidad" column="Cantidad" />
+    </class>
+
+	<sql-query name="MovimientoStockDetalle">
+		<return alias="MovimientoStockDetalle" class="tiendapome.Entidades.MovimientoStockDetalle" />
+		exec [sp_ProcesarMovimientosStock] @idProductoStock = :idProductoStock
+	</sql-query>
+</hibernate-mapping>

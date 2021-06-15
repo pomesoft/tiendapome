@@ -78,3 +78,13 @@ export class Provincia {
             this.Id = -1;
       }
 }
+
+
+export class Login {
+      Usuario: string;
+      Clave: string;
+      constructor() {
+            this.Usuario = '';
+            this.Clave = '';
+      }
+}

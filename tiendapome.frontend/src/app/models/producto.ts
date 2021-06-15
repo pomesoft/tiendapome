@@ -33,7 +33,8 @@ export class Producto {
         public StockReservado?: number,
         public ProductoStock?: Array<ProductoStock>,
         public IdDocumentoVenta?: number,
-        public GrupoOrden?: ProductoGrupoOrden
+        public GrupoOrden?: ProductoGrupoOrden,
+        public PrecioUnitarioFinalSinDescuento?: number
     ) {
         this.ProductoStock = new Array<ProductoStock>()
         this.Stock = 0;
@@ -74,5 +75,53 @@ export class ProductoGrupoOrden {
     }
 }
 
+export class TipoMovimientoStock {
+    public Id: number;
+    public Descripcion: string;
+    public Vigente: boolean;
+    public Tipo: number;
+    constructor() {
+        this.Id = -1;
+    }
+}
+
+export class ProductoStockMovimiento {
+    public Id: number;
+    public Descripcion: string;
+    public IdProductoStock: number;
+    public Fecha: Date;
+    public TipoMovimiento: TipoMovimientoStock;
+    public Cantidad: number;
+    public Observaciones: string;
+    constructor() {
+        this.Id = -1;
+        this.IdProductoStock = -1;
+        this.TipoMovimiento = new TipoMovimientoStock();
+        this.Cantidad = 0;
+    }
+}
+
+
+
+export class MovimientoStockDetalle {
+    public Id: number;
+    public Tipo: string;
+    public Categoria: string;
+    public Subcategoria: string;
+    public Codigo: string;
+    public IdProductoStock: string;
+    public Orden: string;
+    public Movimiento: string;
+    public Fecha: string;
+    public Pedido: string;
+    public Observaciones: string;
+    public IdMedida: string;
+    public Medida: string;
+    public Cantidad: string;
+
+    constructor() {
+        this.Id = -1;
+    }
+}
 
 

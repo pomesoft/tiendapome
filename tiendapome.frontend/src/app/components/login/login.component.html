@@ -40,12 +40,12 @@
                                                 <div class="form-group mb-2">
                                                       <input type="email" class="form-control" id="exampleInputEmail"
                                                             aria-describedby="emailHelp" placeholder="Email..."
-                                                            [(ngModel)]="usuario">
+                                                            [(ngModel)]="loginData.Usuario">
                                                 </div>
                                                 <div class="form-group mb-2">
                                                       <input type="password" class="form-control"
                                                             id="exampleInputPassword" placeholder="Contraseña..."
-                                                            [(ngModel)]="clave">
+                                                            [(ngModel)]="loginData.Clave">
                                                 </div>
                                                 <div *ngIf="!ingresando">
                                                       <a href="#" class="btn btn-primary btn-user btn-block"

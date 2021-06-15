@@ -41,7 +41,7 @@ export class DocumentoVentaService {
         let paramDocsPendientes = '&tipoListado=' + tipoListado;
 
         let urlAPI: string = this.url + 'venta/listpaginado?' + paramsPagina + paramsRegistros + paramDesde + paramHasta + paramUsuario + paramCliente + paramDocsPendientes;
-        //console.log(urlAPI);
+        console.log(urlAPI);
 
         return this._http.get<DocumentoVentaList>(urlAPI, { headers: this.headers });
     }
@@ -83,6 +83,7 @@ export class DocumentoVentaService {
     }
 
     saveNotaPedidoFacturarPedido(docVenta: DocumentoVenta): Observable<DocumentoVenta> {
+        console.log('saveNotaPedidoFacturarPedido() => docVenta', docVenta);
         let params = JSON.stringify(docVenta);
         let headers = new HttpHeaders().set('Content-Type', 'application/json');
         return this._http.post<DocumentoVenta>(this.url + 'venta/facturarpedido', params, { headers: headers });
@@ -118,7 +119,7 @@ export class DocumentoVentaService {
     printNotaPedido(
         idVenta: number
     ) {
-        let urlAPI: string = 'https://tradingjoyas.com/backend/api/venta/imprimirnp?idVenta=' + idVenta
+        let urlAPI: string = this.url + 'venta/imprimirnp?idVenta=' + idVenta
         //let urlAPI: string = this.url + 'venta/imprimirnp?idVenta=' + idVenta
         console.log(urlAPI);
         window.open(urlAPI, '_blank');
@@ -129,7 +130,7 @@ export class DocumentoVentaService {
         fechaDesde: string,
         fechaHasta: string
     ) {
-        let urlAPI: string = 'https://tradingjoyas.com/backend/api/venta/exportctactetopdf?fechaDesde=' + fechaDesde + '&fechaHasta=' + fechaHasta + '&idCliente=' + idCliente;
+        let urlAPI: string = this.url + 'venta/exportctactetopdf?fechaDesde=' + fechaDesde + '&fechaHasta=' + fechaHasta + '&idCliente=' + idCliente;
         console.log(urlAPI);
         window.open(urlAPI, '_blank');
     }

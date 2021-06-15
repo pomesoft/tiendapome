@@ -39,7 +39,6 @@ import { NavbarcarritopublicoComponent } from './components/navbarcarritopublico
 import { PedidoslistclientesComponent } from './components/pedidoslistclientes/pedidoslistclientes.component';
 import { MantenimientoComponent } from './components/mantenimiento/mantenimiento.component';
 
-
 /**
  * Custom angular notifier options
  */

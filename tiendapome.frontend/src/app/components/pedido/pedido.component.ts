@@ -86,7 +86,7 @@ export class PedidoComponent implements OnInit {
                               //console.log('pedido', this.pedido);
 
                               // si el pedido esta EN_PROCESO no se verifica el stock
-                              if (localStorage.getItem("verificarStock") != null && this.pedido.Estado.Id < 3) {
+                              if (localStorage.getItem("verificarStock") != null) {
                                     this.verificarStock = localStorage.getItem("verificarStock") == 'SI';
                               }
                               //solo para los pedidos que estan en Solicitados se muestran todas las medidas, para el resto de los estado se muestra boton ocultar/mostrar
@@ -297,15 +297,14 @@ export class PedidoComponent implements OnInit {
 
             if (this.verificarStock) {
                   let prodStock: ProductoStock = item.Producto.ProductoStock.filter(item => item.Id === itemMedida.IdProductoStock)[0];
-                  if (itemMedida.Cantidad < prodStock.StockDisponible) {
-                        itemMedida.Cantidad++;
+
+                  itemMedida.Cantidad++;
+                  if (this.verificarCantidadPorMedida(itemMedida, item)) {
                         this.itemModificado(item);
-                        this.showAlert('warning', item.Id, 'Guardar cambios...');
-                  } else {
-                        this.showAlertModalMedidas('warning', itemMedida.Id, 'Stock disponible: ' + prodStock.StockDisponible.toString());
                   }
             } else {
                   itemMedida.Cantidad++;
+                  return true;
             }
 
       }
@@ -323,19 +322,33 @@ export class PedidoComponent implements OnInit {
             itemMedida: PedidoItemProducto,
             item: PedidoItem
       ) {
+
             if (this.verificarStock) {
                   let prodStock: ProductoStock = item.Producto.ProductoStock.filter(item => item.Id === itemMedida.IdProductoStock)[0];
-                  if (itemMedida.Cantidad <= prodStock.StockDisponible) {
+
+                  let stockDisponibleValida: number = 0;
+                  if (this.pedido.Estado.Id === 1) {
+                        //si el pedido esta INGRESADO se valida contra el Stock Disponible del Producto
+                        stockDisponibleValida = prodStock.StockDisponible;
+                  } else {
+                        // Despues que el pedido ya fue SOLICITADO se valida contra el Stock Disponible del pedido (tabla: tp_PedidoItemProducto)
+                        stockDisponibleValida = itemMedida.StockDisponible;
+                  }
+
+                  if (itemMedida.Cantidad <= stockDisponibleValida) {
                         this.itemModificado(item);
                         this.showAlert('warning', item.Id, 'Guardar cambios...');
+                        return true;
                   }
                   else {
-                        itemMedida.Cantidad = prodStock.Stock;
-                        this.showAlertModalMedidas('warning', itemMedida.Id, 'Stock disponible: ' + prodStock.StockDisponible.toString());
+                        itemMedida.Cantidad = stockDisponibleValida;
+                        this.showAlertModalMedidas('warning', itemMedida.Id, 'Stock disponible: ' + stockDisponibleValida.toString());
+                        return false;
                   }
             } else {
                   this.itemModificado(item);
                   this.showAlert('warning', item.Id, 'Guardar cambios...');
+                  return true;
             }
       }
 
@@ -416,8 +429,6 @@ export class PedidoComponent implements OnInit {
       }
 
 
-
-
       registrarEstadoItem(
             $event: any,
             item: PedidoItem,
@@ -425,12 +436,17 @@ export class PedidoComponent implements OnInit {
       ) {
             $event.preventDefault();
 
+            item.ItemProductos.forEach(itemProd => {
+                  if (itemProd.Cantidad > 0 && !this.verificarCantidadPorMedida(itemProd, item))
+                        return;
+            });
+
             item.EstadoItem = estadoItem;
             this._pedidoServices.savePedidoItemCambioEstado(item).subscribe(
                   (response: PedidoItem) => {
                         if (response) {
                               this.showAlert('success', item.Id, 'El ítem se actualizó correctamente.');
-                              
+
                               let _total: number = 0;
 
                               this.pedido.Items.forEach(pi => {

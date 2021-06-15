@@ -230,7 +230,7 @@
                                                     [ngClass]="{ 'border border-success text-success': ctaCteSinDeuda,
                                                                 'border border-danger text-danger': !ctaCteSinDeuda }">
                                                     <span class="h4 mr-2">Saldo: </span>
-                                                    <span class="h3 mr-2">USD {{saldoCC | number: '1.2-2'}}</span>
+                                                    <span class="h3 mr-2">{{monedaVenta}} {{saldoCC | number: '1.2-2'}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -299,7 +299,7 @@
                                                                                 <i class="fas fa-fw fa-edit"></i>
                                                                             </span>
                                                                         </a>
-                                                                        <a href="#"
+                                                                        <a href="#" *ngIf="item.TipoComprobante.Id != 6"
                                                                             class="btn btn-warning btn-icon-split btn-sm mr-1"
                                                                             data-toggle="tooltip" data-placement="top"
                                                                             title="Exportr a PDF"
@@ -429,13 +429,13 @@
                                                             <span>{{item.Campo3}}</span>
                                                         </td>
                                                         <td>
-                                                            <span>{{item.Campo4 | number: '1.2-2'}}</span>
+                                                            <span>{{item.Campo4}}</span>
                                                         </td>
                                                         <td>
-                                                            <span>{{item.Campo5 | number: '1.2-2'}}</span>
+                                                            <span>{{item.Campo5}}</span>
                                                         </td>
                                                         <td>
-                                                            <span>{{item.Campo6 | number: '1.2-2'}}</span>
+                                                            <span>{{item.Campo6}}</span>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -458,7 +458,7 @@
                                             <div class="col-4">
                                                 <div class="shadow bg-white rounded p-2 mb-3 w-100 text-right ">
                                                     <span class="h4">Total: </span>
-                                                    <span class="h3">USD {{saldoCOB | number: '1.2-2'}}</span>
+                                                    <span class="h3">{{monedaVenta}} {{saldoCOB | number: '1.2-2'}}</span>
                                                 </div>
                                             </div>
                                         </div>

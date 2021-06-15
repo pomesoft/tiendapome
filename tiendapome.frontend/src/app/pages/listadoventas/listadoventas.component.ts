@@ -10,10 +10,12 @@ import { NotifierService } from 'angular-notifier';
 import { AutenticaService } from 'src/app/services/autentica.service';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { DocumentoVentaService } from '../../services/venta.service';
+import { ParametroServices } from '../../services/parametro.services';
 
 import { Cliente } from '../../models/cliente';
 import { DocumentoVenta, DocumentoVentaItem, DocumentoVentaList, VentaTipoComprobante } from '../../models/documentoVenta';
 import { ListadoCtaCte } from '../../models/itemListado';
+import { Parametro } from 'src/app/models/parametro';
 
 
 declare var $: any;
@@ -67,15 +69,17 @@ export class ListadoventasComponent implements OnInit {
 
     public procesando: boolean = false;
 
+    public monedaVenta: string = '';
+
     constructor(
         private _router: Router,
         private _route: ActivatedRoute,
         private _autenticaServices: AutenticaService,
         private _documentoVentaService: DocumentoVentaService,
         private _clienteService: ClienteService,
+        private _parametroService: ParametroServices,
         private calendar: NgbCalendar,
         private _notifier: NotifierService
-
     ) {
 
 
@@ -95,6 +99,8 @@ export class ListadoventasComponent implements OnInit {
         };
 
         this.usuarioLogin = this._autenticaServices.getClienteLoguin();
+
+        this.monedaVenta = this._parametroService.getParametro_MonedaVenta();
 
         this._route.params.subscribe((params: Params) => {
             if (params.cargarListados) {
@@ -149,7 +155,7 @@ export class ListadoventasComponent implements OnInit {
 
     getResumenSaldo(pagina: number) {
         debugger;
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
 
             this._documentoVentaService
                 .getResumenSaldoCtaCte()
@@ -176,7 +182,7 @@ export class ListadoventasComponent implements OnInit {
 
 
     getSaldoInicialCliente() {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
 
             if (!this.clienteSeleccionado) {
                 resolve();
@@ -200,7 +206,7 @@ export class ListadoventasComponent implements OnInit {
     }
 
     getSaldoActualCliente() {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
 
             if (!this.clienteSeleccionado) {
                 resolve();
@@ -222,7 +228,7 @@ export class ListadoventasComponent implements OnInit {
     }
 
     getCuentaCorriente(pagina: number) {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
 
             let idCliente: number = -1;
 
@@ -267,7 +273,7 @@ export class ListadoventasComponent implements OnInit {
     }
 
     getCobranzas(pagina: number) {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
 
             let idCliente: number = -1;
             if (this.clienteSeleccionado)
@@ -306,7 +312,7 @@ export class ListadoventasComponent implements OnInit {
 
 
     getComprobantesAnulados(pagina: number) {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
 
             let idCliente: number = -1;
             if (this.clienteSeleccionado)
@@ -334,7 +340,7 @@ export class ListadoventasComponent implements OnInit {
     }
 
     getClientes() {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
 
             this._clienteService
                 .getClientes()
@@ -382,10 +388,10 @@ export class ListadoventasComponent implements OnInit {
     buscarClientes(
         buscar: string
     ): Observable<any> {
-        const lc = of(this.listadoClientes.filter(item=>{
-            return (item.NombreFantasia!=null && item.NombreFantasia.toLowerCase().includes(buscar.toLowerCase()))
-                || (item.Apellido!=null && item.Apellido.toLowerCase().includes(buscar.toLowerCase()))
-                || (item.Nombre!=null && item.Nombre.toLowerCase().includes(buscar.toLowerCase()))
+        const lc = of(this.listadoClientes.filter(item => {
+            return (item.NombreFantasia != null && item.NombreFantasia.toLowerCase().includes(buscar.toLowerCase()))
+                || (item.Apellido != null && item.Apellido.toLowerCase().includes(buscar.toLowerCase()))
+                || (item.Nombre != null && item.Nombre.toLowerCase().includes(buscar.toLowerCase()))
                 || item.Codigo.toLowerCase().includes(buscar.toLowerCase())
                 || item.Email.toLowerCase().includes(buscar.toLowerCase());
         }));

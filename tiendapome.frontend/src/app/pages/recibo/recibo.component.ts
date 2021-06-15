@@ -11,6 +11,7 @@ import { ClienteService } from '../../services/cliente.service';
 import { DocumentoVentaService } from '../../services/venta.service';
 import { PedidoService } from '../../services/pedido.service';
 import { ArchivoService } from '../../services/archivo.service';
+import { ParametroServices } from '../../services/parametro.services';
 
 import { Cliente } from '../../models/cliente';
 import { DocumentoVenta, DocumentoVentaItem, DocumentoVentaList, DocumentoVentaObservaciones, VentaTipoComprobante } from '../../models/documentoVenta';
@@ -49,7 +50,9 @@ export class ReciboComponent implements OnInit {
     public saldoPendiente: number = 0;
 
     public archivoFoto: Array<File>;
-    
+
+    public monedaVenta: string = '';
+
     constructor(
         private _router: Router,
         private _route: ActivatedRoute,
@@ -57,6 +60,7 @@ export class ReciboComponent implements OnInit {
         private _documentoVentaService: DocumentoVentaService,
         private _clienteService: ClienteService,
         private _pedidoService: PedidoService,
+        private _parametroService: ParametroServices,
         private _archivoService: ArchivoService,
         private _notifier: NotifierService
     ) {
@@ -68,9 +72,13 @@ export class ReciboComponent implements OnInit {
             if (params.idDocumenotVenta)
                 this.IdDocumenotVenta = +params.idDocumenotVenta;
         });
+
         this.usuarioLogin = this._autenticaServices.getClienteLoguin();
+
         this.comprobantesPendientes = new Array<DocumentoVenta>()
         this.docVenta = new DocumentoVenta();
+
+        this.verificartMonedaVenta();
 
         this.inicializarControles();
     }
@@ -82,6 +90,8 @@ export class ReciboComponent implements OnInit {
         await this.getDocumentoVenta()
             .then(result => {
                 this.cargarDatos(<DocumentoVenta>result);
+                if (this.docVenta.Total == 0)
+                    this.verificartMonedaVenta();
             })
             .catch(err => {
                 this.showNotification('error', 'Ocurrió un error al cargar la página.');
@@ -209,7 +219,7 @@ export class ReciboComponent implements OnInit {
     }
 
     getSaldoCliente() {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
 
             let idCliente: number = -1;
 
@@ -231,18 +241,45 @@ export class ReciboComponent implements OnInit {
         });
     }
 
+
+    esMonedaVentaDolar(): boolean {
+        return this.monedaVenta == 'USD';
+    }
+
+    verificartMonedaVenta() {
+
+        this.monedaVenta = this._parametroService.getParametro_MonedaVenta();
+
+        if (this.monedaVenta == 'USD') {
+            this.docVenta.DolaresCotizaDolar = 1;
+            this.docVenta.EfectivoCotizaDolar = 0;
+            this.docVenta.ChequesCotizaDolar = 0;
+            this.docVenta.TarjetaCotizaDolar = 0;
+            this.docVenta.MercadoPagoCotizaDolar = 0;
+            this.docVenta.DepositoTransferCotizaDolar = 0;
+
+        } else {
+            this.docVenta.DolaresCotizaDolar = 0;
+            this.docVenta.EfectivoCotizaDolar = 1;
+            this.docVenta.ChequesCotizaDolar = 1;
+            this.docVenta.TarjetaCotizaDolar = 1;
+            this.docVenta.MercadoPagoCotizaDolar = 1;
+            this.docVenta.DepositoTransferCotizaDolar = 1;
+        }
+
+    }
+
     calcularTotales() {
 
         this.docVenta.Total = 0;
-        this.docVenta.DolaresCotizaDolar = 1;
+
+        let _dolares: number = 0;
+        if (this.docVenta.Dolares)
+            _dolares = (this.docVenta.Dolares * this.docVenta.DolaresCotizaDolar);
 
         let _efectivo: number = 0;
         if (this.docVenta.Efectivo > 0 && this.docVenta.EfectivoCotizaDolar > 0)
             _efectivo = (this.docVenta.Efectivo / this.docVenta.EfectivoCotizaDolar);
-
-        let _dolares: number = 0;
-        if (this.docVenta.Dolares)
-            _dolares = this.docVenta.Dolares;
 
         let _cheques: number = 0;
         if (this.docVenta.Cheques > 0 && this.docVenta.ChequesCotizaDolar > 0)
@@ -259,6 +296,7 @@ export class ReciboComponent implements OnInit {
         let _deposito: number = 0;
         if (this.docVenta.DepositoTransferencia > 0 && this.docVenta.DepositoTransferCotizaDolar > 0)
             _deposito = (this.docVenta.DepositoTransferencia / this.docVenta.DepositoTransferCotizaDolar);
+
 
         this.docVenta.Total = _efectivo + _dolares + _cheques + _tarjeta + _mercadoPago + _deposito
 
@@ -285,13 +323,13 @@ export class ReciboComponent implements OnInit {
                 if (response) {
 
                     this._archivoService.postArchivo('/venta/adjunto', this.archivoFoto[0].name, this.archivoFoto[0])
-                    .then(result => {
-                        this.inicializarControles();
-                    })
-                    .catch(err => {
-                        this.showNotification('error', 'No se pudo subir la foto.');
-                        console.log(err)
-                    });
+                        .then(result => {
+                            this.inicializarControles();
+                        })
+                        .catch(err => {
+                            this.showNotification('error', 'No se pudo subir la foto.');
+                            console.log(err)
+                        });
 
 
                     this.MensajeUsuario_OK = true;

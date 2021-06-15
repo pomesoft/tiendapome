@@ -34,6 +34,9 @@ namespace tiendapome.Entidades
         [JsonProperty("PrecioUnitarioFinal")]
         public virtual decimal PrecioUnitarioFinal { get; set; }
 
+        [JsonProperty("PrecioUnitarioFinalSinDescuento")]
+        public virtual decimal PrecioUnitarioFinalSinDescuento { get; set; }
+        
         [JsonProperty("PrecioUnitarioProcesado")]
         public virtual decimal PrecioUnitarioProcesado { get; set; }
 

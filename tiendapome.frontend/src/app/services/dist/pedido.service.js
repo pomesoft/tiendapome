@@ -98,7 +98,7 @@ var PedidoService = /** @class */ (function () {
         return this._http.get(this.url + 'catalogo/estados', { headers: headers });
     };
     PedidoService.prototype.exportListadoEtiquetas = function (idPedido) {
-        var urlAPI = 'https://backend.tradingjoyas.com/api/pedido/listadoetiquetas?idPedido=' + idPedido;
+        var urlAPI = 'https://tradingjoyas.com/backend/api/pedido/listadoetiquetas?idPedido=' + idPedido;
         console.log(urlAPI);
         window.open(urlAPI, '_blank');
     };

@@ -11,5 +11,5 @@ if(not exists(select * from tp_Parametros where Clave = 'VERSION_APP'))
 
 select * from tp_Parametros where Clave = 'VERSION_APP'
 /*
- update tp_Parametros set Valor = 'V_02.10' where Clave = 'VERSION_APP'
+ update tp_Parametros set Valor = 'V_02.30' where Clave = 'VERSION_APP'
 */

@@ -156,7 +156,13 @@
     <EmbeddedResource Include="Mapeo\ProductoGrupoOrden.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Mapeo\TipoMovimientoStock.hbm.xml" />
+    <EmbeddedResource Include="Mapeo\TipoMovimientoStock.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapeo\MovimientoStockDetalle.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mapeo\SubcategoriaDescuento.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

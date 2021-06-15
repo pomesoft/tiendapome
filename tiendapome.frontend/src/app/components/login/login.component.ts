@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ClienteService } from '../../services/cliente.service';
 import { PouchDBServices } from '../../services/pouch-db.services';
 
-import { Cliente } from '../../models/cliente';
+import { Cliente, Login } from '../../models/cliente';
 import { AutenticaService } from '../../services/autentica.service';
 import { PedidoService } from '../../services/pedido.service';
 import { Pedido } from '../../models/pedido';
@@ -18,8 +18,7 @@ declare var $: any;
 })
 export class LoginComponent implements OnInit {
 
-      public usuario: string;
-      public clave: string;
+      public loginData: Login = new Login();
 
       public mensajeError: string = '';
       public versionAPP: string = '';
@@ -33,10 +32,7 @@ export class LoginComponent implements OnInit {
             private _router: Router,
             private _clienteService: ClienteService,
             private _pedidoServices: PedidoService
-      ) {
-            this.usuario = '';
-            this.clave = '';
-      }
+      ) { }
 
       ngOnInit() {
             $("#alertError").hide();
@@ -48,46 +44,46 @@ export class LoginComponent implements OnInit {
       ) {
             $event.preventDefault();
 
-            if (this.usuario != '' && this.clave != '') {
+            if (this.loginData.Usuario != '' && this.loginData.Clave != '') {
                   this.ingresando = true;
-                  this._autenticaServices.login(this.usuario, this.clave).subscribe(
-                        response => {
+                  this._autenticaServices.login(this.loginData)
+                        .subscribe(
+                              response => {
+                                    if (response) {
+                                          this.clienteLogin = response;
+                                          this._autenticaServices.setClienteLoguin(this.clienteLogin);
 
-                              if (response) {
-                                    this.clienteLogin = response;
-                                    this._autenticaServices.setClienteLoguin(this.clienteLogin);
+                                          this._autenticaServices.registrarPedido(this.clienteLogin)
+                                                .then(result => {
+                                                      return this._autenticaServices.registrarUsuario(this.clienteLogin);
+                                                })
+                                                .then(result => {
+                                                      this.ingresando = false;
 
-                                    this._autenticaServices.registrarPedido(this.clienteLogin)
-                                          .then(result => {
-                                                return this._autenticaServices.registrarUsuario(this.clienteLogin);
-                                          })
-                                          .then(result => {
-                                                this.ingresando = false;
+                                                      if (this.clienteLogin.Rol.Id == 3) {
+                                                            let reqLanding_HashHref = localStorage.getItem('reqLanding_HashHref') ? localStorage.getItem('reqLanding_HashHref') : '';
 
-                                                if (this.clienteLogin.Rol.Id == 3) {
-                                                      let reqLanding_HashHref = localStorage.getItem('reqLanding_HashHref') ? localStorage.getItem('reqLanding_HashHref') : '';
-
-                                                      if (reqLanding_HashHref != '')
-                                                            this._router.navigate(['/' + reqLanding_HashHref.substr(1)]);
+                                                            if (reqLanding_HashHref != '')
+                                                                  this._router.navigate(['/' + reqLanding_HashHref.substr(1)]);
+                                                            else
+                                                                  this._router.navigate(['/carrito']);
+                                                      }
                                                       else
-                                                            this._router.navigate(['/carrito']);
-                                                }
-                                                else
-                                                      this._router.navigate(['/backoffice']);
-                                                      
-                                          })
-                                          .catch(err => {
-                                                this.ingresando = false;
-                                                console.error(err);
-                                          });
+                                                            this._router.navigate(['/backoffice']);
+
+                                                })
+                                                .catch(err => {
+                                                      this.ingresando = false;
+                                                      console.error(err);
+                                                });
+                                    }
+                              },
+                              error => {
+                                    this.ingresando = false;
+                                    this.showAlert(<any>error.error.Message);
+                                    console.error(<any>error);
                               }
-                        },
-                        error => {
-                              this.ingresando = false;
-                              this.showAlert(<any>error.error.Message);
-                              console.error(<any>error);
-                        }
-                  );
+                        );
             }
       }
 

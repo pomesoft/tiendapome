@@ -33,6 +33,10 @@ from tp_DocumentosVenta dv
 	inner join tp_DocumentoVentaItems dvi on dv.IdVenta = dvi.IdVenta 
 	inner join tp_Clientes c on c.IdCliente = dv.IdCliente
 where dvi.Descripcion like '%Comisión APP Tienda WEB%'
-	and dv.Fecha > '2021-01-01'
+	and dv.Fecha > '2021-04-01'
 order by c.IdCliente
+
+
+select * from olka.dbo.tp_pedidos where fecha > '2021-04-01' and NumeroPedidoProveedor > 0
+
 

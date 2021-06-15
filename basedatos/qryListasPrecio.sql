@@ -28,14 +28,14 @@ delete from tp_Clientes where IdCliente = 1399
 
 select * from tp_Clientes where idcliente in (1253, 1291) Email like '%piana%' 
 
-select * from tp_Clientes where Email like '%vallejosmaru@gmail.com%'
+select * from tp_Clientes where Email like '%plpalacios3%'
 
 --sandraaramayo@hotmail.com  /  1144779573
 
 /* asignacion de listas de precios a clientes*/
 drop table #tmp_ClienteListas
 
-select 1459 as IdCliente, lpc.idListaPrecio as IdListaProducto, lpc.idListaPrecioCliente as IdListaCliente
+select 1463 as IdCliente, lpc.idListaPrecio as IdListaProducto, lpc.idListaPrecioCliente as IdListaCliente
 into #tmp_ClienteListas
 from tp_ListasPrecioCliente lpc		
 where lpc.Codigo in ('M05', 'A1', 'P05', 'AB1_25', 'AB2_25', 'AB3_25', 'PP1220', 'A25', 'B25', 'C25', 

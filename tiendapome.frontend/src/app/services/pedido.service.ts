@@ -139,8 +139,9 @@ export class PedidoService {
       exportListadoEtiquetas(
             idPedido: number
       ) {
-            let urlAPI: string = 'https://backend.tradingjoyas.com/api/pedido/listadoetiquetas?idPedido=' + idPedido;
-            console.log(urlAPI);
+            let urlAPI: string = this.url +  'pedido/listadoetiquetas?idPedido=' + idPedido;
             window.open(urlAPI, '_blank');
       }
+
 }
+

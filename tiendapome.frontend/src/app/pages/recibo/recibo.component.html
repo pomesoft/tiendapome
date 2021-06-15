@@ -159,7 +159,7 @@
                                 <span>Cotización</span>
                             </div>
                             <div class="col-4 text-center">
-                                <span>USD</span>
+                                <span>{{monedaVenta}}</span>
                             </div>
                         </div>
                         <div class="row mt-2 ">
@@ -173,12 +173,16 @@
                                 </div>
                             </div>
                             <div class="col-3">
-
+                                <div class="input-group" *ngIf="!esMonedaVentaDolar()">
+                                    <input type="number" class="form-control text-right h4"
+                                        [(ngModel)]="docVenta.DolaresCotizaDolar" (ngModelChange)="calcularTotales()">
+                                </div>
                             </div>
                             <div class="col-3">
-                                <div class="shadow bg-white rounded p-2 mb-1 w-100 text-right ">
-                                    <span class="h4"
-                                        *ngIf="docVenta.Dolares>0">{{docVenta.Dolares | number: '1.2-2'}}</span>
+                                <div class="shadow bg-white rounded p-2 mb-1 w-100 text-right" 
+                                    *ngIf="docVenta.Dolares>0 && docVenta.DolaresCotizaDolar>0">
+                                    <span class="h4">
+                                        {{(docVenta.Dolares * docVenta.DolaresCotizaDolar) | number: '1.2-2'}}</span>
                                 </div>
                             </div>
                         </div>
@@ -193,7 +197,7 @@
                                 </div>
                             </div>
                             <div class="col-3">
-                                <div class="input-group">
+                                <div class="input-group" *ngIf="esMonedaVentaDolar()">
                                     <input type="number" class="form-control text-right h4"
                                         [(ngModel)]="docVenta.EfectivoCotizaDolar" (ngModelChange)="calcularTotales()">
                                 </div>
@@ -217,7 +221,7 @@
                                 </div>
                             </div>
                             <div class="col-3">
-                                <div class="input-group">
+                                <div class="input-group" *ngIf="esMonedaVentaDolar()">
                                     <input type="number" class="form-control text-right h4"
                                         [(ngModel)]="docVenta.TarjetaCotizaDolar" (ngModelChange)="calcularTotales()">
                                 </div>
@@ -241,7 +245,7 @@
                                 </div>
                             </div>
                             <div class="col-3">
-                                <div class="input-group">
+                                <div class="input-group" *ngIf="esMonedaVentaDolar()">
                                     <input type="number" class="form-control text-right h4"
                                         [(ngModel)]="docVenta.MercadoPagoCotizaDolar"
                                         (ngModelChange)="calcularTotales()">
@@ -267,7 +271,7 @@
                                 </div>
                             </div>
                             <div class="col-3">
-                                <div class="input-group">
+                                <div class="input-group" *ngIf="esMonedaVentaDolar()">
                                     <input type="number" class="form-control text-right h4"
                                         [(ngModel)]="docVenta.DepositoTransferCotizaDolar"
                                         (ngModelChange)="calcularTotales()">
@@ -292,7 +296,7 @@
                                 </div>
                             </div>
                             <div class="col-3">
-                                <div class="input-group">
+                                <div class="input-group" *ngIf="esMonedaVentaDolar()">
                                     <input type="number" class="form-control text-right h4"
                                         [(ngModel)]="docVenta.ChequesCotizaDolar" (ngModelChange)="calcularTotales()">
                                 </div>
@@ -328,7 +332,7 @@
                                 </div>
                             </div>
                             <div class="col-4 pt-2 text-right">
-                                <span class="h4">Saldo Cliente: USD</span>
+                                <span class="h4">Saldo Cliente: {{monedaVenta}}</span>
                             </div>
                             <div class="col-4 text-left">
                                 <div class="shadow bg-white rounded p-2 mb-3 w-100 text-right ">
@@ -356,7 +360,7 @@
                                 </div>
                             </div>
                             <div class="col-4 pt-2 text-right">
-                                <span class="h4">Total Recibo: USD</span>
+                                <span class="h4">Total Recibo: {{monedaVenta}}</span>
                             </div>
                             <div class="col-4">
                                 <div class="shadow bg-white rounded p-2 mb-3 w-100 text-right ">
@@ -369,7 +373,7 @@
 
                             </div>
                             <div class="col-4 pt-2 text-right">
-                                <span class="h4">Pendiente: USD</span>
+                                <span class="h4">Pendiente: {{monedaVenta}}</span>
                             </div>
                             <div class="col-4 text-left">
                                 <div class="shadow bg-white rounded p-2 mb-3 w-100 text-right ">

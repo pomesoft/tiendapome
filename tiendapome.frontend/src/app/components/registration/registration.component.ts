@@ -6,7 +6,7 @@ import { PouchDBServices } from '../../services/pouch-db.services';
 import { AutenticaService } from '../../services/autentica.service';
 import { ParametroServices } from '../../services/parametro.services';
 
-import { Cliente, Rol } from '../../models/cliente';
+import { Cliente, Login, Rol } from '../../models/cliente';
 import { Parametro } from '../../models/parametro';
 import { Pedido } from 'src/app/models/pedido';
 
@@ -167,45 +167,51 @@ export class RegistrationComponent implements OnInit {
 
             if (this.todoOK) {
                   this.ingresando = true;
-                  this._autenticaServices.login(this.cliente.Email, this.cliente.Codigo).subscribe(
-                        response => {
 
-                              if (response) {
-                                    this.clienteLogin = response;
-                                    this._autenticaServices.setClienteLoguin(this.clienteLogin);
+                  let loginData: Login = new Login();
+                  loginData.Usuario = this.cliente.Email;
+                  loginData.Clave = this.cliente.Codigo
 
-                                    this._autenticaServices.registrarPedido(this.clienteLogin)
-                                          .then(result => {
-                                                return this._autenticaServices.registrarUsuario(this.clienteLogin);
-                                          })
-                                          .then(result => {
-                                                this.ingresando = false;
-                                                if (this.clienteLogin.Rol.Id == 3) {
-                                                      let reqLanding_HashHref = localStorage.getItem('reqLanding_HashHref') ? localStorage.getItem('reqLanding_HashHref') : '';
+                  this._autenticaServices.login(loginData)
+                        .subscribe(
+                              response => {
 
-                                                      if (reqLanding_HashHref != '')
-                                                            this._router.navigate(['/' + reqLanding_HashHref.substr(1)]);
+                                    if (response) {
+                                          this.clienteLogin = response;
+                                          this._autenticaServices.setClienteLoguin(this.clienteLogin);
+
+                                          this._autenticaServices.registrarPedido(this.clienteLogin)
+                                                .then(result => {
+                                                      return this._autenticaServices.registrarUsuario(this.clienteLogin);
+                                                })
+                                                .then(result => {
+                                                      this.ingresando = false;
+                                                      if (this.clienteLogin.Rol.Id == 3) {
+                                                            let reqLanding_HashHref = localStorage.getItem('reqLanding_HashHref') ? localStorage.getItem('reqLanding_HashHref') : '';
+
+                                                            if (reqLanding_HashHref != '')
+                                                                  this._router.navigate(['/' + reqLanding_HashHref.substr(1)]);
+                                                            else
+                                                                  this._router.navigate(['/carrito']);
+                                                      }
                                                       else
-                                                            this._router.navigate(['/carrito']);
-                                                }
-                                                else
-                                                      this._router.navigate(['/backoffice']);
-                                          })
-                                          .catch(err => {
-                                                this.ingresando = false;
-                                                console.error(err);
-                                          });
+                                                            this._router.navigate(['/backoffice']);
+                                                })
+                                                .catch(err => {
+                                                      this.ingresando = false;
+                                                      console.error(err);
+                                                });
+                                    }
+                              },
+                              error => {
+                                    this.ingresando = false;
+                                    this.todoOK = false;
+                                    this.ocurrioError = true;
+                                    console.log(<any>error);
+                                    this.leyendaErrorRegistro = <any>error.error.Message;
+                                    $('#modalConfirmaRegistro').modal('show');
                               }
-                        },
-                        error => {
-                              this.ingresando = false;
-                              this.todoOK = false;
-                              this.ocurrioError = true;
-                              console.log(<any>error);
-                              this.leyendaErrorRegistro = <any>error.error.Message;
-                              $('#modalConfirmaRegistro').modal('show');
-                        }
-                  );
+                        );
             }
       }
 

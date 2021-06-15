@@ -10,6 +10,7 @@ import { ClienteService } from '../../services/cliente.service';
 import { DocumentoVentaService } from '../../services/venta.service';
 import { PedidoService } from 'src/app/services/pedido.service';
 import { ProductoServices } from '../../services/producto.services';
+import { ParametroServices } from '../../services/parametro.services';
 
 import { Cliente } from '../../models/cliente';
 import { DocumentoVenta, DocumentoVentaItem, DocumentoVentaList, VentaTipoComprobante } from '../../models/documentoVenta';
@@ -65,6 +66,7 @@ export class DocumentoventaComponent implements OnInit {
 
     public listadoClientes: Array<Cliente>;
 
+    public monedaVenta: string = '';
 
     constructor(
         private _router: Router,
@@ -74,6 +76,7 @@ export class DocumentoventaComponent implements OnInit {
         private _clienteService: ClienteService,
         private _pedidoService: PedidoService,
         private _productosServices: ProductoServices,
+        private _parametroService: ParametroServices,
         private _notifier: NotifierService
     ) {
 
@@ -87,7 +90,10 @@ export class DocumentoventaComponent implements OnInit {
             if (params.idDocumentoVenta)
                 this.IdDocumentoVenta = +params.idDocumentoVenta;
         });
+        
         this.usuarioLogin = this._autenticaServices.getClienteLoguin();
+        this.monedaVenta = this._parametroService.getParametro_MonedaVenta();
+
         this.docVentaItem = new DocumentoVentaItem();
         this.pedidosFinalizados = new Array<Pedido>()
         this.inicializarControles();

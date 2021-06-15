@@ -239,6 +239,78 @@ namespace tiendapome.API.Controllers
         }
 
         [HttpPost]
+        [Route("api/producto/movimientostock/")]
+        public IHttpActionResult PostMovimientoStock([FromBody] ProductoStockMovimiento dato)
+        {
+            try
+            {
+                ServiciosProductos servicio = new ServiciosProductos();
+                Producto resp = servicio.ProductoStockMovimientoGrabar(dato);
+                if (resp == null)
+                    return NotFound();
+                return Ok(resp);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/producto/movimientostock/{idProductoStock}")]
+        public IHttpActionResult GetMovimientosStockDetalle(int idProductoStock)
+        {
+            try
+            {
+                ServiciosProductos servicio = new ServiciosProductos();
+                List<MovimientoStockDetalle> resp = servicio.MovimientoStockDetalleObtener(idProductoStock);
+
+                if (resp == null)
+                    return NotFound();
+                return Ok(resp);
+            }
+            catch (Exception ex)
+            {
+                LoggerHelper.LogError(MethodBase.GetCurrentMethod(), ex);
+                return BadRequest(ex.GetExceptionOriginal().Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/producto/movimientostockcsv/{idProductoStock}")]
+        public HttpResponseMessage ExportarMovimientosStockDetalle(int idProductoStock)
+        {
+            HttpResponseMessage result = null;
+            try
+            {
+                ServiciosProductos servicio = new ServiciosProductos();
+                string registros = servicio.ExportarCSVMovimientoStockDetalle(idProductoStock);
+
+                //// Exportacion a Excel 
+                byte[] byteArray = Encoding.UTF8.GetBytes(registros);
+                MemoryStream reportStream = new MemoryStream(byteArray);
+
+                result = Request.CreateResponse(HttpStatusCode.OK);
+
+                result.Content = new StreamContent(reportStream);
+                result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/csv");
+                result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+                {
+                    FileName = string.Format("MovimientosStock_{0}_{1}.csv", idProductoStock.ToString(), DateTime.Now.ToString("yyyyMMdd"))
+                };
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LoggerHelper.LogError(MethodBase.GetCurrentMethod(), ex);
+                return Request.CreateResponse(HttpStatusCode.Gone);
+            }
+        }
+
+
+
+        [HttpPost]
         [Route("api/producto/foto")]
         public IHttpActionResult PostFoto()
         {
@@ -344,5 +416,10 @@ namespace tiendapome.API.Controllers
                 return Request.CreateResponse(HttpStatusCode.Gone);
             }
         }
+
+
+
+
+        
     }
 }
