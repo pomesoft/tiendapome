@@ -147,7 +147,18 @@ namespace tiendapome.Repository
                             where IdProductoStock in (select IdProductoStock from tp_ProductoStock where IdProducto = " + idProducto + "); ";
             this.ActualizarSQL(sql);
         }
-        
+
+
+        public List<MovimientoStockDetalle> MovimientoStockDetalleObtener(int idProductoStock)
+        {
+            ISession session = NHibernateSessionSingleton.GetSession();
+
+            IQuery query = session.GetNamedQuery("MovimientoStockDetalle")
+                                .SetParameter("idProductoStock", idProductoStock);
+
+            return query.List<MovimientoStockDetalle>().ToList();
+        }
+
     }
 }
 

@@ -26,3 +26,9 @@
     height: '100%';
     overflow-y: scroll;
 }
+
+.fuego{
+    width: 100%;
+    height: auto;
+    padding: 2px;
+}

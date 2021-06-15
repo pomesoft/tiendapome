@@ -478,6 +478,9 @@ namespace tiendapome.Servicios
                                                             .FindAll(item => item != itemDtoOculto)
                                                             .ToList<DocumentoVentaItem>();
 
+            ServicioGenerico servGenerico = new ServicioGenerico();
+            string monedaVenta = servGenerico.ParametroObtenerValor("MONEDA_VENTA") == "DOLAR_EEUU" ? "USD" : "$";
+
             decimal subtotal = docVenta.Gravado;
             decimal total = docVenta.Total;
 
@@ -506,6 +509,7 @@ namespace tiendapome.Servicios
             datos.Add("Subtotal", string.Format("{0:#,##0.00}", subtotal));
             datos.Add("Descuento", string.Format("{0:#,##0.00}", docVenta.Descuento));
             datos.Add("ImprimirSubtotal", string.Format("{0}", docVenta.Descuento != 0 ? 1 : 0));
+            datos.Add("MonedaVenta", monedaVenta);
             datos.Add("Total", string.Format("{0:#,##0.00}", total));
             datos.Add("TextoPiePagina", string.Empty);
                         

@@ -1,6 +1,0 @@
-C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Entidades\bin\Release\tiendapome.Entidades.dll
-C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Entidades\bin\Release\tiendapome.Entidades.pdb
-C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Entidades\bin\Release\Newtonsoft.Json.dll
-C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Entidades\obj\Release\tiendapome.Entidades.csprojResolveAssemblyReference.cache
-C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Entidades\obj\Release\tiendapome.Entidades.dll
-C:\Repositories\tiendaonline\tiendapome.backend\tiendapome.Entidades\obj\Release\tiendapome.Entidades.pdb

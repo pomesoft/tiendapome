@@ -1,16 +1,18 @@
 
-use tiendamayorista
+use trading
 go
+
 
 declare @idPedido int
 --set @idPedido = 5
-select @idPedido = Max(IdPedido) from tp_Pedidos --where Numero = 3
+select @idPedido = Max(IdPedido) from tp_Pedidos where Numero = 3695
 
 
 select * from tp_Clientes where IdCliente in (select IdCliente from tp_Pedidos where IdPedido = @idPedido )
 select p.Numero, e.Descripcion as Estado, * from tp_Pedidos p inner join tp_Estados e on e.IdEstado = p.IdEstado where IdPedido = @idPedido 
 select pr.Codigo, pit.* from tp_PedidoItems pit inner join tp_Productos pr on pit.IdProducto = pr.IdProducto where IdPedido = @idPedido order by pr.Codigo
 select * from tp_PedidoItemProducto where IdPedidoItem in (select IdPedidoItem from tp_PedidoItems where IdPedido = @idPedido ) and Cantidad > 0
+
 
 declare @idProducto int
 --set @idProducto = 11
@@ -26,6 +28,10 @@ select * from tp_ProductoStock where IdProducto = @idProducto
 
 
 select * from dm_MovimientosStock where Codigo = 2032 order by Codigo
+
+
+select * from tp_Pedidos_BKP where IdPedido = 101
+
 
 select Codigo, Orden, Movimiento, IdMedida, count(*) TotalRegistros 
 from dm_DetalleMovimientosStock

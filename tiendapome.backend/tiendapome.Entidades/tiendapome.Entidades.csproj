@@ -48,6 +48,7 @@
     <Compile Include="ClienteLista.cs" />
     <Compile Include="CotizacionDolar.cs" />
     <Compile Include="DocumentoVentaObservaciones.cs" />
+    <Compile Include="DTO\Login.cs" />
     <Compile Include="DTO\ListadoCtaCte.cs" />
     <Compile Include="DTO\ItemListado.cs" />
     <Compile Include="DTO\PedidoItemProductoDTO.cs" />
@@ -76,7 +77,10 @@
     <Compile Include="DocumentoVentaItem.cs" />
     <Compile Include="Provincia.cs" />
     <Compile Include="ProductoGrupoOrden.cs" />
+    <Compile Include="MovimientoStockDetalle.cs" />
     <Compile Include="SituacionIVA.cs" />
+    <Compile Include="SubcategoriaDescuento.cs" />
+    <Compile Include="TipoMovimientoStock.cs" />
     <Compile Include="VentaTipoComprobante.cs" />
     <Compile Include="SubcategoriaMedida.cs" />
     <Compile Include="SubcategoriaMerge.cs" />

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
-import { Producto, ProductoGrupoOrden } from '../models/producto';
+import { MovimientoStockDetalle, Producto, ProductoGrupoOrden, ProductoStockMovimiento, TipoMovimientoStock } from '../models/producto';
 import { GlobalService } from './global.service';
 
 @Injectable({
@@ -114,7 +114,7 @@ export class ProductoServices {
             idSubcategoria: number,
             tipoListado: number
       ) {
-            let urlAPI: string = 'https://backend.tradingjoyas.com/api/producto/listadoproductos?idSubcategoria=' + idSubcategoria + '&tipoListado=' + tipoListado;
+            let urlAPI: string = this.url + 'producto/listadoproductos?idSubcategoria=' + idSubcategoria + '&tipoListado=' + tipoListado;
             console.log(urlAPI);
             window.open(urlAPI, '_blank');
       }
@@ -135,4 +135,40 @@ export class ProductoServices {
 
             return this._http.post(this._globalService.url + 'catalogo/grupoorden', params, { headers: headers });
       }
+
+
+      getTiposMovimientosStock(): Array<TipoMovimientoStock> {
+            let tipos: Array<TipoMovimientoStock> = new Array<TipoMovimientoStock>();
+
+            tipos.push({ Id: 2, Descripcion: 'INGRESO', Vigente: true, Tipo: 1 });
+            tipos.push({ Id: 3, Descripcion: 'SALIDA', Vigente: true, Tipo: 2 });
+            tipos.push({ Id: 4, Descripcion: 'AJUSTE POSITIVO', Vigente: true, Tipo: 1 });
+            tipos.push({ Id: 5, Descripcion: 'AJUSTE NEGATIVO', Vigente: true, Tipo: 2 });
+
+            return tipos;
+      }
+      // /api/producto/movimientostock/
+      saveMovimientoStock(parametro: ProductoStockMovimiento): Observable<any> {
+            let params = JSON.stringify(parametro);
+            let headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+            return this._http.post(this._globalService.url + 'producto/movimientostock', params, { headers: headers });
+      }
+
+
+      getProductoMovimientosStock(
+            idProductoStock: number
+      ): Observable<Array<MovimientoStockDetalle>> {
+            let headers = new HttpHeaders().set('Content-Type', 'application/json');
+            return this._http.get<Array<MovimientoStockDetalle>>(this._globalService.url + 'producto/movimientostock/' + idProductoStock.toString(), { headers: headers });
+      }
+
+      exportMovimientosStockDetalle(
+            idProductoStock: number
+      ) {
+            let urlAPI: string = this.url + 'producto/movimientostockcsv/' + idProductoStock;
+            console.log('exportMovimientosStockDetalle=>urlAPI', urlAPI);
+            window.open(urlAPI, '_blank');
+      }
+
 }

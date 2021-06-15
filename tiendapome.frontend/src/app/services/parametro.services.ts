@@ -30,24 +30,31 @@ export class ParametroServices {
       }
 
       getParametroValor(clave: string): Observable<Parametro> {
-            // let headers = new HttpHeaders().set('Content-Type', 'application/json');
-            // return this._http.get(this.url + 'parametro' + '/valor/' + clave, { headers: headers });
-
             const obs$ = new Observable<Parametro>(observer => {
-                  let params = sessionStorage.getItem("ParametrosAPP");
-
-                  let parametros: Array<Parametro> = JSON.parse(params);
-                  let parametro: Parametro = parametros.find(item => item.Clave === clave);
-
+                  let parametro: Parametro = this.parserParametroStorage(clave);
                   observer.next(parametro);
             });
-
             return obs$;
+      }
+
+      parserParametroStorage(clave: string): Parametro {
+            let params = sessionStorage.getItem("ParametrosAPP");
+
+            let parametros: Array<Parametro> = JSON.parse(params);
+            return parametros.find(item => item.Clave === clave);
+      }
+
+      getParametro_MonedaVenta(): string {
+            let param: Parametro = this.parserParametroStorage('MONEDA_VENTA');
+            if (param.Valor === 'DOLAR_EEUU')
+                  return 'USD';
+            else
+                  return '$';
       }
 
 
       obtenerTodosParametros() {
-            return new Promise((resolve, reject) => {
+            return new Promise<void>((resolve, reject) => {
 
                   if (sessionStorage.getItem("ParametrosAPP") != null) {
                         resolve();

@@ -126,7 +126,7 @@ export class MenuproductosComponent implements OnInit {
       }
 
       getUserPouchDB() {
-            return new Promise((resolve, reject) => {
+            return new Promise<void>((resolve, reject) => {
                   if (!this._autenticaServices.getClienteLoguin()) {
                         resolve();
 
@@ -147,7 +147,7 @@ export class MenuproductosComponent implements OnInit {
       }
 
       mostrarBannerBienvenida() {
-            return new Promise((resolve, reject) => {
+            return new Promise<void>((resolve, reject) => {
                   if (this._autenticaServices.getClienteLoguin()) {
                         resolve();
 

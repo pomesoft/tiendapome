@@ -79,7 +79,8 @@
                                                       </a>
                                                 </li>
                                                 <li class="nav-item">
-                                                      <a class="nav-link" href="#" data-toggle="tab" [routerLink]="['/tipos']" >
+                                                      <a class="nav-link" href="#" data-toggle="tab"
+                                                            [routerLink]="['/tipos']">
                                                             <i class="fas stream fa-bars mr-2"></i>
                                                             Administrar Categorías
                                                       </a>
@@ -163,9 +164,9 @@
                                                                                                 class="form-control"
                                                                                                 [(ngModel)]="prod.Descripcion" />
                                                                                     </div>
-                                                                              </div>                                                                              
+                                                                              </div>
                                                                         </div>
-                                                                        <div class="row">                                                                              
+                                                                        <div class="row">
                                                                               <div class="col-6 col-lg-3">
                                                                                     <div class="form-group">
                                                                                           <label>Tipo de Precio</label>
@@ -234,11 +235,13 @@
                                                                                                 <option
                                                                                                       *ngFor="let item of listaGruposOrden"
                                                                                                       [value]="item.Id">
-                                                                                                      {{ item.Descripcion }}
+                                                                                                      {{
+                                                                                                      item.Descripcion
+                                                                                                      }}
                                                                                                 </option>
-                                                                                                <option
-                                                                                                      [value]="9999">
-                                                                                                      Agregar grupo orden
+                                                                                                <option [value]="9999">
+                                                                                                      Agregar grupo
+                                                                                                      orden
                                                                                                 </option>
                                                                                           </select>
                                                                                     </div>
@@ -256,7 +259,9 @@
                                                                                                 <option
                                                                                                       *ngFor="let lista of menu"
                                                                                                       [value]="lista.Id">
-                                                                                                      {{ lista.Descripcion }}
+                                                                                                      {{
+                                                                                                      lista.Descripcion
+                                                                                                      }}
                                                                                                 </option>
                                                                                           </select>
                                                                                     </div>
@@ -271,7 +276,9 @@
                                                                                                 <option
                                                                                                       *ngFor="let lista of listaCategorias"
                                                                                                       [value]="lista.Id">
-                                                                                                      {{ lista.Descripcion }}
+                                                                                                      {{
+                                                                                                      lista.Descripcion
+                                                                                                      }}
                                                                                                 </option>
                                                                                           </select>
                                                                                     </div>
@@ -286,88 +293,15 @@
                                                                                                 <option
                                                                                                       *ngFor="let lista of listaSubcategorias"
                                                                                                       [value]="lista.Id">
-                                                                                                      {{ lista.Descripcion }}
+                                                                                                      {{
+                                                                                                      lista.Descripcion
+                                                                                                      }}
                                                                                                 </option>
                                                                                           </select>
                                                                                     </div>
                                                                               </div>
                                                                         </div>
-                                                                        <!-- ProductoStock -  -->
-                                                                        <div class="row">
-                                                                              <div class="col-12 col-md-6 col-lg-4">
-                                                                                    <div class="form-group">
-                                                                                          <span class="h5">Stock Real:
-                                                                                          </span>
-                                                                                          <span
-                                                                                                class="h3">{{prod.StockReal}}</span>
-                                                                                    </div>
-                                                                              </div>
-                                                                              <div class="col-12 col-md-6 col-lg-4">
-                                                                                    <div class="form-group">
-                                                                                          <span class="h5">Stock
-                                                                                                Reservado: </span>
-                                                                                          <span
-                                                                                                class="h3">{{prod.StockReservado}}</span>
-                                                                                    </div>
-                                                                              </div>
-                                                                              <div class="col-12 col-md-6 col-lg-4">
-                                                                                    <div class="form-group">
-                                                                                          <span class="h4">Stock
-                                                                                                Disponible: </span>
-                                                                                          <span
-                                                                                                class="h3">{{prod.Stock}}</span>
-                                                                                    </div>
-                                                                              </div>
-                                                                        </div>
-                                                                        <div class="row" *ngIf="!modoBusqueda">
-                                                                              <div class="col-6 col-md-4 col-lg-2"
-                                                                                    *ngFor="let itemStock of prod.ProductoStock">
-                                                                                    <div class="row">
-                                                                                          <div class="col">
-                                                                                                <span>{{itemStock.Medida.Observaciones}}</span>
-                                                                                          </div>
-                                                                                    </div>
-                                                                                    <div class="row">
-                                                                                          <div class="col">
-                                                                                                <input type="number"
-                                                                                                      class="form-control"
-                                                                                                      [(ngModel)]="itemStock.Stock"
-                                                                                                      (change)="onChangeCantidadStock( prod )" />
-                                                                                          </div>
-                                                                                    </div>
-                                                                                    <div class="row">
-                                                                                          <div class="col">
-                                                                                                <small>Reservado:</small>
-                                                                                                {{  itemStock.Reservado}}
-                                                                                          </div>
 
-                                                                                    </div>
-                                                                              </div>
-                                                                        </div>
-                                                                        <!-- modo busquda - solo lectura => TIPO - CATEGORIA - SUBCATEGORIA -->
-                                                                        <div class="row" *ngIf="modoBusqueda">
-                                                                              <div class="col-12 col-lg-9">
-                                                                                    <div class="form-group">
-                                                                                          <label>{{prod.DescripcionTipo}}
-                                                                                                -
-                                                                                                {{prod.DescripcionCategoria}}
-                                                                                                -
-                                                                                                {{prod.DescripcionSubcategoria}}
-                                                                                          </label>
-                                                                                    </div>
-                                                                              </div>
-                                                                              <div class="col-12 col-lg-3">
-                                                                                    <a href="#" class="btn btn-block"
-                                                                                          (click)="editarProducto($event, prod.Codigo)">
-                                                                                          <span
-                                                                                                class="icon text-white-50 m-2">
-                                                                                                <i
-                                                                                                      class="fas fa-edit"></i>
-                                                                                          </span>
-                                                                                          Editar
-                                                                                    </a>
-                                                                              </div>
-                                                                        </div>
                                                                         <!-- botones => SUBIR FOTO -  ELIMINAR - GUARDAR -->
                                                                         <div class="row" *ngIf="!modoBusqueda">
                                                                               <div class="col-12 col-lg-6">
@@ -375,10 +309,10 @@
                                                                                           *ngIf="prod.Id>0">
                                                                                           <div *ngIf="!productoFoto">
                                                                                                 <a href="#"
-                                                                                                      class="btn btn-primary mr-2"
+                                                                                                      class="btn btn-outline-primary mr-2"
                                                                                                       (click)="subirFoto( $event, prod )">
                                                                                                       <span
-                                                                                                            class="icon text-white-50  m-2">
+                                                                                                            class="icon m-2">
                                                                                                             <i
                                                                                                                   class="fas fa-cloud-upload-alt"></i>
                                                                                                       </span>
@@ -466,6 +400,99 @@
 
                                                                               </div>
                                                                         </div>
+
+                                                                        <!-- ProductoStock -  -->
+                                                                        <div class="row" >
+                                                                              <div class="col-12 col-md-6 col-lg-4">
+                                                                                    <div class="form-group">
+                                                                                          <span class="h5">Stock Real:
+                                                                                                </span>
+                                                                                          <span
+                                                                                                class="h3">{{prod.StockReal}}</span>
+                                                                                    </div>
+                                                                              </div>
+                                                                              <div class="col-12 col-md-6 col-lg-4">
+                                                                                    <div class="form-group">
+                                                                                          <span class="h5">Stock
+                                                                                                Reservado: </span>
+                                                                                          <span
+                                                                                                class="h3">{{prod.StockReservado}}</span>
+                                                                                    </div>
+                                                                              </div>
+                                                                              <div class="col-12 col-md-6 col-lg-4">
+                                                                                    <div class="form-group">
+                                                                                          <span class="h4">Stock
+                                                                                                Disponible: </span>
+                                                                                          <span
+                                                                                                class="h3">{{prod.Stock}}</span>
+                                                                                    </div>
+                                                                              </div>
+                                                                        </div>
+                                                                        <div class="row" *ngIf="prod.Id>0 && !modoBusqueda">
+                                                                              <div class="col-6 col-md-4 col-lg-2"
+                                                                                    *ngFor="let itemStock of prod.ProductoStock">
+                                                                                    <div class="row">
+                                                                                          <div class="col">
+                                                                                                <small>{{itemStock.Medida.Observaciones}}</small>
+                                                                                          </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                          <div class="col">
+                                                                                                <label>Stock:</label>
+                                                                                                <span
+                                                                                                      class="h5">{{itemStock.Stock}}</span>
+                                                                                          </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                          <div class="col">
+                                                                                                <label>Reservado:</label>
+                                                                                                <span
+                                                                                                      class="h5">{{itemStock.Reservado}}</span>
+                                                                                          </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                          <div class="col">
+                                                                                                <a href="#"
+                                                                                                      class="btn btn-outline-primary"
+                                                                                                      (click)="onClickMovimientoStock($event, itemStock, prod.Codigo)">
+                                                                                                      <span
+                                                                                                            class="icon">
+                                                                                                            <i
+                                                                                                                  class="fas fa-edit"></i>
+                                                                                                            Stock
+                                                                                                      </span>
+                                                                                                </a>
+                                                                                          </div>
+                                                                                    </div>
+                                                                              </div>
+                                                                        </div>
+                                                                        <!-- modo busquda - solo lectura => TIPO - CATEGORIA - SUBCATEGORIA -->
+                                                                        <div class="row" *ngIf="modoBusqueda">
+                                                                              <div class="col-12 col-lg-9">
+                                                                                    <div class="form-group">
+                                                                                          <span>Tipo: </span>
+                                                                                          <span
+                                                                                                class="h4">{{prod.DescripcionTipo}}</span>
+                                                                                          <span> - Categoría: </span>
+                                                                                          <span
+                                                                                                class="h4">{{prod.DescripcionCategoria}}</span>
+                                                                                          <span> - Subcategoría: </span>
+                                                                                          <span
+                                                                                                class="h4">{{prod.DescripcionSubcategoria}}</span>
+                                                                                    </div>
+                                                                              </div>
+                                                                              <div class="col-12 col-lg-3">
+                                                                                    <a href="#" class="btn btn-block"
+                                                                                          (click)="editarProducto($event, prod.Codigo)">
+                                                                                          <span
+                                                                                                class="icon text-white-50 m-2">
+                                                                                                <i
+                                                                                                      class="fas fa-edit"></i>
+                                                                                          </span>
+                                                                                          Editar
+                                                                                    </a>
+                                                                              </div>
+                                                                        </div>
                                                                   </div>
                                                             </div>
                                                       </div>
@@ -492,45 +519,59 @@
                                                 <div class="col-3">
                                                       <nav class="navbar navbar-expand-lg  bg-light">
                                                             <div class="container">
-                                                                <div class="navbar-translate">
-                                                                    <ul class="navbar-nav">
-                                                                        <li class="dropdown nav-item">
-                                                                            <a href="#"
-                                                                                class="btn btn-primary btn-icon-split btn-block dropdown-toggle nav-link"
-                                                                                data-toggle="dropdown">
-                                                                                <span class="icon text-white mr-1">
-                                                                                    <i class="fas fa-folder-plus fa-sm fa-fw mr-2"></i>
-                                                                                    Listar
-                                                                                </span>
-                                                                            </a>
-                                                                            <div class="dropdown-menu">
-                                                                                <a class="dropdown-item" href="#"
-                                                                                    (click)="onClickListarProductos( $event, 1 )">
-                                                                                    <span class="icon mr-1">
-                                                                                        <i class="fas fa-file-invoice-dollar"></i>
-                                                                                    </span>
-                                                                                    <span class="text">Todos los productos</span>
-                                                                                </a>
-                                                                                <a class="dropdown-item" href="#"
-                                                                                    (click)="onClickListarProductos( $event, 2 )">
-                                                                                    <span class="icon mr-1">
-                                                                                        <i class="fas fa-file-invoice-dollar"></i>
-                                                                                    </span>
-                                                                                    <span class="text">Solo productos CON Stock</span>
-                                                                                </a>
-                                                                                <a class="dropdown-item" href="#"
-                                                                                    (click)="onClickListarProductos( $event, 3 )">
-                                                                                    <span class="icon mr-1">
-                                                                                        <i class="fas fa-file-invoice-dollar"></i>
-                                                                                    </span>
-                                                                                    <span class="text">Solo productos SIN Stock</span>
-                                                                                </a>
-                                                                            </div>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
+                                                                  <div class="navbar-translate">
+                                                                        <ul class="navbar-nav">
+                                                                              <li class="dropdown nav-item">
+                                                                                    <a href="#"
+                                                                                          class="btn btn-primary btn-icon-split btn-block dropdown-toggle nav-link"
+                                                                                          data-toggle="dropdown">
+                                                                                          <span
+                                                                                                class="icon text-white mr-1">
+                                                                                                <i
+                                                                                                      class="fas fa-folder-plus fa-sm fa-fw mr-2"></i>
+                                                                                                Listar
+                                                                                          </span>
+                                                                                    </a>
+                                                                                    <div class="dropdown-menu">
+                                                                                          <a class="dropdown-item"
+                                                                                                href="#"
+                                                                                                (click)="onClickListarProductos( $event, 1 )">
+                                                                                                <span class="icon mr-1">
+                                                                                                      <i
+                                                                                                            class="fas fa-file-invoice-dollar"></i>
+                                                                                                </span>
+                                                                                                <span class="text">Todos
+                                                                                                      los
+                                                                                                      productos</span>
+                                                                                          </a>
+                                                                                          <a class="dropdown-item"
+                                                                                                href="#"
+                                                                                                (click)="onClickListarProductos( $event, 2 )">
+                                                                                                <span class="icon mr-1">
+                                                                                                      <i
+                                                                                                            class="fas fa-file-invoice-dollar"></i>
+                                                                                                </span>
+                                                                                                <span class="text">Solo
+                                                                                                      productos CON
+                                                                                                      Stock</span>
+                                                                                          </a>
+                                                                                          <a class="dropdown-item"
+                                                                                                href="#"
+                                                                                                (click)="onClickListarProductos( $event, 3 )">
+                                                                                                <span class="icon mr-1">
+                                                                                                      <i
+                                                                                                            class="fas fa-file-invoice-dollar"></i>
+                                                                                                </span>
+                                                                                                <span class="text">Solo
+                                                                                                      productos SIN
+                                                                                                      Stock</span>
+                                                                                          </a>
+                                                                                    </div>
+                                                                              </li>
+                                                                        </ul>
+                                                                  </div>
                                                             </div>
-                                                        </nav>
+                                                      </nav>
                                                 </div>
                                                 <div class="col-3">
                                                       <a href="#" class="btn btn-info btn-block"
@@ -664,51 +705,188 @@
 
 
 
- 
-<div class="modal fade" id="modalGrupoOrden" tabindex="-1" role="dialog"
-    aria-labelledby="modalGrupoOrdenTitle" aria-hidden="true" *ngIf="grupoOrdenSeleccionado">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalGrupoOrdenTitle">
-                    Grupo Orden</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Descripción:</label>
-                            <input type="text" class="form-control" aria-describedby="descripcion-addon"
-                                [(ngModel)]="grupoOrdenSeleccionado.Descripcion">
+
+<div class="modal fade" id="modalGrupoOrden" tabindex="-1" role="dialog" aria-labelledby="modalGrupoOrdenTitle"
+      aria-hidden="true" *ngIf="grupoOrdenSeleccionado">
+      <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                  <div class="modal-header">
+                        <h5 class="modal-title" id="modalGrupoOrdenTitle">
+                              Grupo Orden</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                        </button>
+                  </div>
+                  <div class="modal-body">
+                        <div class="row">
+                              <div class="col">
+                                    <div class="form-group">
+                                          <label>Descripción:</label>
+                                          <input type="text" class="form-control" aria-describedby="descripcion-addon"
+                                                [(ngModel)]="grupoOrdenSeleccionado.Descripcion">
+                                    </div>
+                              </div>
                         </div>
-                    </div>
-                </div>                
+                  </div>
+                  <div class="modal-footer">
+                        <button type="button" class="btn mr-3" data-dismiss="modal">
+                              <span class="icon text-white-50 m-2">
+                                    <i class="fas fa-times"></i>
+                              </span>
+                              Cancelar
+                        </button>
+                        <div *ngIf="!procesando">
+                              <button type="button" class="btn btn-success"
+                                    (click)="onClickGuardarGrupoOrden( $event )">
+                                    <span class="icon text-white-50 m-2">
+                                          <i class="fas fa-save"></i>
+                                    </span>
+                                    Guardar
+                              </button>
+                        </div>
+                        <div *ngIf="procesando">
+                              <a class="btn btn-success" aria-disabled="true">
+                                    <span class="spinner-border spinner-border-sm" role="status"
+                                          aria-hidden="true"></span>
+                                    <span class="text">Procesando...</span>
+                              </a>
+                        </div>
+                  </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn mr-3" data-dismiss="modal">
-                    <span class="icon text-white-50 m-2">
-                        <i class="fas fa-times"></i>
-                    </span>
-                    Cancelar
-                </button>
-                <div *ngIf="!procesando">
-                    <button type="button" class="btn btn-success" (click)="onClickGuardarGrupoOrden( $event )">
-                        <span class="icon text-white-50 m-2">
-                            <i class="fas fa-save"></i>
-                        </span>
-                        Guardar
-                    </button>
-                </div>
-                <div *ngIf="procesando">
-                    <a class="btn btn-success" aria-disabled="true">
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        <span class="text">Procesando...</span>
-                    </a>
-                </div>
+      </div>
+</div>
+
+
+
+
+
+
+<div class="modal fade" id="modalMovimientoStock" tabindex="-1" role="dialog"
+      aria-labelledby="modalMovimientoStockTitle" aria-hidden="true"
+      *ngIf="movimientoStockSeleccionado && productoStockSeleccionado">
+      <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                  <div class="modal-header">
+                        <h5 class="modal-title" id="modalMovimientoStockTitle">
+                              Movimiento de Stock</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                        </button>
+                  </div>
+                  <div class="modal-body">
+                        <h5 class="card-title">Código: {{codigoSeleccionado}} -
+                              {{productoStockSeleccionado.Medida.Observaciones}}</h5>
+                        <div class="row">
+                              <div class="col-6">
+                                    <div class="form-group">
+                                          <label>Movimiento</label>
+                                          <select class="custom-select"
+                                                [(ngModel)]="movimientoStockSeleccionado.TipoMovimiento.Id"
+                                                (change)="onChangeListaTipoMovimientoStock($event)">
+                                                <option *ngFor="let lista of listaTiposMovimientoStock"
+                                                      [value]="lista.Id">
+                                                      {{ lista.Descripcion }}
+                                                </option>
+                                          </select>
+                                    </div>
+                              </div>
+                              <div class="col-6">
+                                    <div class="form-group">
+                                          <label>Cantidad:</label>
+                                          <input type="text" class="form-control" aria-describedby="descripcion-addon"
+                                                [(ngModel)]="movimientoStockSeleccionado.Cantidad">
+                                    </div>
+                              </div>
+                        </div>
+                        <div class="row">
+                              <div class="col">
+                                    <div class="form-group">
+                                          <label>Observaciones:</label>
+                                          <input type="text" class="form-control" aria-describedby="descripcion-addon"
+                                                [(ngModel)]="movimientoStockSeleccionado.Observaciones">
+                                    </div>
+                              </div>
+                        </div>
+                        <div class="row">
+                              <button type="button" class="btn btn-info mr-3"
+                                    (click)="onClickDescargarMovimientoStock( $event )">
+                                    <span class="icon text-white-50 m-2">
+                                          <i class="fas fa-download"></i>
+                                    </span>
+                                    Descargar
+                              </button>
+                              <button type="button" class="btn mr-3" data-dismiss="modal">
+                                    <span class="icon text-white-50 m-2">
+                                          <i class="fas fa-times"></i>
+                                    </span>
+                                    Cancelar
+                              </button>
+                              <div *ngIf="!procesando">
+                                    <button type="button" class="btn btn-success"
+                                          (click)="onClickGuardarMovimientoStock( $event )">
+                                          <span class="icon text-white-50 m-2">
+                                                <i class="fas fa-save"></i>
+                                          </span>
+                                          Guardar
+                                    </button>
+                              </div>
+                              <div *ngIf="procesando">
+                                    <a class="btn btn-success" aria-disabled="true">
+                                          <span class="spinner-border spinner-border-sm" role="status"
+                                                aria-hidden="true"></span>
+                                          <span class="text">Procesando...</span>
+                                    </a>
+                              </div>
+                        </div>
+                        <div class="row" style="height: 500px;">
+                              <div class="table-responsive mygrid-wrapper-div">
+                                    <table class="table table-striped table-hover" id="dtData" width="100%"
+                                          cellspacing="0">
+                                          <thead>
+                                                <tr>
+                                                      <th style="width: 35%;">Movimiento</th>
+                                                      <th style="width: 10%;">Fecha</th>
+                                                      <th style="width: 10%;">Pedido</th>
+                                                      <th style="width: 35%;">Observaciones</th>
+                                                      <th style="width: 10%;">Cantidad</th>
+                                                </tr>
+                                          </thead>
+                                          <tbody>
+                                                <tr *ngFor="let item of listaMovimientosStock ">
+                                                      <td style="width: 35%;">
+                                                            <span style="font-size: small;"
+                                                            [ngClass]="{'badge badge-info': item.Orden === '5' || item.Orden === '7' }">
+                                                                  {{item.Movimiento}}
+                                                            </span>
+                                                      </td>
+                                                      <td style="width: 10%;">
+                                                            <span style="font-size: small;">
+                                                                  {{item.Fecha}}
+                                                            </span>
+                                                      </td>
+                                                      <td style="width: 10%;">
+                                                            <span style="font-size: small;">
+                                                                  {{item.Pedido}}
+                                                            </span>
+                                                      </td>
+                                                      <td style="width: 35%;">
+                                                            <span style="font-size: small;"
+                                                            [ngClass]="{'badge badge-info': item.Orden === '5' || item.Orden === '7' }">
+                                                                  {{item.Observaciones}}
+                                                            </span>
+                                                      </td>
+                                                      <td style="width: 10%; text-align: right;">
+                                                            <span style="font-size: small;">
+                                                                  {{item.Cantidad}}
+                                                            </span>
+                                                      </td>
+                                                </tr>
+                                          </tbody>
+                                    </table>
+                              </div>
+
+                        </div>
+                  </div>
             </div>
-        </div>
-    </div>
+      </div>
 </div>

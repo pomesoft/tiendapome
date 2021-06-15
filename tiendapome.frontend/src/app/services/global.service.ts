@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { ApiURL } from '../../environments/environment';
+import { environment } from '../../environments/environment';
 
 @Injectable({
       providedIn: 'root'
@@ -15,8 +15,11 @@ export class GlobalService {
       constructor(
             private _http: HttpClient
       ) {
-
-            this.url = ApiURL.url;
+            if (environment.production) {
+                  this.url = `${window.location.origin}/backend/api/`;
+            } else {
+                  this.url = 'http://localhost:61044/api/';
+            }
             this.TittleIndex = '';
       }
 

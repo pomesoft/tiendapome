@@ -23,6 +23,8 @@ namespace tiendapome.API.Controllers
         [Route("api/login/{usuario}/{clave}")]
         public IHttpActionResult Login(string usuario, string clave)
         {
+            //este metodo lo dejo por compatibilidad
+            //pero se tiene que utilizar el POST
             try
             {
                 LoggerHelper.LogInfo(System.Reflection.MethodBase.GetCurrentMethod(), string.Format("Login usuario: {0} - clave: {1}", usuario, clave));
@@ -33,6 +35,35 @@ namespace tiendapome.API.Controllers
                 if (resp == null)
                     return NotFound();
                 LoggerHelper.LogInfo(System.Reflection.MethodBase.GetCurrentMethod(), JsonConvert.SerializeObject(resp));
+
+                return Ok(resp);
+            }
+            catch (ApplicationException ex)
+            {
+                LoggerHelper.LogError(MethodBase.GetCurrentMethod(), ex);
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                LoggerHelper.LogError(MethodBase.GetCurrentMethod(), ex);
+                return BadRequest("Ocurrió un error al validar el usuario.");
+            }
+        }
+
+        [HttpPost]
+        [Route("api/postlogin/")]
+        public IHttpActionResult PostLogin([FromBody] Login datos)
+        {
+            try
+            {
+                //LoggerHelper.LogInfo(System.Reflection.MethodBase.GetCurrentMethod(), string.Format("Login usuario: {0} - clave: {1}", datos.usuario, datos.clave));
+
+                ServicioClientes servicio = new ServicioClientes();
+                Cliente resp = servicio.ClienteLogIn(datos.Usuario, datos.Clave);
+
+                if (resp == null)
+                    return NotFound();
+                //LoggerHelper.LogInfo(System.Reflection.MethodBase.GetCurrentMethod(), JsonConvert.SerializeObject(resp));
 
                 return Ok(resp);
             }

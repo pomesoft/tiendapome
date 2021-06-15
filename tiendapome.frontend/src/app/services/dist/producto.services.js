@@ -75,7 +75,7 @@ var ProductoServices = /** @class */ (function () {
         return this._http.post(this.url + '/eliminar/' + id, { headers: headers });
     };
     ProductoServices.prototype.printListadoProductos = function (idSubcategoria, tipoListado) {
-        var urlAPI = 'https://backend.tradingjoyas.com/api/producto/listadoproductos?idSubcategoria=' + idSubcategoria + '&tipoListado=' + tipoListado;
+        var urlAPI = 'https://tradingjoyas.com/backend/api/producto/listadoproductos?idSubcategoria=' + idSubcategoria + '&tipoListado=' + tipoListado;
         console.log(urlAPI);
         window.open(urlAPI, '_blank');
     };

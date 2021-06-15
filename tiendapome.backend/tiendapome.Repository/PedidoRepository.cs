@@ -164,6 +164,8 @@ namespace tiendapome.Repository
 
         public void PedidoReservarStock(int idPedido)
         {
+            this.PedidoActualizacionesStock_ANTES(idPedido, "PedidoReservarStock");
+            
             string sql = @" update pip 
                             set pip.StockReservado = case when pip.Cantidad > pip.StockDisponible 
                                                             then pip.StockDisponible 
@@ -180,11 +182,15 @@ namespace tiendapome.Repository
 	                    inner join tp_PedidoItems			pit	on pip.IdPedidoItem = pit.IdPedidoItem
                     where pit.IdPedido = " + idPedido + "; ";
             this.ActualizarSQL(sql);
+
+            this.PedidoActualizacionesStock_DESPUES(idPedido, "PedidoReservarStock");
         }
 
-        public void PedidoLiberarStock(int idPedido)
+        public void PedidoLiberarStockReservado(int idPedido)
         {
-
+            this.PedidoActualizacionesStock_ANTES(idPedido, "PedidoLiberarStockReservado");
+            
+            //cuando se cancela un pedido que está solicitado o en proceso, se tiene que liberar el stock reservado unicamente
             string sql = @" update ps set ps.Reservado = ps.Reservado - pip.StockReservado
                     from tp_ProductoStock ps
 	                    inner join tp_PedidoItemProducto	pip on ps.IdProductoStock = pip.IdProductoStock
@@ -196,25 +202,84 @@ namespace tiendapome.Repository
                             from tp_PedidoItemProducto	pip 
 	                            inner join tp_PedidoItems			pit	on pip.IdPedidoItem = pit.IdPedidoItem
                             where pit.IdPedido = " + idPedido + "; ";
-            this.ActualizarSQL(sql);            
+            this.ActualizarSQL(sql);
+
+            this.PedidoActualizacionesStock_DESPUES(idPedido, "PedidoLiberarStockReservado");
+        }
+
+        public void PedidoVolverAStock(int idPedido)
+        {
+            this.PedidoActualizacionesStock_ANTES(idPedido, "PedidoVolverAStock");
+            
+            //cuando se cancela un pedido ya finalizado, se tiene que volver el stock
+            string sql = @" update ps set ps.Stock = ps.Stock + pip.Cantidad
+                    from tp_ProductoStock ps
+	                    inner join tp_PedidoItemProducto	pip on ps.IdProductoStock = pip.IdProductoStock
+	                    inner join tp_PedidoItems			pit	on pip.IdPedidoItem = pit.IdPedidoItem
+                    where pit.IdPedido = " + idPedido + "; ";
+            this.ActualizarSQL(sql);
+            
+            this.PedidoActualizacionesStock_DESPUES(idPedido, "PedidoVolverAStock");
         }
 
         public void PedidoDescontarStock(int idPedido)
         {
-            string sql = @" update ps 
-                            set ps.Stock = ps.Stock - pip.Cantidad,
-	                            ps.Reservado = ps.Reservado - pip.StockReservado
-                            from tp_ProductoStock ps
-	                            inner join tp_PedidoItemProducto	pip on ps.IdProductoStock = pip.IdProductoStock
-	                            inner join tp_PedidoItems			pit	on pip.IdPedidoItem = pit.IdPedidoItem
-                            where pit.IdPedido = " + idPedido + "; ";
-            this.ActualizarSQL(sql);
+            ISession session = NHibernateSessionSingleton.GetSession();
 
-            sql = @" update pip 
-                    set pip.StockReservado = 0
-                    from tp_PedidoItemProducto	pip 
+            IQuery query = session.CreateSQLQuery("exec sp_PedidoDescontarStock @idPedido=:idPedido");
+            query.SetInt64("idPedido", idPedido);
+            query.ExecuteUpdate();
+
+
+            #region codigo comentado
+            //this.PedidoActualizacionesStock_ANTES(idPedido, "PedidoDescontarStock");
+
+            //string sql = @" update ps 
+            //        set ps.Stock = ps.Stock - pip.Cantidad,
+            //         ps.Reservado = ps.Reservado - pip.StockReservado
+            //        from tp_ProductoStock ps
+            //         inner join tp_PedidoItemProducto	pip on ps.IdProductoStock = pip.IdProductoStock
+            //         inner join tp_PedidoItems			pit	on pip.IdPedidoItem = pit.IdPedidoItem
+            //        where pit.IdPedido = " + idPedido + "; ";
+            //this.ActualizarSQL(sql);
+
+            //sql = @" update pip 
+            //        set pip.StockReservado = 0
+            //        from tp_PedidoItemProducto	pip 
+            //         inner join tp_PedidoItems			pit	on pip.IdPedidoItem = pit.IdPedidoItem
+            //        where pit.IdPedido = " + idPedido + "; ";
+            //this.ActualizarSQL(sql);
+
+            //this.PedidoActualizacionesStock_DESPUES(idPedido, "PedidoDescontarStock");
+            #endregion
+        }
+
+        public void PedidoActualizacionesStock_ANTES(int idPedido, string metodo)
+        {
+            string sql = string.Format(@" insert into dbo.dm_ActualizacionesStock
+                            select	'[ANTES][{0}]' as Momento, getdate() as Fecha, ped.IdPedido, ped.Numero, 
+		                            ped.IdCliente, ps.IdProductoStock as ProductoStock_IdProductoStock, ps.IdProducto as ProductoStock_IdProducto, ps.IdMedida as ProductoStock_IdMedida, ps.Stock as ProductoStock_Stock, ps.Reservado as ProductoStock_Reservado,
+		                            pip.IdPedidoItemProducto as PedidoItemProducto_IdPedidoItemProducto, pip.IdProductoStock as PedidoItemProducto_IdProductoStock, pip.IdMedida as PedidoItemProducto_IdMedida, pip.IdPedidoItem as PedidoItemProducto_IdPedidoItem, pip.Cantidad as PedidoItemProducto_Cantidad, pip.IdEstadoItem as PedidoItemProducto_IdEstadoItem, pip.StockDisponible as PedidoItemProducto_StockDisponible, pip.StockReservado as PedidoItemProducto_StockReservado
+                            from tp_ProductoStock ps
+	                            inner join tp_PedidoItemProducto	pip on ps.IdProductoStock = pip.IdProductoStock and pip.Cantidad > 0
+	                            inner join tp_PedidoItems			pit	on pip.IdPedidoItem = pit.IdPedidoItem
+	                            inner join tp_Pedidos				ped on pit.IdPedido = ped.IdPedido
+                            where ped.IdPedido = {1}; ",
+                            metodo, idPedido);
+            this.ActualizarSQL(sql);
+        }
+        public void PedidoActualizacionesStock_DESPUES(int idPedido, string metodo)
+        {
+            string sql = string.Format(@" insert into dbo.dm_ActualizacionesStock 
+                    select	'[DESPUES][{0}]' as Momento, getdate() as Fecha, ped.IdPedido, ped.Numero, 
+		                    ped.IdCliente, ps.IdProductoStock as ProductoStock_IdProductoStock, ps.IdProducto as ProductoStock_IdProducto, ps.IdMedida as ProductoStock_IdMedida, ps.Stock as ProductoStock_Stock, ps.Reservado as ProductoStock_Reservado,
+		                    0 as PedidoItemProducto_IdPedidoItemProducto, 0 as PedidoItemProducto_IdProductoStock, 0 as PedidoItemProducto_IdMedida, 0 as PedidoItemProducto_IdPedidoItem, 0 as PedidoItemProducto_Cantidad, 0 as PedidoItemProducto_IdEstadoItem, 0 as PedidoItemProducto_StockDisponible, 0 as PedidoItemProducto_StockReservado
+                    from tp_ProductoStock ps
+	                    inner join tp_PedidoItemProducto	pip on ps.IdProductoStock = pip.IdProductoStock and pip.Cantidad > 0
 	                    inner join tp_PedidoItems			pit	on pip.IdPedidoItem = pit.IdPedidoItem
-                    where pit.IdPedido = " + idPedido + "; ";
+	                    inner join tp_Pedidos				ped on pit.IdPedido = ped.IdPedido
+                    where ped.IdPedido = {1}; ",
+                    metodo, idPedido);
             this.ActualizarSQL(sql);
         }
 

@@ -1,9 +1,11 @@
 export const environment = {
     production: true
 };
-export const ApiURL = {
-    url: 'https://tradingjoyas.com/api/'
-}
+
+
+// export const ApiURL = {
+//     url: 'http://pomeapp.ar/backend/api/'
+// }
 
 /*
 url: 'https://testing.tiendapome.com.ar/api/'

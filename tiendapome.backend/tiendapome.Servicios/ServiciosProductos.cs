@@ -23,25 +23,25 @@ namespace tiendapome.Servicios
         #region Producto
         public List<Producto> ProductoObtenerVigentesCache(int idSubcategoria)
         {
-            //string keyCache = string.Format("GetProductos_{0}", idSubcategoria);
-
-            //List<Producto> listProds = new List<Producto>();
-            
-            //var productosCache = CacheManager.GetToCache<List<Producto>>(gobalKeyCache, keyCache);
-            
-            //if (productosCache == null)
-            //{
-            //    ProductoRepository repository = new ProductoRepository();
-            //    listProds = repository.ObtenerProductos(idSubcategoria);
-            //    CacheManager.AddToCache(gobalKeyCache, keyCache, listProds);                
-            //}
-            //else
-            //    listProds = productosCache;
-
+            string keyCache = string.Format("GetProductos_{0}", idSubcategoria);
 
             List<Producto> listProds = new List<Producto>();
-            ProductoRepository repository = new ProductoRepository();
-            listProds = repository.ObtenerProductos(idSubcategoria);
+
+            var productosCache = CacheManager.GetToCache<List<Producto>>(gobalKeyCache, keyCache);
+
+            if (productosCache == null)
+            {
+                ProductoRepository repository = new ProductoRepository();
+                listProds = repository.ObtenerProductos(idSubcategoria);
+                CacheManager.AddToCache(gobalKeyCache, keyCache, listProds);
+            }
+            else
+                listProds = productosCache;
+
+
+            ////List<Producto> listProds = new List<Producto>();
+            ////ProductoRepository repository = new ProductoRepository();
+            ////listProds = repository.ObtenerProductos(idSubcategoria);
                 
             return listProds;
         }
@@ -288,6 +288,7 @@ namespace tiendapome.Servicios
             string myIdCliente = servGenerico.ParametroObtenerValor("TRADING_ID_CLIENTE");
 
             List<ClienteLista> listaCliente = null;
+            SubcategoriaDescuento subcateDescuento = null;
 
             if (idCliente > 0)
             {
@@ -309,7 +310,7 @@ namespace tiendapome.Servicios
 
             if (idSubcategoria != -1)
             {
-                //1ro se obtienen y listan los productos del MONORISTA
+                //1ro se obtienen y listan los productos del MINORISTA
 
                 if (textoBuscar.Contains("ETIQUETA=NOVEDAD"))
                 {
@@ -334,6 +335,10 @@ namespace tiendapome.Servicios
                     idSubcategoria = subcateMerge.IdSubcategoriaMayorista;
                     textoBuscar = subcateMerge.Etiqueta;
                 }
+
+                //se verifica si la subcategoria tiene descuento
+                subcateDescuento = this.ObtenerObjeto<SubcategoriaDescuento>("IdSubcategoria", idSubcategoria);
+
             }
             else
             {
@@ -364,15 +369,15 @@ namespace tiendapome.Servicios
             {
                 listProds = listProdsFull;
             }
-                        
 
+            
             listProds.ForEach(delegate(Producto prod)
             {
                 if (prod.StockPropio)
                     prod = ProcesarStockPropio(listaCliente, url_host, prod);
                 else
                     prod = ProcesarStockMayorista(idCliente, prod);
-
+                
                 prod.MonedaVenta = monedaVenta == "DOLAR_EEUU" ? "USD" : "$";
                 if (monedaVenta != "DOLAR_EEUU")
                     prod.PrecioUnitarioFinal = Decimal.Round(prod.PrecioUnitarioProcesado * cotizacionDolar, 2);
@@ -380,6 +385,13 @@ namespace tiendapome.Servicios
                     prod.PrecioUnitarioFinal = Decimal.Round(prod.PrecioUnitarioProcesado, 2);
 
 
+                prod.PrecioUnitarioFinalSinDescuento = 0;
+
+                if (subcateDescuento != null)
+                {
+                    prod.PrecioUnitarioFinalSinDescuento = prod.PrecioUnitarioFinal;
+                    prod.PrecioUnitarioFinal = prod.PrecioUnitarioFinal - ((prod.PrecioUnitarioFinal * subcateDescuento.PorcentajeDescuento) / 100);
+                }
                 prod.CantidadPedido = 0;
                 prod.ProductoPedido = false;               
                
@@ -430,7 +442,7 @@ namespace tiendapome.Servicios
             /*Se usa la URL del mayorista*/
             ServicioGenerico servGenerico = new ServicioGenerico();
             decimal myGanancia = servGenerico.ParametroObtenerValor("PORC_GANANCIA_GRAL").ConvertirDecimal();
-            
+
             //Para revendedor, el precio unitario es el precio final del mayorista mas la ganancia
             prod.PrecioUnitario = prod.PrecioUnitarioFinal;
 
@@ -448,7 +460,7 @@ namespace tiendapome.Servicios
                 precio = prod.PrecioUnitario - ((precioListaCliente * prod.PrecioUnitario) / 100);
             else
                 precio = prod.PrecioUnitario;
-             
+
             prod.PrecioUnitarioProcesado = precio;
 
             return prod;
@@ -563,8 +575,7 @@ namespace tiendapome.Servicios
             
             dato.Foto = datoGraba.Foto;
 
-            if (string.IsNullOrEmpty(dato.FotoLink) && !string.IsNullOrEmpty(dato.Foto))
-                dato.FotoLink = string.Format("{0}{1}{2}{3}", url_host, "assets/fotos", dato.Path, dato.Foto);
+            dato.FotoLink = string.Format("{0}{1}{2}{3}", url_host, "assets/fotos", dato.Path, dato.Foto);
 
             dato.ListaPrecio = this.ObtenerObjeto<ListaPrecio>(datoGraba.ListaPrecio.Id);
 
@@ -619,14 +630,11 @@ namespace tiendapome.Servicios
                     dato.IdProducto = item.IdProducto > 0 ? item.IdProducto : idProducto;
                     dato.Medida = item.Medida;
                 }
-                bool agregarMovimientoStock = (dato.Stock != item.Stock);
                 dato.Stock = item.Stock;
                 dato.Reservado = item.Reservado;
                 
                 repository.Actualizar(dato);
 
-                if (agregarMovimientoStock)
-                    this.ProductoStockMovimientoGrabar(dato, 1, "Administrador de productos");
             });
             
         }
@@ -644,21 +652,6 @@ namespace tiendapome.Servicios
                 dato.Stock = dato.Stock - cantidad;
             else
                 dato.Stock = dato.Stock + cantidad;
-
-            repository.Actualizar(dato);
-        }
-
-        public void ProductoStockMovimientoGrabar(ProductoStock ps, int idMovimiento, string observaciones)
-        {
-            RepositoryGenerico<ProductoStockMovimiento> repository = new RepositoryGenerico<ProductoStockMovimiento>();
-
-            ProductoStockMovimiento dato = new ProductoStockMovimiento();
-            dato.Id = -1;
-            dato.IdProductoStock = ps.Id;
-            dato.IdTipoMovimiento = idMovimiento;
-            dato.Fecha = DateTime.Now;
-            dato.Cantidad = ps.Stock;
-            dato.Observaciones = observaciones;
 
             repository.Actualizar(dato);
         }
@@ -700,9 +693,92 @@ namespace tiendapome.Servicios
 
             return this.ObtenerObjeto<Producto>(idProducto);
         }
-        
+
         #endregion
-        
+
+        #region Movimientos de Stock
+
+        public Producto ProductoStockMovimientoGrabar(ProductoStockMovimiento datoGraba)
+        {
+            /*
+             * Se registra el movimiento de stock
+             * Se actualiza el Stock del producto segun sea positivo o negativo el movimiento
+             */
+            RepositoryGenerico<ProductoStockMovimiento> repositoryPSM = new RepositoryGenerico<ProductoStockMovimiento>();
+
+            ProductoStockMovimiento dato = null;
+
+            if (datoGraba.Id > 0)
+                dato = repositoryPSM.Obtener(datoGraba.Id);
+            else
+                dato = new ProductoStockMovimiento();
+
+            dato.IdProductoStock = datoGraba.IdProductoStock;
+            dato.TipoMovimiento = this.ObtenerObjeto<TipoMovimientoStock>(datoGraba.TipoMovimiento.Id);
+            dato.Fecha = DateTime.Now;
+            dato.Cantidad = datoGraba.Cantidad;
+            dato.Observaciones = datoGraba.Observaciones;
+
+            repositoryPSM.Actualizar(dato);
+
+
+            RepositoryGenerico<ProductoStock> repositoryPS = new RepositoryGenerico<ProductoStock>();
+            ProductoStock ps = repositoryPS.Obtener(dato.IdProductoStock);
+
+            if (dato.TipoMovimiento.Tipo == 1)
+            {
+                // Tipo: INGRESO Y AJUSTE POSITIVO
+                ps.Stock = ps.Stock + dato.Cantidad;
+            }
+            else
+            {
+                // Tipo: SALIDA Y AJUSTE NEGATIVO
+                ps.Stock = ps.Stock - dato.Cantidad;
+            }
+            repositoryPS.Actualizar(ps);
+            CacheManager.RemoveToCache(gobalKeyCache);
+
+            return this.ObtenerObjeto<Producto>(ps.IdProducto);
+        }
+
+        public List<MovimientoStockDetalle> MovimientoStockDetalleObtener(int idProductoStock)
+        {
+            RepositoryGenerico<ProductoStock> repositoryPS = new RepositoryGenerico<ProductoStock>();
+
+            ProductoStock ps = repositoryPS.Obtener(idProductoStock);
+            repositoryPS.Actualizar(ps);
+
+            ProductoRepository repository = new ProductoRepository();
+            return repository.MovimientoStockDetalleObtener(idProductoStock)
+                            .OrderBy(item=>item.Id).ToList();
+        }
+
+        public string ExportarCSVMovimientoStockDetalle(int idProductoStock)
+        {
+            StringBuilder registros = new StringBuilder();
+
+            List<MovimientoStockDetalle> listDetalle = this.MovimientoStockDetalleObtener(idProductoStock);
+
+            registros.AppendLine("Fecha,Movimiento,Codigo,Medida,Pedido,Observaciones,Cantidad");
+
+            listDetalle.ForEach(delegate (MovimientoStockDetalle item) 
+            {
+                registros.AppendLine(string.Format("{0},{1},{2},{3},{4},{5},{6}", 
+                                                item.Fecha, 
+                                                item.Movimiento,
+                                                item.Codigo, 
+                                                item.Medida, 
+                                                item.Pedido, 
+                                                item.Observaciones, 
+                                                item.Cantidad));
+            });
+            
+            
+            return registros.ToString();
+        }
+
+        #endregion
+
         #region ListaPrecio por Producto
         public ListaPrecio ListaPrecioGrabar(ListaPrecio datoGraba)
         {
@@ -724,7 +800,7 @@ namespace tiendapome.Servicios
 
             repository.Actualizar(dato);
 
-            CacheManager.ForceRemoveToCache(gobalKeyCache, "GetClienteLista");
+            CacheManager.RemoveToCache(gobalKeyCache);
 
             return dato;
         }

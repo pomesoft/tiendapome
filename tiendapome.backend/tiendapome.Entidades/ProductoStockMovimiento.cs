@@ -7,6 +7,8 @@ using Newtonsoft.Json;
 
 namespace tiendapome.Entidades
 {
+
+
     [JsonObject]
     public class ProductoStockMovimiento : EntidadBase
     {
@@ -14,8 +16,8 @@ namespace tiendapome.Entidades
         public virtual int IdProductoStock { get; set; }
         [JsonProperty("Fecha")]
         public virtual DateTime Fecha { get; set; }
-        [JsonProperty("IdTipoMovimiento")]
-        public virtual int IdTipoMovimiento { get; set; }
+        [JsonProperty("TipoMovimiento")]
+        public virtual TipoMovimientoStock TipoMovimiento { get; set; }
         [JsonProperty("Cantidad")]
         public virtual int Cantidad { get; set; }
         [JsonProperty("Observaciones")]

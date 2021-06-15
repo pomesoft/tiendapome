@@ -65,16 +65,17 @@
                             </div>
                         </div>
 
-                        <div class="row p-1" *ngIf="!ventaMayorista && prod.Subcategoria.Id == subcategoriaEnPromo">
+                        <div class="row p-1" *ngIf="!ventaMayorista && prod.PrecioUnitarioFinalSinDescuento > 0">
 
-                            <div class="col-12 font-weight-bold text-info text-left">
+                            <div class="col-1"></div>
+                            <div class="col-11 font-weight-bold text-info text-left">
                                 Antes
                                 <span class="h4" *ngIf="prod.TipoPrecio==1" style="text-decoration:line-through;">
                                     {{prod.MonedaVenta}}
-                                    {{ (prod.Peso*prod.PrecioUnitarioFinal) + ((prod.Peso*prod.PrecioUnitarioFinal) * 0.135) | number: '1.2-2' }}</span>
+                                    {{ prod.Peso * prod.PrecioUnitarioFinalSinDescuento | number: '1.2-2' }}</span>
                                 <span class="h4" *ngIf="prod.TipoPrecio==2" style="text-decoration:line-through;">
                                     {{prod.MonedaVenta}}
-                                    {{ prod.PrecioUnitarioFinal * (prod.PrecioUnitarioFinal  * 0.135) | number: '1.2-2' }}</span>
+                                    {{ prod.PrecioUnitarioFinal | number: '1.2-2' }}</span>
                             </div>
 
                         </div>
@@ -83,18 +84,23 @@
                         <!-- <div *ngIf="!ventaMayorista && mostrarPrecios(); then panel_SI_MuestraPrecio else panel_NO_MuestraPrecio "></div> -->
 
                         <!-- <ng-template #panel_SI_MuestraPrecio> -->
-                            
-                            <div class="row p-1" *ngIf="!ventaMayorista && mostrarPrecios()">
-                                <div class="col-12 font-weight-bold text-center">
-                                    <span class="h3" *ngIf="prod.TipoPrecio==1">{{prod.MonedaVenta}}
-                                        {{ prod.Peso*prod.PrecioUnitarioFinal | number: '1.2-2' }}</span>
-                                    <span class="h3" *ngIf="prod.TipoPrecio==2">{{prod.MonedaVenta}}
-                                        {{ prod.PrecioUnitarioFinal | number: '1.2-2' }}</span>
-                                </div>
+
+                        <div class="row p-1" *ngIf="!ventaMayorista && mostrarPrecios()">
+                            <div class="col-3"  *ngIf="prod.PrecioUnitarioFinalSinDescuento > 0">
+                                <img class="fuego" src="../../../assets/img/fuego.jpeg" alt="">
                             </div>
+                            <div class="col-9 font-weight-bold text-center">
+                                
+                                <span class="h3" *ngIf="prod.TipoPrecio==1">{{prod.MonedaVenta}}
+                                    {{ prod.Peso*prod.PrecioUnitarioFinal | number: '1.2-2' }}</span>
+                                <span class="h3" *ngIf="prod.TipoPrecio==2">{{prod.MonedaVenta}}
+                                    {{ prod.PrecioUnitarioFinal | number: '1.2-2' }}</span>
+
+                            </div>
+                        </div>
 
                         <!-- </ng-template> -->
-                        
+
                         <!-- <ng-template #panel_NO_MuestraPrecio>
                             <div class="col-12">
                                 <button type="button" class="btn btn-primary btn-block"
@@ -110,7 +116,7 @@
                                 </button>
                             </div>
                         </ng-template> -->
-                        
+
 
                         <div class="row" *ngIf="productIdAlerta == prod.Id">
                             <div class="col-12">
@@ -130,7 +136,7 @@
                             </div>
                         </div>
 
-                        <div class="row  pl-4 pr-4 mb-1 mt-1" *ngIf="clienteConListaAsignada">  
+                        <div class="row  pl-4 pr-4 mb-1 mt-1" *ngIf="clienteConListaAsignada">
                             <div class="col-12">
                                 <button type="button" class="btn btn-success btn-block"
                                     (click)=" ingresarCantidadesPorMedida( $event, prod )">
@@ -170,7 +176,7 @@
             <div class="modal-body" *ngIf="productoIngresaCantidades">
                 <div class="row" *ngFor="let itemMedida of productoIngresaCantidades.ProductoStock">
                     <div class="col-6 pt-2">
-                        <span >{{itemMedida.Medida.Observaciones}}</span>
+                        <span>{{itemMedida.Medida.Observaciones}}</span>
                     </div>
 
                     <div class="col-6" *ngIf="itemMedida.StockDisponible > 0">

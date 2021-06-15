@@ -211,7 +211,7 @@ namespace tiendapome.Servicios
             if (!string.IsNullOrEmpty(descuentaAlConfirmar) && descuentaAlConfirmar.Equals("SI"))
             {
                 PedidoRepository repository = new PedidoRepository();
-                repository.PedidoLiberarStock(idPedido);
+                repository.PedidoLiberarStockReservado(idPedido);
             }
         }
 
@@ -222,13 +222,39 @@ namespace tiendapome.Servicios
             Pedido dato;
 
             dato = repository.Obtener(idPedido);
+
+            int? liberaStock = null;
+            switch (dato.Estado.Id)
+            {
+                case (int)ESTADOS.SOLICITADO_:
+                case (int)ESTADOS.EN_PROCESO_:
+                    //p/todos estos estados solo se librea el stock RESERVADO
+                    liberaStock = 1;
+                    dato.Observaciones = string.Format("LIBERA_STOCK_RESERVADO - Estado Anterior {0}", dato.Estado.Descripcion);
+                    break;
+
+                case (int)ESTADOS.FINALIZADO_:
+                case (int)ESTADOS.FACTURADO_:
+                case (int)ESTADOS.ENTREGADO_:
+                case (int)ESTADOS.RECEPCIONADO_:
+                    //p/todos estos estados se vuelve el stock atras
+                    liberaStock = 2;
+                    dato.Observaciones = string.Format("VUELVE_INGRESAR_STOCK - Estado Anterior {0}", dato.Estado.Descripcion);
+                    break;
+            }
+
             dato.Estado = this.ObtenerObjeto<Estado>((int)ESTADOS.CANCELADO_);
             
             repository.Actualizar(dato);
 
             string descuentaAlConfirmar = servGenerico.ParametroObtenerValor("DESCONTAR_STCOK_AL_CONFIRMAR");
-            if (!string.IsNullOrEmpty(descuentaAlConfirmar) && descuentaAlConfirmar.Equals("SI"))
-                repository.PedidoLiberarStock(dato.Id);
+            if (liberaStock.HasValue && !string.IsNullOrEmpty(descuentaAlConfirmar) && descuentaAlConfirmar.Equals("SI"))
+            {
+                if (liberaStock.Value == 1)
+                    repository.PedidoLiberarStockReservado(dato.Id);
+                if (liberaStock.Value == 2)
+                    repository.PedidoVolverAStock(dato.Id);
+            }
         }
 
         public MensajeResponse PedidoAvanzar(Pedido datosGraba, bool esReenvioPedidoMinorista)

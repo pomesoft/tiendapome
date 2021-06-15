@@ -76,12 +76,12 @@ var DocumentoVentaService = /** @class */ (function () {
     };
     DocumentoVentaService.prototype.printNotaPedido = function (idVenta) {
         //let urlAPI: string = 'https://tiendapome.com.ar/api/venta/imprimirnp?idVenta=' + idVenta
-        var urlAPI = 'https://backend.tradingjoyas.com/api/venta/imprimirnp?idVenta=' + idVenta;
+        var urlAPI = 'https://tradingjoyas.com/backend/api/venta/imprimirnp?idVenta=' + idVenta;
         console.log(urlAPI);
         window.open(urlAPI, '_blank');
     };
     DocumentoVentaService.prototype.printCtaCte = function (idCliente, fechaDesde, fechaHasta) {
-        var urlAPI = 'https://backend.tradingjoyas.com/api/venta/exportctacte?fechaDesde=' + fechaDesde + '&fechaHasta=' + fechaHasta + '&idCliente=' + idCliente;
+        var urlAPI = 'https://tradingjoyas.com/backend/api/venta/exportctacte?fechaDesde=' + fechaDesde + '&fechaHasta=' + fechaHasta + '&idCliente=' + idCliente;
         console.log(urlAPI);
         window.open(urlAPI, '_blank');
     };

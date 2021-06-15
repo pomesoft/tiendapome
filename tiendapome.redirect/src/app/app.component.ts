@@ -11,6 +11,8 @@ export class AppComponent {
   constructor() { }
 
   public ngOnInit() {
-    window.location.href = 'https://' + window.location.hostname + '/tienda/#/';
+    //window.location.href = 'https://' + window.location.hostname + '/tienda/#/';
+    console.log('https://' + window.location.hostname + '/#/');
+    window.location.href = 'https://' + window.location.hostname + '/#/';
   }
 }
